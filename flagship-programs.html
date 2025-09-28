@@ -1,0 +1,3408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flagship Programs - Psyche Panacea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init('6KRvQp4CW2Wc9Ir-x');
+    </script>
+    <link rel="icon" href="/images/psypan-logo-transparent.png">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0052cc',
+                        secondary: '#4da8ff',
+                        dark: '#1a1a1a',
+                        light: '#f8f9fa',
+                        accent: '#f59e0b',
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out',
+                        'slide': 'slide 25s linear infinite',
+                        'popup-fade': 'popupFadeIn 0.5s ease forwards',
+                        'slide-up': 'slideUp 0.5s ease forwards',
+                        'message-fade': 'messageFadeIn 0.3s ease',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            from: { opacity: 0 },
+                            to: { opacity: 1 },
+                        },
+                        slide: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        popupFadeIn: {
+                            from: { transform: 'scale(0.7)', opacity: 0 },
+                            to: { transform: 'scale(1)', opacity: 1 },
+                        },
+                        slideUp: {
+                            from: { transform: 'translateY(30px)', opacity: 0 },
+                            to: { transform: 'translateY(0)', opacity: 1 },
+                        },
+                        messageFadeIn: {
+                            from: { opacity: 0, transform: 'translateY(10px)' },
+                            to: { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        .tab-gradient {
+            background: linear-gradient(135deg, #0052cc, #4da8ff);
+        }
+
+        /* Fixed navbar solution */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 12vh;
+            z-index: 1000;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #0052cc;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Tab Navigation (base) */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            color: #555;
+            margin: 0.3rem;
+            border-radius: 4px;
+        }
+
+        .tab-btn.active {
+            color: #0052cc;
+            border-bottom: 3px solid #0052cc;
+            background: rgba(0, 82, 204, 0.05);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(0, 82, 204, 0.1);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Program Cards (kept as-is) */
+        .program-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: slideUp 0.5s ease forwards;
+            animation-delay: calc(var(--delay) * 0.1s);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .program-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .program-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        /* Improved image container sizing */
+        .program-card .overflow-hidden {
+            height: 280px;
+            /* Increased from h-48 (192px) to 280px */
+            overflow: hidden;
+        }
+
+        .program-content {
+            padding: 1.5rem;
+        }
+
+        .program-content h3 {
+            color: #0052cc;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .program-content .program-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            position: relative;
+            max-height: 4.8em;
+            overflow: hidden;
+        }
+
+        .program-content .program-description.expanded {
+            max-height: none;
+        }
+
+        .program-content .read-more {
+            color: #0052cc;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+        }
+
+        .program-content .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #0052cc, #4da8ff);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .program-content .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 82, 204, 0.3);
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Single card layout adjustments */
+        .tab-content .program-grid.grid-cols-1 .program-card {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tab-content .program-grid.grid-cols-1 .program-card .overflow-hidden {
+            height: 320px;
+            /* Even larger for single cards */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .program-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ------------------------------
+   STICKY + TOGGLE + MOBILE BEHAVIOR
+   ------------------------------ */
+
+        /* Make the whole tabs wrapper sticky (desktop/laptop/tablet/mobile) */
+        .tabs-wrapper {
+            position: sticky;
+            top: 0;
+            /* sticks to top of viewport */
+            z-index: 1000;
+            /* high stacking context */
+            background: rgba(255, 255, 255, 0.95);
+            /* prevent content bleed-through */
+            backdrop-filter: blur(4px);
+            /* optional: soft blur */
+            /* add a subtle border shadow so it visually separates */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Mobile toggle button - show on mobile only, also sticky */
+        .mobile-toggle {
+            display: none;
+            background: #0052cc;
+            color: #fff;
+            border: none;
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 0.6rem;
+            /* small offset inside sticky wrapper */
+            position: sticky;
+            top: 0;
+            z-index: 10010;
+            /* higher than .tabs-wrapper to ensure visibility */
+        }
+
+        /* Ensure the tab-nav itself also has sticky behavior and sits under the wrapper */
+        .tab-nav {
+            /* keep its existing layout but also reserve high stacking when visible */
+            z-index: 9998;
+        }
+
+        /* Media query to shrink tabs on medium screens */
+        @media (max-width: 1024px) {
+            .tab-nav {
+                gap: 0.4rem;
+                padding: 0.75rem;
+            }
+
+            .tab-btn {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.6rem;
+            }
+        }
+
+        /* Mobile view: hide inline tab-nav; show toggle; dropdown opens under sticky bar */
+        @media (max-width: 640px) {
+
+            /* hide the inline/desktop tab-nav by default on mobile */
+            .tab-nav {
+                display: none !important;
+            }
+
+            /* show toggle button on mobile only */
+            .mobile-toggle {
+                display: inline-block;
+            }
+
+            /* when toggle opens, show compact grid dropdown */
+            .tab-nav.mobile-open {
+                display: grid !important;
+                position: absolute;
+                left: 0;
+                right: 0;
+                /* place dropdown directly below the sticky wrapper */
+                top: 10px;
+                /* adjust with --header-height inline style if needed */
+                background: #f7fafc;
+                padding: 0.5rem;
+                gap: 0.25rem;
+                grid-template-columns: repeat(4, 1fr);
+                /* compact 4 columns */
+                z-index: 10005;
+                /* higher than content but below toggle */
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+                max-height: 50vh;
+                overflow: auto;
+            }
+
+            .tab-btn {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.75rem;
+                margin: 0;
+                border-radius: 6px;
+                text-align: center;
+                white-space: normal;
+            }
+
+            /* make active visible even in compact mode */
+            .tab-btn.active {
+                background: rgba(0, 82, 204, 0.08);
+                border-bottom: none;
+                color: #0052cc;
+            }
+        }
+
+        /* ensure on larger screens toggle is hidden (and tabs visible) */
+        @media (min-width: 641px) {
+            .mobile-toggle {
+                display: none !important;
+            }
+
+            /* ensure tab nav visible on larger screens */
+            .tab-nav {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* keep your intro styles */
+        .tab-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            padding: 0 1.5rem;
+        }
+
+        .tab-intro h2 {
+            font-size: 2.2rem;
+            color: #0052cc;
+            margin-bottom: 1rem;
+        }
+
+        .tab-intro p {
+            color: #555;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .program-description ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .program-description li {
+            margin-bottom: 0.5rem;
+        }
+
+        .program-description strong {
+            font-weight: 700;
+        }
+
+
+        .card-perspective {
+            perspective: 800px;
+        }
+
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card-perspective:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            backface-visibility: hidden;
+            will-change: transform, opacity;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 95vh;
+            overflow-y: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .form-container {
+            padding: 2rem;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #10B981;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0052cc;
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+        }
+
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-submit {
+            background: linear-gradient(to right, #0052cc, #4da8ff);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 82, 204, 0.3);
+        }
+
+        .btn-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .btn-close:hover {
+            background: #e9ecef;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(to right, #0052cc, #4da8ff);
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .category-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+
+        /* Mobile menu quick-toggle styles (drop into your CSS) */
+
+        #mobile-menu.hidden {
+            opacity: 0;
+            transform-origin: top center;
+            transform: scaleY(.96) translateY(-4px);
+            pointer-events: none;
+            transition: opacity 120ms ease, transform 120ms ease;
+            will-change: opacity, transform;
+        }
+
+        /* Visible state */
+        #mobile-menu.open {
+            opacity: 1;
+            transform: scaleY(1) translateY(0);
+            pointer-events: auto;
+            transition: opacity 120ms ease, transform 120ms ease;
+        }
+
+        /* Small visual polish for the mobile panel */
+        #mobile-menu {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 80px;
+            /* adjust if your header height differs */
+            z-index: 1001;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 10px 30px rgba(6, 11, 26, 0.12);
+            overflow: hidden;
+        }
+
+        /* Keep inner links comfortable and tappable */
+        #mobile-menu .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        #mobile-menu a {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.06);
+        }
+
+        /* Slight background and separation so it feels snappy */
+        #mobile-menu {
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(15, 23, 42, 0.04);
+        }
+
+        /* Responsive safety: ensure hidden on desktop by CSS if needed */
+        @media (min-width: 768px) {
+            #mobile-menu {
+                display: none !important;
+            }
+        }
+
+        /* Utility class to block body scroll while menu open */
+        .body-no-scroll {
+            overflow: hidden !important;
+        }
+
+        .typing-animation {
+            overflow: hidden;
+            border-right: .15em solid #3b82f6;
+            white-space: nowrap;
+            animation: typing 1s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        .bot-typing .bot-typing-text {
+            border-right: .15em solid #3b82f6;
+            white-space: pre-wrap;
+            /* allow wrapped typed text */
+            display: inline-block;
+            animation: blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #3b82f6;
+            }
+        }
+
+        .chatbot-body {
+            scroll-behavior: smooth;
+            height: 250px;
+        }
+
+        #chatbotWindow {
+            transition: all 0.3s ease;
+        }
+
+        .option-btn {
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        #chatbotToggle {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #chatbotToggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        .chatbot-message {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chatbot-window {
+                width: 90vw;
+                max-width: 90vw;
+                right: 5px;
+                max-height: 70vh;
+            }
+
+            .chatbot-input {
+                padding: 0.5rem;
+            }
+
+            .chatbot-input input {
+                padding: 0.5rem;
+            }
+
+            .chatbot-toggle {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 9rem 1.5rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-divider {
+            width: 80px;
+            height: 4px;
+            background: white;
+            margin: 0 auto 1.5rem;
+            border-radius: 2px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.15;
+        }
+
+        /* Sticky Tab Navigation */
+        .sticky-tabs {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 0;
+        }
+
+
+        /* Keep modal hidden by default; your JS toggles .active to show */
+        .modal-overlay {
+            display: none;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        /* Smooth content entrance */
+        .modal-content {
+            transform: translateY(12px) scale(.995);
+            transition: transform 280ms cubic-bezier(.2, .9, .3, 1), opacity 220ms ease;
+            opacity: 0;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* subtle card gradient and glass */
+        .modal-content {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+            backdrop-filter: blur(4px);
+        }
+
+        /* nice focus ring for inputs */
+        .modal-content input:focus,
+        .modal-content textarea:focus,
+        .modal-content button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.10);
+        }
+
+        /* Success icon animation */
+        .success-icon {
+            animation: popIn 420ms cubic-bezier(.2, .9, .3, 1);
+        }
+
+        /* Modal mobile improvements */
+        @media (max-width: 640px) {
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+                margin: 1rem;
+            }
+
+            .form-container {
+                padding: 1rem;
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+
+            .grid.grid-cols-1.sm\:grid-cols-2.gap-4 {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-title {
+                font-size: 1.25rem;
+            }
+
+            .btn-close {
+                top: 10px;
+                right: 10px;
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(.8);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.06);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* SlideUp used by program cards animation (keeps consistent with your scripts) */
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* small screens - keep modal full height with scrollable content */
+        @media (max-width: 640px) {
+            .modal-content {
+                max-height: 92vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* ---------- Marquee base styles (single track) ---------- */
+        .clients-marquee-section {
+            width: 100%;
+            background: #ffffff;
+            padding: 1rem 0;
+            box-sizing: border-box;
+        }
+
+        .clients-marquee-wrap {
+            --marquee-gap: 1.25rem;
+            --logo-height-desktop: 80px;
+            --logo-height-mobile: 56px;
+            --px-per-second: 120;
+
+            max-width: 1300px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        /* SINGLE track that will contain clients + a duplicated set for seamless looping */
+        .marquee-track {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--marquee-gap);
+            white-space: nowrap;
+            will-change: transform;
+            animation-name: marquee-scroll;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-duration: 20s;
+            /* fallback; JS will set correct duration */
+            animation-play-state: running;
+        }
+
+        /* Pause on hover */
+        .clients-marquee-wrap:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        /* item */
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            flex: 0 0 auto;
+            box-sizing: border-box;
+        }
+
+        .marquee-item .logo-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--logo-height-desktop);
+            min-width: calc(var(--logo-height-desktop) * 2);
+            padding: 0.3rem 0.75rem;
+            box-sizing: border-box;
+            border-radius: 6px;
+            background: transparent;
+        }
+
+        .marquee-item img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* animation: translate left by 50% (we duplicate content inside the same track) */
+        @keyframes marquee-scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .clients-marquee-wrap {
+                --logo-height-desktop: 64px;
+            }
+
+            .marquee-item .logo-box {
+                min-width: calc(var(--logo-height-desktop) * 1.8);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .clients-marquee-wrap {
+                --logo-height-desktop: var(--logo-height-mobile);
+                padding: 0 0.5rem;
+            }
+
+            .marquee-item .logo-box {
+                min-width: calc(var(--logo-height-mobile) * 1.8);
+                padding: 0.2rem 0.5rem;
+            }
+        }
+
+
+
+        .card-perspective {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            transform-style: preserve-3d;
+            transition: transform 0.7s;
+        }
+
+        .card-face {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="flex items-center space-x-2">
+            <img class="h-16 w-14" src="/images/psypan-logo-transparent.png" alt="Psyche Panacea"
+                style="height: 80px; width: 80px;">
+            <div class="text-2xl font-bold text-primary">Psyche Panacea</div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="index.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Home</a>
+            <a href="services.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Services</a>
+            <a href="flagship-programs.html" class="text-primary font-semibold transition-colors px-2 py-1">Flagship
+                Programs</a>
+            <a href="events.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Events</a>
+            <a href="gallery.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Gallery</a>
+            <a href="about-us.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">About Us</a>
+            <a href="blogs.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Blogs</a>
+            <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Contact</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center" style="height: 40px;">
+            <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="md:hidden bg-white shadow-lg rounded-b-lg hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="index.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Home</a>
+            <a href="services.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Services</a>
+            <a href="flagship-programs.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-primary bg-blue-50">Flagship
+                Programs</a>
+            <a href="events.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Events</a>
+            <a href="gallery.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Gallery</a>
+            <a href="blogs.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Blogs</a>
+            <a href="about-us.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">About
+                Us</a>
+            <a href="contact.html"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Contact</a>
+
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="text-4xl md:text-5xl font-bold">Flagship Programs</h1>
+        <div class="hero-divider"></div>
+        <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+            Transformative learning experiences designed to elevate leadership, communication, and organizational
+            effectiveness
+        </p>
+    </section>
+
+    <div class="tabs-wrapper">
+        <!-- Mobile toggle (visible only on mobile) -->
+        <button id="tabToggle" class="mobile-toggle" aria-expanded="false" aria-controls="tabNav">
+            ☰ Our Programs
+        </button>
+
+        <!-- Tab Navigation (use same classes you already use) -->
+        <div id="tabNav"
+            class="tab-nav bg-gray-100 rounded-md grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2 p-4"
+            role="tablist">
+            <button class="tab-btn active" data-tab="mdp" role="tab" aria-selected="true">Managerial Dev.
+                Program</button>
+            <button class="tab-btn" data-tab="ttt" role="tab" aria-selected="false">Train The Trainer</button>
+            <button class="tab-btn" data-tab="hdc" role="tab" aria-selected="false">Handling Conversation</button>
+            <button class="tab-btn" data-tab="c2c" role="tab" aria-selected="false">Campus to Corporate</button>
+            <button class="tab-btn" data-tab="bcs" role="tab" aria-selected="false">Business Comm. Skills</button>
+            <button class="tab-btn" data-tab="ms" role="tab" aria-selected="false">Mentoring Skills</button>
+            <button class="tab-btn" data-tab="di" role="tab" aria-selected="false">Diversity & Inclusion</button>
+            <button class="tab-btn" data-tab="sahyog" role="tab" aria-selected="false">Sahyog</button>
+        </div>
+    </div>
+
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay fixed inset-0 z-50 items-center justify-center p-4 sm:p-6" id="bookingModal"
+        style="z-index: 2000;" aria-hidden="true">
+        <div
+            class="modal-content w-full max-w-3xl md:max-w-2xl lg:max-w-3xl mx-auto rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+            <!-- Header -->
+            <div class="modal-header px-6 py-4 flex items-start sm:items-center gap-4 border-b bg-white">
+                <div class="flex-1 min-w-0">
+                    <div class="modal-title text-lg font-semibold text-gray-800">Book Your Program</div>
+                    <div class="category-badge mt-1 inline-block text-sm text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full font-medium"
+                        id="categoryBadge">
+                        Managerial Development Program
+                    </div>
+                </div>
+
+                <!-- Close -->
+                <button id="closeModal"
+                    class="btn-close ml-auto text-gray-500 hover:text-gray-700 p-2 rounded-full transition-colors"
+                    aria-label="Close">
+                    <!-- SVG close icon -->
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Form Container -->
+            <div id="formContainer" class="form-container px-6 py-6 bg-gradient-to-b from-white to-gray-50">
+                <form id="contactForm" class="space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">First name</label>
+                            <input required name="first_name" type="text" placeholder="John"
+                                class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 shadow-sm transition" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Last name</label>
+                            <input required name="last_name" type="text" placeholder="Doe"
+                                class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 shadow-sm transition" />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Email</label>
+                            <input required name="email" type="email" placeholder="you@example.com"
+                                class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 shadow-sm transition" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Phone</label>
+                            <input required name="phone" type="tel" placeholder="+91 99XXXXXXXX"
+                                class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 shadow-sm transition" />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Program (Category)</label>
+                            <!-- keep same id/class; add nicer look -->
+                            <input name="services" id="services" type="text"
+                                placeholder="Managerial Development Program"
+                                class="mt-1 block w-full px-4 py-3 border border-indigo-100 rounded-lg bg-indigo-50 text-indigo-800 font-medium"
+                                readonly />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Program (Subcategory)</label>
+                            <input name="subcategory" id="subcategory" type="text"
+                                placeholder="Supervisory Development Program"
+                                class="mt-1 block w-full px-4 py-3 border border-indigo-100 rounded-lg bg-indigo-50 text-indigo-800 font-medium"
+                                readonly />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Message</label>
+                        <textarea name="message" rows="5" placeholder="Write your message..."
+                            class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg bg-white placeholder-gray-400 shadow-sm transition"></textarea>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <button type="submit"
+                            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg font-semibold transition-shadow shadow-md">
+                            <!-- Send icon -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 19l9 2-7-9 7-9-9 2-9-2 9 9-9 9 9-2z"></path>
+                            </svg>
+                            Send Request
+                        </button>
+
+                        <button type="button" id="successClose"
+                            class="hidden sm:inline-block px-4 py-3 bg-gray-100 text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-200 transition"
+                            aria-hidden="true">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message hidden px-6 py-8 text-center bg-white">
+                <div
+                    class="success-icon inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-50 text-green-600 mx-auto mb-4">
+                    <!-- check icon -->
+                    <svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Thank You for Your Booking!</h3>
+                <p class="text-gray-600 mb-4">
+                    We've received your request and will contact you shortly with payment details.
+                </p>
+                <p class="text-gray-600 mb-6">You'll receive a confirmation email with program details shortly.</p>
+
+                <div class="flex items-center justify-center gap-3">
+                    <button id="successClose"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition">
+                        Close
+                    </button>
+                    <button type="button" id="bookAnother"
+                        class="px-4 py-2 bg-white text-indigo-600 rounded-lg border border-indigo-100 hover:bg-indigo-50 transition">
+                        Book another
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("bookAnother").addEventListener("click", function () {
+            document.getElementById("successMessage").style.display = "none";
+        });
+    </script>
+
+    <!-- Tab Content -->
+    <!-- Management Development Programs (MDP) -->
+    <div id="mdp" class="tab-content active space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+        <!-- Intro -->
+        <div class="tab-intro text-center max-w-2xl mx-auto">
+            <h2
+                class="text-3xl font-extrabold text-indigo-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                Management Development Programs
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Unleash Potential with our Management Development Program.
+            </p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="program-grid grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Card 1 -->
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 100ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/mngmt dvp prg.jpg" alt="Management Development Programs"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
+                        Management Development Programs
+                    </h3>
+                    <div class="program-description">
+                        <p>Comprehensive training to enhance managerial abilities at all organizational levels.</p>
+                        <p><strong>Key components:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Leadership skills development</li>
+                            <li>Functional knowledge enhancement</li>
+                            <li>Business acumen building</li>
+                            <li>Personal development focus</li>
+                            <li>Networking opportunities</li>
+                            <li>Practical case studies</li>
+                            <li>Coaching and mentorship</li>
+                            <li>Continuous learning pathways</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-indigo-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transform transition-transform duration-300 hover:scale-105"
+                            data-category="Managerial Development Program"
+                            data-subcategory="Management Development Programs">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 200ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/supervisory dvp prgm.jpg" alt="SUPERVISORY DEVELOPMENT PROGRAM"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
+                        Supervisory Development Program
+                    </h3>
+                    <div class="program-description">
+                        <p>Specialized training for supervisory roles to enhance team performance.</p>
+                        <p><strong>Key components:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Leadership and management skills</li>
+                            <li>Teamwork and collaboration techniques</li>
+                            <li>Performance management strategies</li>
+                            <li>Communication enhancement</li>
+                            <li>Time and priority management</li>
+                            <li>Decision-making training</li>
+                            <li>Continuous self-development</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-indigo-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transform transition-transform duration-300 hover:scale-105"
+                            data-category="Managerial Development Program"
+                            data-subcategory="Supervisory Development Program">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 300ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/exctv dvp prgm.jpg" alt="Executive Development Program"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
+                        Executive Development Program
+                    </h3>
+                    <div class="program-description">
+                        <p>Advanced training for senior executives to enhance strategic leadership capabilities.</p>
+                        <p><strong>Key components:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Executive leadership enhancement</li>
+                            <li>Corporate strategy understanding</li>
+                            <li>Executive presence development</li>
+                            <li>Global perspective building</li>
+                            <li>Strategic thinking training</li>
+                            <li>Peer learning opportunities</li>
+                            <li>Executive coaching</li>
+                            <li>Continuous learning focus</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-indigo-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transform transition-transform duration-300 hover:scale-105"
+                            data-category="Managerial Development Program"
+                            data-subcategory="Executive Development Program">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Train the Trainer (TTT) -->
+    <div id="ttt" class="tab-content hidden space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+        <div class="tab-intro text-center max-w-2xl mx-auto">
+            <h2
+                class="text-3xl font-extrabold text-blue-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                Train the Trainer
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Empower internal trainers with skills to deliver impactful learning experiences.
+            </p>
+        </div>
+
+        <div class="program-grid grid grid-cols-1 gap-6">
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="animation-delay: 100ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/trsin the trainee.jpg" alt="Train the Trainer"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                        Train The Trainer
+                    </h3>
+                    <div class="program-description">
+                        <p>Empowering trainers to become exceptional through NLP-enriched program.</p>
+                        <p><strong>Program focus:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Adult learning principles and styles</li>
+                            <li>Training needs analysis</li>
+                            <li>Program design and development</li>
+                            <li>Effective delivery techniques</li>
+                            <li>Material development strategies</li>
+                            <li>Facilitation skills enhancement</li>
+                            <li>Communication mastery</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-blue-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">Read
+                            more</span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transform transition-transform duration-300 hover:scale-105">Book
+                            Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Handling Difficult Conversation (HDC) -->
+    <div id="hdc" class="tab-content hidden space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+        <div class="tab-intro text-center max-w-2xl mx-auto">
+            <h2
+                class="text-3xl font-extrabold text-red-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                Handling Difficult Conversations
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Navigate challenging conversations with confidence and empathy.
+            </p>
+        </div>
+
+        <div class="program-grid grid grid-cols-1 gap-6">
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 200ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/dfclt cnvrsn.jpg" alt="Difficult Conversations"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-red-600 transition-colors">
+                        HANDLING DIFFICULT CONVERSATION
+                    </h3>
+                    <div class="program-description">
+                        <p>Mastering the Art of Handling Difficult Dialogues</p>
+                        <p><strong>Training components:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Active listening techniques</li>
+                            <li>Emotional intelligence development</li>
+                            <li>Conversation planning and preparation</li>
+                            <li>Constructive feedback delivery</li>
+                            <li>Defusing defensiveness strategies</li>
+                            <li>Managing strong emotions</li>
+                            <li>Practical role-playing exercises</li>
+                            <li>Conflict resolution tools</li>
+                            <li>Cross-cultural communication</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-red-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-red-600 text-white rounded hover:bg-red-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campus to Corporate (C2C) -->
+    <div id="c2c" class="tab-content hidden space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+        <div class="tab-intro text-center max-w-2xl mx-auto">
+            <h2
+                class="text-3xl font-extrabold text-green-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                Campus to Corporate
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Smooth transition for graduates entering the corporate world.
+            </p>
+        </div>
+
+        <div class="program-grid grid grid-cols-1 gap-6">
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 300ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/cmp to cprt.jpg" alt="Campus to Corporate"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-green-600 transition-colors">
+                        Campus To Corporate
+                    </h3>
+                    <div class="program-description">
+                        <p>Bridging the Gap from Campus to Corporate</p>
+                        <p><strong>Program elements:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Professionalism and work ethics</li>
+                            <li>Interpersonal skills development</li>
+                            <li>Corporate culture understanding</li>
+                            <li>Business etiquette training</li>
+                            <li>Technical competencies enhancement</li>
+                            <li>Communication skills improvement</li>
+                            <li>Time management strategies</li>
+                            <li>Problem-solving abilities</li>
+                            <li>Adaptability and resilience building</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-green-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-green-600 text-white rounded hover:bg-green-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Communication Skills (BCS) -->
+    <div id="bcs" class="tab-content hidden space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+        <div class="tab-intro text-center max-w-2xl mx-auto">
+            <h2
+                class="text-3xl font-extrabold text-blue-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                Business Communication Skills
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Enhance professional communication across all channels.
+            </p>
+        </div>
+
+        <div class="program-grid grid grid-cols-1 gap-6">
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 100ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/business-communication.jpg" alt="Business Communication"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                        Business Communication Skills
+                    </h3>
+                    <div class="program-description">
+                        <p>Develop advanced communication skills for leadership roles.</p>
+                        <p><strong>Key focus areas:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Effective communication importance</li>
+                            <li>Verbal, written & body language mastery</li>
+                            <li>Professional email writing</li>
+                            <li>Powerful presentation creation</li>
+                            <li>Engaging PowerPoint techniques</li>
+                            <li>Meaningful delivery synchronization</li>
+                            <li>Integrity and goal accomplishment</li>
+                            <li>Self-concept development</li>
+                            <li>Time-task productivity strategies</li>
+                            <li>Stress management techniques</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-blue-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded hover:bg-blue-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mentoring Skills (MS) -->
+    <div id="ms" class="tab-content hidden space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+        <div class="tab-intro text-center max-w-2xl mx-auto">
+            <h2
+                class="text-3xl font-extrabold text-purple-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                Mentoring Skills
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Develop capabilities to guide and develop organizational talent.
+            </p>
+        </div>
+
+        <div class="program-grid grid grid-cols-1 gap-6">
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 100ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/MENTORING-SKILLS.jpg" alt="Mentoring Skills"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
+                        MENTORING SKILLS
+                    </h3>
+                    <div class="program-description">
+                        <p>Elevate Your Impact with Effective Mentoring Skills</p>
+                        <p><strong>Training components:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Rapport and relationship building</li>
+                            <li>Feedback and coaching techniques</li>
+                            <li>Mentoring role clarification</li>
+                            <li>Communication enhancement</li>
+                            <li>Goal setting and action planning</li>
+                            <li>Diversity and inclusion in mentoring</li>
+                            <li>Emotional intelligence development</li>
+                            <li>Mentoring through challenges</li>
+                            <li>Relationship assessment methods</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-purple-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-purple-600 text-white rounded hover:bg-purple-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diversity & Inclusion (D&I) -->
+    <div id="di" class="tab-content hidden space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+        <div class="tab-intro text-center max-w-2xl mx-auto">
+            <h2
+                class="text-3xl font-extrabold text-teal-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                Diversity & Inclusion
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Foster inclusive workplace culture that values diversity.
+            </p>
+        </div>
+
+        <div class="program-grid grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 100ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/POSHTTT.jpg" alt="Inclusive Leadership"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">
+                        POSH (Prevention of Sexual Harassment)
+                    </h3>
+                    <div class="program-description">
+                        <p>Creating Respectful Workspaces: Preventing Sexual Harassment.</p>
+                        <p><strong>Training components:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Understanding sexual harassment</li>
+                            <li>Legal framework and guidelines</li>
+                            <li>Awareness creation</li>
+                            <li>Privacy and confidentiality</li>
+                            <li>Respectful communication</li>
+                            <li>Investigation procedures</li>
+                            <li>Regular refresher training</li>
+                            <li>Harassment identification</li>
+                            <li>Reporting mechanisms</li>
+                            <li>Bystander intervention</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-teal-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-teal-600 text-white rounded hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 200ms">
+                <div class="overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=500&auto=format&fit=crop"
+                        alt="Unconscious Bias"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">
+                        GENDER SENSITIZATION
+                    </h3>
+                    <div class="program-description">
+                        <p>Promoting Understanding: Embracing Gender Sensitization.</p>
+                        <p><strong>Training components:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Gender-based discrimination awareness</li>
+                            <li>Organizational policy review</li>
+                            <li>Support building strategies</li>
+                            <li>Case studies and discussions</li>
+                            <li>Cultural norm understanding</li>
+                            <li>Unconscious bias recognition</li>
+                            <li>Inclusive language training</li>
+                            <li>Intersectionality awareness</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-teal-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-teal-600 text-white rounded hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="poshTTT"
+                class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 300ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/POSHTTT.jpg" alt="Inclusive Culture"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">
+                        POSH TTT
+                    </h3>
+                    <div class="program-description">
+                        <p>Train-the-Trainer program for sexual harassment prevention.</p>
+                        <p><strong>Training topics:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>POSH background and significance</li>
+                            <li>Policy understanding</li>
+                            <li>Legal framework</li>
+                            <li>Processes and protocols</li>
+                            <li>TTT fundamentals and principles</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-teal-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-teal-600 text-white rounded hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                style="--delay: 400ms">
+                <div class="overflow-hidden">
+                    <img src="/images/flagship-programs/herizons.jpg" alt="HERizons"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div class="program-content p-5 space-y-4">
+                    <h3 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">
+                        HERizons
+                    </h3>
+                    <div class="program-description">
+                        <p>STRONGER TOGETHER: WOMEN'S EMPOWERMENT JOURNEY</p>
+                        <p><strong>Workshop topics:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Understanding resilience</li>
+                            <li>Developing emotional intelligence</li>
+                            <li>Building coping strategies</li>
+                            <li>Cultivating empathy and self-awareness</li>
+                            <li>Developing positive relationships</li>
+                            <li>Mindfulness and self-compassion</li>
+                            <li>Overcoming obstacles</li>
+                            <li>Emotional intelligence in leadership</li>
+                            <li>Compassionate communication</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span
+                            class="read-more text-teal-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                            Read more
+                        </span>
+                        <button
+                            class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-teal-600 text-white rounded hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sahyog Wellness Program -->
+    <div id="sahyog" class="tab-content hidden space-y-16 px-6 py-12 bg-white rounded-2xl shadow-lg animate-fade-in">
+
+        <!-- Flip Card Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Card Component -->
+            <div class="card-perspective group">
+                <div
+                    class="card-inner relative w-full h-80 transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
+                    <!-- Front -->
+                    <div
+                        class="card-face absolute inset-0 rounded-xl shadow-md flex flex-col items-center justify-end overflow-hidden">
+                        <img src="/images/flagship-programs/wellness-report-psypan-1.jpg"
+                            alt="Workplace/Mental Health Counselling"
+                            class="absolute inset-0 w-full h-full object-cover" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <h3 class="text-lg font-semibold text-white text-center relative z-10 p-4">
+                            Workplace / Mental Health Counselling
+                        </h3>
+                    </div>
+                    <!-- Back -->
+                    <div
+                        class="card-face card-back absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-6 overflow-y-auto rotate-y-180">
+                        <h3 class="text-xl font-bold text-blue-700 mb-4 text-center">
+                            Workplace / Mental Health Counselling
+                        </h3>
+                        <div class="text-gray-700 space-y-3">
+                            <p class="font-medium">Nurturing growth and well-being through tailored workspace
+                                counseling:</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Confidential, supportive environment for employees</li>
+                                <li>Address personal, emotional, and psychological concerns</li>
+                                <li>Promotes mental wellness and improves productivity</li>
+                                <li>Builds resilience and cultivates a healthier work environment</li>
+                                <li>Professional counselors with industry experience</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card #2 -->
+            <div class="card-perspective group">
+                <div
+                    class="card-inner relative w-full h-80 transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
+                    <div
+                        class="card-face absolute inset-0 rounded-xl shadow-md flex flex-col items-center justify-end overflow-hidden">
+                        <img src="/images/flagship-programs/Employee-Assessment-Psypan.jpg" alt="Wellness Assessment"
+                            class="absolute inset-0 w-full h-full object-cover" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <h3 class="text-lg font-semibold text-white text-center relative z-10 p-4">
+                            Wellness Assessment
+                        </h3>
+                    </div>
+                    <div
+                        class="card-face card-back absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-6 overflow-y-auto rotate-y-180">
+                        <h3 class="text-xl font-bold text-blue-700 mb-4 text-center">Wellness Assessment</h3>
+                        <div class="text-gray-700 space-y-3">
+                            <p class="font-medium">Fostering well-being through comprehensive assessments:</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Maps physical, emotional, and lifestyle dimensions</li>
+                                <li>Data-driven insights for targeted wellness programs</li>
+                                <li>Enhances employee health, productivity, and engagement</li>
+                                <li>Customized assessment tools for different industries</li>
+                                <li>Actionable recommendations for improvement</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card #3 -->
+            <div class="card-perspective group">
+                <div
+                    class="card-inner relative w-full h-80 transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
+                    <div
+                        class="card-face absolute inset-0 rounded-xl shadow-md flex flex-col items-center justify-end overflow-hidden">
+                        <img src="/images/flagship-programs/Employee-Wellness-survey.jpg"
+                            alt="Wellness Survey of Employee" class="absolute inset-0 w-full h-full object-cover" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <h3 class="text-lg font-semibold text-white text-center relative z-10 p-4">
+                            Employee Wellness Survey
+                        </h3>
+                    </div>
+                    <div
+                        class="card-face card-back absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-6 overflow-y-auto rotate-y-180">
+                        <h3 class="text-xl font-bold text-blue-700 mb-4 text-center">Employee Wellness Survey</h3>
+                        <div class="text-gray-700 space-y-3">
+                            <p class="font-medium">Exploring well-being through structured surveys and psychometric
+                                tools:</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Depression Inventory assessment</li>
+                                <li>Anxiety Inventory evaluation</li>
+                                <li>Rorschach Inkblot Test analysis</li>
+                                <li>Thematic Apperception Test interpretation</li>
+                                <li>Customized survey tools for organizational needs</li>
+                                <li>Confidential results with professional insights</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card #4 -->
+            <div class="card-perspective group">
+                <div
+                    class="card-inner relative w-full h-80 transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180">
+                    <div
+                        class="card-face absolute inset-0 rounded-xl shadow-md flex flex-col items-center justify-end overflow-hidden">
+                        <img src="/images/flagship-programs/employee-wellness-report-3.jpg"
+                            alt="Employee Wellness Report" class="absolute inset-0 w-full h-full object-cover" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <h3 class="text-lg font-semibold text-white text-center relative z-10 p-4">
+                            Employee Wellness Report
+                        </h3>
+                    </div>
+                    <div
+                        class="card-face card-back absolute inset-0 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-6 overflow-y-auto rotate-y-180">
+                        <h3 class="text-xl font-bold text-blue-700 mb-4 text-center">Employee Wellness Report</h3>
+                        <div class="text-gray-700 space-y-3">
+                            <p class="font-medium">Detailed insights and strategies for workforce well-being:</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Comprehensive analysis of employee wellness data</li>
+                                <li>Identification of patterns and trends</li>
+                                <li>Actionable strategies for improvement</li>
+                                <li>Roadmap for fostering a healthier workforce</li>
+                                <li>Guidance for building resilience and performance</li>
+                                <li>Benchmarking against industry standards</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Why EAP Stands Out -->
+        <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div class="space-y-5">
+                <span
+                    class="inline-block bg-orange-500 text-white px-5 py-1.5 rounded-full text-sm font-medium shadow-sm">
+                    👍 Why Our EAP Stands Out
+                </span>
+                <h3 class="text-2xl font-bold text-gray-900">
+                    Going beyond the ordinary, our Employee Assistance Program ensures holistic
+                    well-being, productivity, and employee satisfaction.
+                </h3>
+                <p class="text-gray-700">
+                    We provide counseling, stress management, and support services that reduce
+                    absenteeism, enhance retention, and foster a healthier workplace culture.
+                </p>
+                <p class="text-gray-700">
+                    Nearly half of India’s workforce struggles with stress or depression. Our
+                    program directly addresses this with time-efficient, impactful interventions.
+                </p>
+                <p class="text-gray-700">
+                    <strong>SAHYOG: An EAP Initiative</strong> by Team Psyche Panacea delivers
+                    confidential support for personal and professional challenges, empowering
+                    employees to thrive.
+                </p>
+            </div>
+            <div class="overflow-hidden rounded-2xl shadow-lg animate-fade-in-right">
+                <img src="/images/flagship-programs/sahyog.avif" alt="Creating an Environment Where Employees Thrive"
+                    class="w-full h-full object-cover" />
+            </div>
+        </div>
+
+        <div id="sahyog"
+            class="tab-content hidden space-y-8 px-6 py-10 bg-white rounded-lg shadow-lg animate-pulse-once">
+            <div class="tab-intro text-center max-w-2xl mx-auto">
+                <h2
+                    class="text-3xl font-extrabold text-teal-600 mb-4 transform transition-transform duration-500 hover:scale-105">
+                    Employee Konnect
+                </h2>
+                <p class="text-gray-700 leading-relaxed">
+                    Fostering collaboration, engagement, and professional growth while promoting holistic well-being.
+                </p>
+            </div>
+
+            <div class="program-grid grid grid-cols-1 gap-6">
+                <div class="program-card group bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform transition-transform duration-500 hover:-translate-y-2"
+                    style="--delay: 100ms">
+                    <div class="overflow-hidden">
+                        <img src="/images/flagship-programs/Employee-konnect.jpg" alt="Employee Konnect"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    <div class="program-content p-5 space-y-4">
+                        <h3 class="text-xl font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">
+                            Employee Konnect
+                        </h3>
+                        <div class="program-description">
+                            <p>
+                                "Employee Konnect" fosters collaboration, engagement, and professional
+                                growth while promoting holistic well-being.
+                            </p>
+                            <p><strong>Family Konnect:</strong> Strengthening work-life balance by
+                                fostering meaningful connections between employees and their families.
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><strong>Kids Konnect:</strong> Engages employees' children with
+                                    office tours, activities, and community-building events.</li>
+                                <li><strong>Lifestyle Management:</strong> Practical tools and resources
+                                    to maintain healthy routines and balance personal + professional life.
+                                </li>
+                                <li><strong>Relationship Management:</strong> Promoting positive workplace
+                                    relationships to boost harmony and productivity.</li>
+                            </ul>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span
+                                class="read-more text-teal-500 text-sm font-medium hover:underline transform transition-transform duration-300 hover:translate-x-1">
+                                Read more
+                            </span>
+                            <button
+                                class="book-now-btn inline-block px-4 py-2 text-sm font-medium bg-teal-600 text-white rounded hover:bg-teal-700 transform transition-transform duration-300 hover:scale-105"
+                                data-category="Employee Konnect" data-subcategory="Employee Konnect Program">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLIENT LOGO MARQUEE (single-row, no double-vertical logos) -->
+    <section id="clients-marquee" class="clients-marquee-section" aria-label="Our clients">
+        <div class="clients-marquee-wrap">
+            <div class="marquee-track" aria-hidden="true"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <!-- Left half: Map -->
+                <div class="w-full h-full map-container rounded-xl overflow-hidden border-2 border-blue-700 shadow-lg">
+                    <iframe src="https://maps.google.com/maps?q=28.467519771527627,77.03697016794533&z=15&output=embed"
+                        width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen loading="lazy"
+                        class="filter grayscale hover:grayscale-0 transition-all duration-500 pointer-events-auto"
+                        gestureHandling="greedy">
+                    </iframe>
+                </div>
+
+                <!-- Right half: Content -->
+                <div class="grid grid-cols-1 gap-8">
+                    <!-- Company Info -->
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-2 rounded-lg mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-blue-400">Psyche Panacea</h3>
+                        </div>
+                        <p class="text-gray-400">
+                            Pioneers of innovative and breakthrough methodologies in the Indian consultation arena,
+                            transforming organizations through strategic HR solutions.
+                        </p>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div>
+                        <h4 class="text-lg font-semibold mb-3 text-blue-400 border-b border-blue-700 pb-1">Contact Us
+                        </h4>
+                        <ul class="space-y-4 text-gray-400 text-sm">
+                            <li class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 mt-1 text-blue-500"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span>308/2, Old Delhi Rd, adjacent Country Inn,<br>Sector 12 A, Anamika
+                                    Enclave,<br>Gurugram, Haryana 122001 India</span>
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                                <button onclick="window.location.href='tel:09810323292'">09810323292</button>
+                            </li>
+                            <li class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                <button
+                                    onclick="window.location.href='mailto:hr@psypanconsulting.com'">hr@psypanconsulting.com</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="border-t border-gray-800 mt-12 pt-6 text-center text-gray-500 text-sm">
+                <p>© 2025 Psyche Panacea. All rights reserved. Designed by Psyche Panacea Team.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot fixed bottom-6 right-4 z-50" style="z-index: 1000;">
+        <!-- Toggle / Floating Button -->
+        <button id="chatbotToggle"
+            class="chatbot-toggle w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center cursor-pointer shadow-lg text-white"
+            aria-label="Open chat">
+            <img src="Chatbot.gif" alt="">
+        </button>
+
+        <!-- Chat window -->
+        <div id="chatbotWindow"
+            class="chatbot-window w-80 sm:w-96 max-h-[540px] absolute bottom-20 sm:bottom-24 right-0 bg-white rounded-xl shadow-2xl hidden border border-blue-100 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <div
+                class="chatbot-header bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 sm:p-4 rounded-t-xl flex justify-between items-center">
+                <div>
+                    <div class="font-bold text-sm sm:text-base">PsypanChatbot</div>
+                    <div class="text-xs opacity-90">Your virtual guide</div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="chatbotClose" class="chatbot-close text-2xl leading-none">×</button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div id="chatbotBody" class="chatbot-body p-3 sm:p-4 overflow-y-auto flex-1 space-y-3 bg-white">
+                <!-- Messages will be inserted here by JavaScript -->
+            </div>
+
+            <!-- Options Container -->
+            <div id="chatOptions" class="p-2 bg-white border-t border-gray-200">
+                <!-- Options will be inserted here by JavaScript -->
+            </div>
+
+            <!-- Input area -->
+            <div class="chatbot-input p-2 sm:p-3 border-t border-gray-200 flex gap-2 items-center">
+                <input id="chatbotInput" type="text"
+                    class="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    placeholder="Type your message here...">
+                <button id="chatbotSend"
+                    class="bg-blue-500 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-600 transition">Send</button>
+            </div>
+        </div>
+    </div>
+    <!-- Put this JS before </body> -->
+    <script>
+        (function () {
+            const btn = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+
+            if (!btn || !menu) return;
+
+            // initialize aria states
+            btn.setAttribute('aria-expanded', 'false');
+            menu.setAttribute('aria-hidden', 'true');
+
+            // helper to open/close
+            function openMenu() {
+                menu.classList.remove('hidden');
+                menu.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+                menu.setAttribute('aria-hidden', 'false');
+                document.documentElement.classList.add('body-no-scroll');
+
+                // focus first link for keyboard users
+                const firstLink = menu.querySelector('a, button');
+                if (firstLink) firstLink.focus({ preventScroll: true });
+            }
+
+            function closeMenu() {
+                menu.classList.remove('open');
+                // keep hidden attribute until transition finishes for smoothness
+                menu.setAttribute('aria-hidden', 'true');
+                btn.setAttribute('aria-expanded', 'false');
+                document.documentElement.classList.remove('body-no-scroll');
+
+                // after transition end hide completely to remove pointer-events if .hidden used elsewhere
+                const onTransEnd = () => {
+                    menu.classList.add('hidden');
+                    menu.removeEventListener('transitionend', onTransEnd);
+                };
+                // if no transition fire immediately
+                const computed = getComputedStyle(menu);
+                const dur = parseFloat(computed.transitionDuration) || 0;
+                if (dur > 0) {
+                    menu.addEventListener('transitionend', onTransEnd);
+                } else {
+                    onTransEnd();
+                }
+
+                // return focus to button
+                btn.focus({ preventScroll: true });
+            }
+
+            // toggle handler
+            btn.addEventListener('click', (e) => {
+                const isOpen = menu.classList.contains('open');
+                if (isOpen) closeMenu();
+                else openMenu();
+            });
+
+            // close when a menu link is clicked
+            menu.addEventListener('click', (e) => {
+                const target = e.target.closest('a, button');
+                if (!target) return;
+                // small delay so native navigation begins without abrupt UI change
+                setTimeout(closeMenu, 60);
+            });
+
+            // close on Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && menu.classList.contains('open')) {
+                    closeMenu();
+                }
+            });
+
+            // close on outside click (outside menu and outside button)
+            document.addEventListener('click', (e) => {
+                if (!menu.classList.contains('open')) return;
+                const isInsideMenu = !!e.target.closest('#mobile-menu');
+                const isOnButton = !!e.target.closest('#mobile-menu-button');
+                if (!isInsideMenu && !isOnButton) closeMenu();
+            });
+
+            // ensure correct initial state if menu had no "hidden" class in markup
+            if (!menu.classList.contains('hidden') && !menu.classList.contains('open')) {
+                menu.classList.add('hidden');
+                menu.setAttribute('aria-hidden', 'true');
+            }
+        })();
+    </script>
+
+    <script>
+        (function () {
+            const chatBody = document.getElementById('chatbotBody');
+            if (!chatBody) return;
+
+            // typing speed in ms per character (tweak if you want faster/slower)
+            const TYPE_SPEED = 18;
+
+            // Remove any existing typing-indicator nodes (class 'typing-animation') helper
+            function clearTypingIndicators() {
+                const ind = chatBody.querySelectorAll('.typing-animation');
+                ind.forEach(node => node.remove());
+            }
+
+            // Smooth scroll helper
+            function scrollToBottom() {
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+
+            // Type text into target span element char-by-char
+            function typeText(span, fullText, onDone) {
+                let i = 0;
+                function step() {
+                    if (i <= fullText.length) {
+                        // keep caret visible as we type
+                        span.textContent = fullText.slice(0, i);
+                        i++;
+                        scrollToBottom();
+                        timer = setTimeout(step, TYPE_SPEED);
+                    } else {
+                        if (typeof onDone === 'function') onDone();
+                    }
+                }
+                let timer = setTimeout(step, TYPE_SPEED);
+                return () => clearTimeout(timer);
+            }
+
+            // Observe added bot messages
+            const observer = new MutationObserver((mutations) => {
+                for (const mut of mutations) {
+                    for (const node of mut.addedNodes) {
+                        if (!(node instanceof HTMLElement)) continue;
+
+                        // ignore typing-indicator nodes
+                        if (node.classList.contains('typing-animation')) continue;
+
+                        // only act on bot messages (class includes 'bot')
+                        if (node.classList.contains('bot') && !node.dataset.typed) {
+                            // mark to avoid double-processing
+                            node.dataset.typed = 'processing';
+
+                            // capture original HTML and plain text
+                            const originalHTML = node.innerHTML || '';
+                            const plainText = node.textContent ? node.textContent.trim() : '';
+
+                            // Clear possible typing indicator(s) so we show our typed text cleanly
+                            // (we don't remove them earlier to avoid interfering with original flow)
+                            clearTypingIndicators();
+
+                            // Prepare typed container
+                            node.innerHTML = ''; // remove content
+                            node.classList.add('bot-typing');
+
+                            // create a span to receive typed characters
+                            const span = document.createElement('span');
+                            span.className = 'bot-typing-text';
+                            node.appendChild(span);
+                            scrollToBottom();
+
+                            // If the original content contains HTML tags, we will type its plain-text first,
+                            // then replace with originalHTML at the end (so lists and markup render properly).
+                            // If original was plain text, we type it fully and leave as-is.
+                            const textToType = plainText.length ? plainText : originalHTML.replace(/<[^>]*>/g, '');
+
+                            typeText(span, textToType, () => {
+                                // done typing: if originalHTML had markup, set it now (so lists render)
+                                if (/<[a-z][\s\S]*>/i.test(originalHTML)) {
+                                    node.innerHTML = originalHTML;
+                                } else {
+                                    // ensure final text exactly matches original (in case of trimming)
+                                    span.textContent = plainText || originalHTML;
+                                }
+                                node.classList.remove('bot-typing');
+                                node.dataset.typed = 'true';
+                                scrollToBottom();
+                            });
+                        }
+                    }
+                }
+            });
+
+            observer.observe(chatBody, { childList: true, subtree: false });
+
+            // Also make existing bot messages (already present on load) appear typed
+            // by triggering a small re-process for any untyped bot nodes
+            window.addEventListener('load', () => {
+                const existing = Array.from(chatBody.querySelectorAll('.bot')).filter(n => !n.dataset.typed);
+                existing.forEach(n => {
+                    // trigger MutationObserver by re-appending node (no visual move)
+                    // create a shallow clone then replace to fire the observer logic
+                    const clone = n.cloneNode(true);
+                    n.replaceWith(clone);
+                });
+            });
+
+            // tidy: expose a function to force-enable or disable this enhancer if needed
+            window.__psypanBotTypingEnhancer = {
+                disconnect: () => observer.disconnect(),
+                reconnect: () => observer.observe(chatBody, { childList: true, subtree: false })
+            };
+        })();
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const chatbotWindow = document.getElementById("chatbotWindow");
+            const chatbotToggle = document.getElementById("chatbotToggle");
+            const chatbotClose = document.getElementById("chatbotClose");
+
+
+            // Toggle chatbot when floating button is clicked
+            chatbotToggle.addEventListener("click", () => {
+                chatbotWindow.classList.toggle("hidden");
+            });
+
+            // Close chatbot when "×" is clicked
+            chatbotClose.addEventListener("click", () => {
+                chatbotWindow.classList.add("hidden");
+            });
+        });
+
+        /* Use your clients array exactly as provided */
+        const clients = [
+            // Automotive
+            { name: "Honda", image: "honda.png", category: "automotive", tagline: "The Power of Dreams" },
+            { name: "Maruti Suzuki", image: "maruti.png", category: "automotive", tagline: "Way of Life" },
+            { name: "Hero", image: "hero.png", category: "automotive", tagline: "Desh Ki Dhadkan" },
+            { name: "JCB", image: "jcb.png", category: "automotive", tagline: "Powering Progress" },
+            { name: "Yamaha", image: "BirlaYamaha.png", category: "automotive", tagline: "Revs Your Heart" },
+            { name: "Suzuki Motorcycles", image: "Suzuki-Motorcycles.png", category: "automotive" },
+            { name: "JK Tyres", image: "jktyre.png", category: "automotive" },
+            { name: "Escort", image: "Escort.png", category: "automotive" },
+            { name: "Sona Koyo", image: "Sona-Koyo.jpg", category: "automotive" },
+            { name: "Minda", image: "minda.png", category: "automotive" },
+            { name: "JBM Group", image: "jbm.png", category: "automotive" },
+
+            // Manufacturing
+            { name: "ACC", image: "acc.png", category: "manufacturing", tagline: "The Professional's Choice" },
+            { name: "Amtek", image: "Amtek.jpg", category: "manufacturing" },
+            { name: "Anchor", image: "Anchor.jpg", category: "manufacturing" },
+            { name: "Asahi Glass", image: "Asahi-Glass.png", category: "manufacturing" },
+            { name: "ATO", image: "ato.png", category: "manufacturing" },
+            { name: "BIRLA POWER", image: "birla-power.png", category: "manufacturing", tagline: "POWER... the ability to change" },
+            { name: "Bria", image: "Birla.jpg", category: "manufacturing" },
+            { name: "Chemsys", image: "Chemsys.png", category: "manufacturing" },
+            { name: "Colgate and Palmolive", image: "ColgateandPalmolive.png", category: "manufacturing" },
+            { name: "Daikin", image: "Daikin.png", category: "manufacturing" },
+            { name: "Dabur", image: "dabur.png", category: "manufacturing" },
+            { name: "Ester Industries", image: "Ester-Industries.png", category: "manufacturing" },
+            { name: "Grasim", image: "Grasim.jpg", category: "manufacturing" },
+            { name: "Hindustan Zinc", image: "Hindustan-Zinc.png", category: "manufacturing" },
+            { name: "Indian Oil", image: "indian-oil.png", category: "manufacturing" },
+            { name: "NTPC", image: "ntpc.png", category: "manufacturing" },
+            { name: "Shree Cements", image: "Shree-Cements.jpg", category: "manufacturing" },
+            { name: "SRF", image: "SRF.png", category: "manufacturing" },
+
+            // Technology
+            { name: "Bharti", image: "Bharti.png", category: "technology" },
+            { name: "HCL", image: "hcl.png", category: "technology" },
+            { name: "Hughes Software", image: "Hughes-Software.png", category: "technology" },
+            { name: "ICICI Bank", image: "icici-bank.png", category: "technology" },
+            { name: "Mizuho Bank", image: "Mizuho-Bank.png", category: "technology" },
+            { name: "RMSI", image: "RMSI.png", category: "technology" },
+            { name: "Safran", image: "Safran.png", category: "technology" },
+            { name: "SPIL", image: "SPIL.png", category: "technology" },
+            { name: "Tech Mahindra", image: "tech-mahindra.png", category: "technology" },
+            { name: "TMTL", image: "TMTL.png", category: "technology" },
+            { name: "Wabag", image: "Wabag.png", category: "technology" },
+            { name: "OMAX Technology", image: "LOGO_OMAX-technology.png", category: "technology" },
+            { name: "Nex-Gen", image: "Nex-Gen.png", category: "technology" },
+            { name: "Biotech", image: "Biotech.webp", category: "technology" },
+
+            // FMCG
+            { name: "Pepsi", image: "pepsi.png", category: "fmg" },
+            { name: "Parle-G", image: "Parle-G.jpg", category: "fmg" },
+            { name: "Dabur", image: "DABUR (1).png", category: "fmg" },
+            { name: "Colgate and Palmolive", image: "Colgate-and-Palmoliv.png", category: "fmg" },
+            { name: "Whirlpool", image: "whirl-pool.png", category: "fmg" },
+            { name: "Spencer's", image: "spencers.png", category: "fmg" },
+            { name: "Van Melle", image: "Van-Melle.png", category: "fmg" },
+            { name: "Mother Dairy", image: "Mother-Dairy.jpg", category: "fmg" },
+            { name: "Antheme", image: "AnthemLogo_White_01-Small.png", category: "fmg" },
+            { name: "BPT", image: "BPT.png", category: "fmg" },
+            { name: "EIL", image: "eil", category: "fmg" },
+            { name: "LBL", image: "lbl.png", category: "fmg" },
+            { name: "UD-Trucks", image: "UD-trucks-logo-637x426.jpg", category: "fmg" },
+            { name: "UNO MINDA", image: "UNO MINDA.png", category: "fmg" },
+            { name: "Vecv", image: "Vecv.png", category: "fmg" },
+            { name: "BSES", image: "bses.png", category: "fmg" }
+        ];
+
+        const COMMON_PATH = 'images/clients/'; // common path requested
+        const DEFAULT_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='; // tiny transparent pixel
+
+        function createItemNode(client) {
+            const item = document.createElement('div');
+            item.className = 'marquee-item';
+            const box = document.createElement('div');
+            box.className = 'logo-box';
+
+            const img = document.createElement('img');
+            img.alt = client.name || '';
+            img.src = COMMON_PATH + client.image;
+            img.onerror = function () {
+                this.onerror = null;
+                // try a safe placeholder in images/clients/ first (if you have it), else use transparent pixel
+                this.src = COMMON_PATH + 'placeholder.png';
+                // if placeholder.png doesn't exist on server, the browser will try that and hit onerror again
+                // but we already removed onerror to avoid infinite loop; in that case you will see broken image or provide placeholder.png
+            };
+
+            box.appendChild(img);
+            item.appendChild(box);
+            return item;
+        }
+
+        function populateSingleTrack() {
+            const track = document.querySelector('.marquee-track');
+            if (!track) return;
+            track.innerHTML = '';
+
+            // create fragment of original items
+            const frag = document.createDocumentFragment();
+            clients.forEach(c => frag.appendChild(createItemNode(c)));
+
+            // append original items
+            track.appendChild(frag);
+
+            // append a clone of the same items to the same track (seamless loop)
+            // we clone nodes to avoid reusing the exact same elements (keeps DOM stable)
+            const nodesToClone = Array.from(track.children).slice(0, clients.length);
+            nodesToClone.forEach(n => track.appendChild(n.cloneNode(true)));
+        }
+
+        function adjustDurationSingleTrack() {
+            const wrap = document.querySelector('.clients-marquee-wrap');
+            const track = document.querySelector('.marquee-track');
+            if (!wrap || !track) return;
+
+            // One set width is half the scrollWidth because we duplicated content inside same track
+            const total = track.scrollWidth;
+            const oneSetWidth = total / 2 || track.getBoundingClientRect().width / 2;
+
+            const style = getComputedStyle(wrap);
+            const pxPerSecond = Math.max(40, parseFloat(style.getPropertyValue('--px-per-second')) || 120);
+
+            // duration so that oneSetWidth travels at pxPerSecond speed (seconds)
+            const duration = Math.max(6, (oneSetWidth / pxPerSecond));
+            track.style.animationDuration = duration + 's';
+        }
+
+        // init
+        function initSingleMarquee() {
+            populateSingleTrack();
+
+            // wait a bit for images to load and layout to settle before measuring
+            setTimeout(() => {
+                adjustDurationSingleTrack();
+            }, 80);
+
+            // recalc on resize (debounced)
+            let t;
+            window.addEventListener('resize', () => {
+                clearTimeout(t);
+                t = setTimeout(adjustDurationSingleTrack, 150);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initSingleMarquee);
+
+        /* ---------- Utility Helpers ---------- */
+        function parseCssDelayToSeconds(delayStr) {
+            if (!delayStr) return 0;
+            delayStr = delayStr.trim();
+            if (delayStr.endsWith('ms')) {
+                const n = parseFloat(delayStr.replace('ms', '')) || 0;
+                return n / 1000;
+            }
+            if (delayStr.endsWith('s')) {
+                return parseFloat(delayStr.replace('s', '')) || 0;
+            }
+            // fallback assume milliseconds numeric
+            const n = parseFloat(delayStr) || 0;
+            return n / 1000;
+        }
+
+        (function () {
+            const tabNav = document.getElementById('tabNav');
+            const tabBtns = Array.from(tabNav.querySelectorAll('.tab-btn'));
+            const tabContents = Array.from(document.querySelectorAll('.tab-content'));
+            const toggleBtn = document.getElementById('tabToggle');
+            const tabsWrapper = document.querySelector('.tabs-wrapper');
+
+            // Tab click handler (switch active tab)
+            function activateTabBtn(btn) {
+                tabBtns.forEach(b => {
+                    b.classList.toggle('active', b === btn);
+                    b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+                });
+
+                const target = btn.dataset.tab;
+                tabContents.forEach(tc => {
+                    tc.classList.toggle('active', tc.id === target);
+                });
+            }
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => activateTabBtn(btn));
+                // keyboard interaction
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        activateTabBtn(btn);
+                    }
+                });
+            });
+
+            // Mobile toggle open/close
+            toggleBtn.addEventListener('click', (e) => {
+                const open = tabNav.classList.toggle('mobile-open');
+                toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+                // When opened, ensure scroll position keeps sticky bar visible
+                if (open) {
+                    // scroll the sticky wrapper into view to avoid overlay
+                    tabsWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            // Close mobile dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 640) {
+                    if (!tabNav.contains(e.target) && !toggleBtn.contains(e.target)) {
+                        if (tabNav.classList.contains('mobile-open')) {
+                            tabNav.classList.remove('mobile-open');
+                            toggleBtn.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                }
+            });
+
+            // Handle resize: if going to larger screens, ensure mobile-open removed
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 640) {
+                    tabNav.classList.remove('mobile-open');
+                    toggleBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // init: ensure one active tab-content visible
+            (function init() {
+                const activeBtn = tabBtns.find(b => b.classList.contains('active')) || tabBtns[0];
+                if (activeBtn) activateTabBtn(activeBtn);
+            })();
+
+        })();
+
+        /* ---------- Animate Program Cards ---------- */
+        function animateProgramCards() {
+            const cards = document.querySelectorAll('.program-card');
+            cards.forEach(card => {
+                // reset any previous animation
+                card.style.animation = 'none';
+                // initial styles
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+
+                // get css variable --delay either inline or computed
+                let delayVar = card.style.getPropertyValue('--delay');
+                if (!delayVar) {
+                    // try computed style (in case defined in stylesheet)
+                    delayVar = window.getComputedStyle(card).getPropertyValue('--delay');
+                }
+                const delaySeconds = parseCssDelayToSeconds(delayVar) || 0;
+
+                // force reflow to reset animation
+                void card.offsetWidth;
+
+                // apply animation after a tiny tick so the reset takes effect
+                setTimeout(() => {
+                    card.style.animation = 'slideUp 0.5s ease forwards';
+                    card.style.animationDelay = `${delaySeconds}s`;
+                }, 50);
+            });
+        }
+
+        /* ---------- Read More ---------- */
+        function initReadMore() {
+            document.querySelectorAll('.read-more').forEach(button => {
+                button.addEventListener('click', function () {
+                    const card = this.closest('.program-card');
+                    if (!card) return;
+
+                    const description = card.querySelector('.program-description');
+                    if (!description) return;
+
+                    description.classList.toggle('expanded');
+
+                    this.textContent = description.classList.contains('expanded')
+                        ? 'Read less'
+                        : 'Read more';
+                });
+            });
+        }
+
+        /* Call after DOM load */
+        document.addEventListener("DOMContentLoaded", initReadMore);
+
+
+        (function () {
+            // --- configuration / content (edit as needed) ---
+            const contactInfo = {
+                address: '08/2, Old Delhi Rd, adjacent Country In, Sector 12 A, Anamika Enclave,Sector 14, Gurugram, Haryana 122001',
+                phones: ['+91 9810319292', '+91 9810323292'],
+                email: 'hr@psypanconsulting.com',
+            };
+
+            // PAGE URL map
+            const pageUrlMap = {
+                'Services': 'services.html',
+                'Contact': 'contact.html',
+                'Gallery': 'gallery.html',
+                'Global Programs': 'https://psychepan-mba.netlify.app'
+            };
+
+            // Main menu options
+            const mainOptions = [
+                { id: 1, label: 'Services Offered', icon: '🌐' },
+                { id: 2, label: 'Management Trainings', icon: '📊' },
+                { id: 3, label: 'Global Executive Devp Programs', icon: '🌍' },
+                { id: 4, label: 'Emp Engagement', icon: '👥' },
+                { id: 5, label: 'Emp Assistance', icon: '🤝' },
+                { id: 6, label: 'OBT Training', icon: '🏕️' },
+                { id: 7, label: 'Offsites', icon: '🏞️' },
+                { id: 8, label: 'Contact Us', icon: '📞' }
+            ];
+
+            // Sub-options for each main option
+            const subOptions = {
+                1: [
+                    { label: 'Management Trainings', action: 'redirect', target: 'Services' },
+                    { label: 'Employee Engagement', action: 'redirect', target: 'Services' },
+                    { label: 'Global Executive Development', action: 'menu', target: 3 },
+                    { label: 'Outbound Training', action: 'redirect', target: 'Services' },
+                    { label: 'Offsites', action: 'redirect', target: 'Services' },
+                    { label: 'Employee Assistance', action: 'redirect', target: 'Services' }
+                ],
+                2: [
+                    { label: '📘 Featured Trainings', action: 'Trainings' },
+                    { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+                ],
+                3: [
+                    { label: '🌍 Global MBA', action: 'redirect', target: 'Global Programs' },
+                    { label: '✅ Eligibility', action: 'redirect', target: 'Global Programs' }
+                ],
+                4: [
+                    { label: '🎯 EEP Services', action: 'EEPServices' },
+                    { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+                ],
+                5: [
+                    { label: '🧩 EAP Details', action: 'EAPDetails' },
+                    { label: '📞 Request Call Back', action: 'Phone' }
+                ],
+                6: [
+                    { label: '🏖 Venue Options', action: 'Venues' },
+                    { label: '🎯 Format Details', action: 'FormatDetails' }
+                ],
+                7: [
+                    { label: '🏞 Sample Activities', action: 'SampleActivities' },
+                    { label: '📸 Go to Gallery', action: 'redirect', target: 'Gallery' }
+                ],
+                8: [
+                    { label: '📩 Talk to a Human', action: 'redirect', target: 'Contact' },
+                    { label: '📅 Book a Consultation', action: 'Email' },
+                    { label: '📞 Request a Call Back', action: 'Phone' }
+                ]
+            };
+
+            // Content for various options
+            const content = {
+                trainings: [
+                    'Result Oriented Trainings',
+                    'Impact Assessment Program',
+                    'Tailormade Program',
+                    'Employee Feedback Analysis',
+                    'People & Team Leadership',
+                    'Strategy & Operational Excellence'
+                ],
+                eepServices: [
+                    'Employee Wellness Programme',
+                    'Employee Development',
+                    'Employee Konnect',
+                    'Employee Offsite Program'
+                ],
+                eapDetails: [
+                    'Workplace / Mental Health Counselling',
+                    'Wellness Assessment',
+                    'Wellness Survey',
+                    'Wellness Report'
+                ],
+                venues: [
+                    'Panchgani', 'Chandipur', 'Bubhneshwar', 'Lonavala', 'Khandala',
+                    'Jim Corbett', 'Nanital', 'Ranikhet', 'Kausani', 'Kausali',
+                    'Chail', 'Dhanulti', 'Mussorie', 'Solan', 'Shoghi',
+                    'Nalagarh', 'Garh Mukteshwar'
+                ],
+                formatDetails: [
+                    'Result Oriented OBTs',
+                    'Strategic OBTs',
+                    'Immersive Experience',
+                    'Experiential Strategic & Challenging Group activities'
+                ],
+                sampleActivities: [
+                    'Big Picture',
+                    'Street Jam',
+                    'Pixel Challenge',
+                    'Drone Making',
+                    'Olympic Challenge',
+                    'Treasure Hunt',
+                    'Pyramid Challenge',
+                    'Drop the ball',
+                    'Ripple Effect',
+                    'Gladiator'
+                ]
+            };
+
+
+            // Bot responses for main options
+            const botResponses = {
+                1: "We offer a portfolio of services to support organizations and individuals with growth, learning, and transformation. Would you like to explore specific services such as Management Trainings, Employee Engagement, or Outbound Programs?",
+                2: "Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness. They can be customized for different levels of management. Would you like to see available training modules or connect with our team for details?",
+                3: "We bring world-class executive development programs through our global collaborations with leading universities and experts. These programs focus on leadership, innovation, and future-ready skills. Would you like an overview or check eligibility to join?",
+                4: "We design employee engagement initiatives to boost motivation, collaboration, and workplace satisfaction. Programs include workshops, cultural initiatives, and interactive experiences. Would you like examples of engagement activities?",
+                5: "Our Employee Assistance Programs (EAPs) provide confidential support to employees for work-life balance, stress management, and well-being. Would you like to know more about our EAP offerings?",
+                6: "Our outbound training programs combine learning with adventure, designed to build teamwork, leadership, and resilience. Would you like to see sample activities or discuss a custom OBT for your team?",
+                7: "We organize corporate offsites to strengthen bonding, align strategy, and recharge teams in engaging environments. Would you like options for venues and formats?",
+                8: "Would you like to connect with our team directly?"
+            };
+
+            // Fallback response
+            const fallbackResponse = "❓ I may not know that yet…➡️ Explore services👨‍💼 Talk to a consultant";
+
+            // Track the last question asked by the bot
+            let lastQuestionContext = null;
+
+            // Keyword responses (typed input fallback)
+            function getBotResponse(message) {
+                const lower = message.toLowerCase();
+
+                // Handle yes/no responses to bot questions
+                if (lastQuestionContext) {
+                    if (lower === 'yes' || lower === 'y' || lower === 'yeah' || lower === 'yep') {
+                        // Handle the "yes" response based on the last question context
+                        handleActionSelect(lastQuestionContext.action, lastQuestionContext.target);
+                        lastQuestionContext = null;
+                        return "";
+                    } else if (lower === 'no' || lower === 'n' || lower === 'nope') {
+                        // Clear chat and show main options for "no" response
+                        bodyEl.innerHTML = '';
+                        initChatbot();
+                        lastQuestionContext = null;
+                        return "";
+                    }
+                }
+
+                // Common words mapping
+                if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+                    return "Hello! How can I help you today?";
+                }
+                if (lower.includes('thank')) {
+                    return "You're welcome! Is there anything else I can help you with?";
+                }
+                if (lower.includes('bye') || lower.includes('goodbye')) {
+                    return "Thank you for chatting with me. Have a great day!";
+                }
+                if (lower.includes('contact') || lower.includes('address')) {
+                    return `Our office is located at ${contactInfo.address}`;
+                }
+                if (lower.includes('phone') || lower.includes('call') || lower.includes('contact number') || lower.includes('number')) {
+                    return `You can reach us at ${contactInfo.phones.join(' or ')}.`;
+                }
+                if (lower.includes('email') || lower.includes('mail')) {
+                    return `For inquiries, please email us at ${contactInfo.email}`;
+                }
+                if (lower.includes('training') || lower.includes('program') || lower.includes('course')) {
+                    return 'We offer various training programs including Management Training, Employee Engagement, and Outbound Training.';
+                }
+                if (lower.includes('service') || lower.includes('offer') || lower.includes('provide')) {
+                    return 'We provide corporate training solutions in leadership development, team building, and mental wellness programs.';
+                }
+                if (lower.includes('management') || lower.includes('leadership')) {
+                    return 'Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness.';
+                }
+                if (lower.includes('employee') || lower.includes('staff')) {
+                    return 'We offer Employee Engagement and Employee Assistance programs to support your workforce.';
+                }
+                if (lower.includes('global') || lower.includes('executive') || lower.includes('mba')) {
+                    return 'We bring world-class executive development programs through our global collaborations with leading universities.';
+                }
+                if (lower.includes('outbound') || lower.includes('obt') || lower.includes('team building')) {
+                    return 'Our outbound training programs combine learning with adventure, designed to build teamwork and leadership.';
+                }
+                if (lower.includes('offsites') || lower.includes('offsite')) {
+                    return 'We organize corporate offsites to strengthen bonding and align strategy in engaging environments.';
+                }
+                if (lower.includes('help') || lower.includes('support')) {
+                    return "I'm here to help! You can ask me about our services, training programs, or how to contact us.";
+                }
+
+                // fallback
+                return fallbackResponse;
+            }
+
+            // --- DOM references ---
+            const sendBtn = document.getElementById('chatbotSend');
+            const inputEl = document.getElementById('chatbotInput');
+            const bodyEl = document.getElementById('chatbotBody');
+            const optionsContainer = document.getElementById('chatOptions');
+
+            // Track current menu state
+            let currentMenu = null;
+
+            // --- helpers ---
+            function scrollChatToBottom() {
+                bodyEl.scrollTop = bodyEl.scrollHeight;
+            }
+
+            function createMessage({ text, who = 'bot', html = false, typing = false }) {
+                const wrapper = document.createElement('div');
+                wrapper.className =
+                    'chatbot-message ' +
+                    (who === 'user'
+                        ? 'user bg-blue-500 text-white rounded-lg p-3 mb-3 max-w-[80%] ml-auto clear-both text-sm'
+                        : 'bot bg-blue-50 text-gray-800 rounded-lg p-3 mb-3 max-w-[80%] clear-both text-sm');
+
+                if (typing) {
+                    wrapper.classList.add('typing-animation');
+                    wrapper.style.width = 'fit-content';
+                }
+
+                if (html) wrapper.innerHTML = text;
+                else wrapper.textContent = text;
+
+                bodyEl.appendChild(wrapper);
+                scrollChatToBottom();
+                return wrapper;
+            }
+
+            function createTypingIndicator() {
+                return createMessage({ text: 'PsypanChatbot is typing...', who: 'bot', typing: true });
+            }
+
+            function removeTypingIndicator(indicator) {
+                if (indicator && indicator.parentNode) {
+                    indicator.classList.remove('typing-animation');
+                    indicator.style.borderRight = 'none';
+                }
+            }
+
+            // Show main options
+            function showMainOptions() {
+                optionsContainer.innerHTML = '';
+
+                mainOptions.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+                    btn.innerHTML = `${opt.icon} ${opt.label}`;
+                    btn.dataset.option = opt.id;
+                    optionsContainer.appendChild(btn);
+                });
+
+                currentMenu = null;
+                scrollChatToBottom();
+            }
+
+            // Show sub options
+            function showSubOptions(optionId) {
+                optionsContainer.innerHTML = '';
+
+                if (subOptions[optionId]) {
+                    subOptions[optionId].forEach(opt => {
+                        const btn = document.createElement('button');
+                        btn.className = 'option-btn px-3 py-2 mb-2 mr-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+                        btn.textContent = opt.label;
+                        btn.dataset.action = opt.action;
+                        if (opt.target) btn.dataset.target = opt.target;
+                        optionsContainer.appendChild(btn);
+                    });
+                }
+
+                // Add back button
+                const backBtn = document.createElement('button');
+                backBtn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
+                backBtn.textContent = '⬅ Back to Main Menu';
+                backBtn.addEventListener('click', () => {
+                    createMessage({ text: 'What would you like to know about?', who: 'bot' });
+                    showMainOptions();
+                });
+                optionsContainer.appendChild(backBtn);
+
+                currentMenu = optionId;
+                scrollChatToBottom();
+            }
+
+            // Show list of items
+            function showList(items, redirectUrl = null) {
+                let listHtml = '';
+                if (redirectUrl) {
+                    listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li class="cursor-pointer hover:underline" onclick="window.location.href='${redirectUrl}'">${item}</li>`).join('')}</ul>
+                    </div>`;
+                } else {
+                    listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li>${item}</li>`).join('')}</ul>
+                    </div>`;
+                }
+                createMessage({ text: listHtml, who: 'bot', html: true });
+            }
+
+            // Redirect to page
+            function redirectToPage(page) {
+                if (pageUrlMap[page]) {
+                    createMessage({ text: `Redirecting you to ${page}...`, who: 'bot' });
+                    setTimeout(() => {
+                        if (pageUrlMap[page].startsWith('http')) {
+                            window.open(pageUrlMap[page], '_blank');
+                        } else {
+                            window.location.href = pageUrlMap[page];
+                        }
+                    }, 1000);
+                } else {
+                    createMessage({ text: `The ${page} page is not available at the moment.`, who: 'bot' });
+                }
+            }
+
+            // Show phone number
+            function showPhone() {
+                createMessage({ text: `You can call us at: ${contactInfo.phones[1]}`, who: 'bot' });
+            }
+
+            // Show email
+            function showEmail() {
+                createMessage({ text: `Please email us at: ${contactInfo.email}`, who: 'bot' });
+            }
+
+            // Handle option selection
+            function handleOptionSelect(optionId) {
+                // Create user message
+                const optionText = mainOptions.find(opt => opt.id == optionId).label;
+                createMessage({ text: optionText, who: 'user' });
+
+                // Show typing indicator
+                const typingIndicator = createTypingIndicator();
+
+                // After delay, show bot response and options
+                setTimeout(() => {
+                    removeTypingIndicator(typingIndicator);
+                    createMessage({ text: botResponses[optionId], who: 'bot' });
+
+                    // Set last question context if the response ends with a question mark
+                    if (botResponses[optionId].endsWith('?')) {
+                        const firstSubOption = subOptions[optionId] && subOptions[optionId][0];
+                        if (firstSubOption) {
+                            lastQuestionContext = {
+                                action: firstSubOption.action,
+                                target: firstSubOption.target
+                            };
+                        }
+                    }
+
+                    showSubOptions(optionId);
+                }, 1500);
+            }
+
+            // Handle action selection
+            function handleActionSelect(action, target) {
+                // Create user message
+                const actionText = event ? event.target.textContent : "Yes";
+                createMessage({ text: actionText, who: 'user' });
+
+                // Show typing indicator
+                const typingIndicator = createTypingIndicator();
+
+                // After delay, handle the action
+                setTimeout(() => {
+                    removeTypingIndicator(typingIndicator);
+
+                    switch (action) {
+                        case 'menu':
+                            handleOptionSelect(target);
+                            break;
+                        case 'Trainings':
+                            showList(content.trainings, pageUrlMap['Services']);
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'EEPServices':
+                            showList(content.eepServices, pageUrlMap['Services']);
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'EAPDetails':
+                            showList(content.eapDetails, pageUrlMap['Services']);
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'Venues':
+                            showList(content.venues, pageUrlMap['Services']);
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'FormatDetails':
+                            showList(content.formatDetails, pageUrlMap['Services']);
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'SampleActivities':
+                            showList(content.sampleActivities);
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'Phone':
+                            showPhone();
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'Email':
+                            showEmail();
+                            showSubOptions(currentMenu);
+                            break;
+                        case 'redirect':
+                            redirectToPage(target);
+                            break;
+                        default:
+                            createMessage({ text: "I'm not sure how to help with that.", who: 'bot' });
+                            showMainOptions();
+                    }
+
+                    // Clear the last question context after handling the action
+                    lastQuestionContext = null;
+                }, 1500);
+            }
+
+            // Initialize chatbot
+            function initChatbot() {
+                createMessage({ text: "Hello! PsypanChatbot here 👋 Ready to explore our Website?", who: 'bot' });
+                showMainOptions();
+            }
+
+            // --- event handlers ---
+            sendBtn.addEventListener('click', () => {
+                const message = inputEl.value.trim();
+                if (message) {
+                    createMessage({ text: message, who: 'user' });
+                    inputEl.value = '';
+
+                    const typingIndicator = createTypingIndicator();
+
+                    setTimeout(() => {
+                        removeTypingIndicator(typingIndicator);
+                        const response = getBotResponse(message);
+
+                        if (response) {
+                            createMessage({ text: response, who: 'bot' });
+
+                            if (response === fallbackResponse) {
+                                const html = `<div class="flex gap-2 mt-2">
+                                    <button data-action="redirect" data-target="Services" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🌐 Explore Services</button>
+                                    <button data-action="redirect" data-target="Contact" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🤝 Talk to Consultant</button>
+                                </div>`;
+                                createMessage({ text: html, who: 'bot', html: true });
+                            } else {
+                                showMainOptions();
+                            }
+                        }
+                    }, 1000);
+                }
+            });
+
+            inputEl.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendBtn.click();
+                }
+            });
+
+            // Delegate option clicks
+            optionsContainer.addEventListener('click', (e) => {
+                if (e.target.dataset.option) {
+                    handleOptionSelect(e.target.dataset.option);
+                } else if (e.target.dataset.action) {
+                    handleActionSelect(e.target.dataset.action, e.target.dataset.target);
+                }
+            });
+
+            // Initialize the chatbot when the page loads
+            document.addEventListener('DOMContentLoaded', function () {
+                initChatbot();
+            });
+        })();
+
+        /* ---------- Init on DOMContentLoaded ---------- */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize mobile menu
+            initMobileMenu();
+
+            // Rest of your initialization code
+            initBookingModal();
+            animateProgramCards();
+            initReadMore();
+
+            // Chatbot initialization code
+            if (chatbotInput) chatbotInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+        });
+
+        /* ---------- Booking Modal (updated, preserves original function names) ---------- */
+        function initBookingModal() {
+            const modal = document.getElementById('bookingModal');
+            const closeModal = document.getElementById('closeModal');
+            // there may be multiple successClose elements in markup; collect both by id or class
+            const successCloseElems = document.querySelectorAll('#successClose');
+            // Try to find bookingForm by common ids used in your project (backward-compatible)
+            const bookingForm = document.getElementById('bookingForm') || document.getElementById('contactForm') || document.querySelector('form');
+            const formContainer = document.getElementById('formContainer');
+            const successMessage = document.getElementById('successMessage');
+
+            // category/subcategory fields - support both "category"/"subcategory" ids and "services"/"subcategory" variants
+            const categoryField = document.getElementById('category') || document.getElementById('services') || document.querySelector('[name="services"]');
+            const subcategoryField = document.getElementById('subcategory') || document.querySelector('[name="subcategory"]');
+            const categoryBadge = document.getElementById('categoryBadge');
+
+            // utility: get active tab label (category)
+            function getActiveTabText() {
+                const activeBtn = document.querySelector('.tab-btn.active');
+                if (activeBtn) return activeBtn.textContent.trim();
+                // fallback: read heading from active content panel
+                const activePanel = document.querySelector('.tab-content.active, .tab-panel.active');
+                if (activePanel) {
+                    const h2 = activePanel.querySelector('h2, .tab-intro h2');
+                    if (h2) return h2.textContent.trim();
+                }
+                return '';
+            }
+
+            // store last selected values so "book another" or reopen keeps them
+            let lastCategory = '';
+            let lastSubcategory = '';
+
+            // Delegated click for Book Now buttons
+            document.addEventListener('click', (e) => {
+                const button = e.target.closest && e.target.closest('.book-now-btn');
+                if (!button) return;
+
+                // find nearest program card and its title (h3 preferred)
+                const card = button.closest('.program-card') || button.closest('article') || button.parentElement;
+                let subCategory = '';
+                if (card) {
+                    const title = card.querySelector('h3, h2, h4, .program-title');
+                    if (title) subCategory = title.textContent.trim();
+                }
+                // fallback to data-subcategory attribute
+                if (!subCategory && button.dataset && button.dataset.subcategory) {
+                    subCategory = button.dataset.subcategory.trim();
+                }
+
+                // get main category from active tab, fallback to data-category attribute on button
+                let mainCategory = getActiveTabText();
+                if (!mainCategory && button.dataset && button.dataset.category) {
+                    mainCategory = button.dataset.category.trim();
+                }
+
+                // update stored values
+                if (mainCategory) lastCategory = mainCategory;
+                if (subCategory) lastSubcategory = subCategory;
+
+                // Reset form state: remove any date field, then reset form
+                if (bookingForm) {
+                    const prevDate = bookingForm.querySelector('input[name="date"]');
+                    if (prevDate) prevDate.remove();
+                    // reset only if bookingForm supports reset
+                    if (typeof bookingForm.reset === 'function') bookingForm.reset();
+                }
+
+                // Fill the readonly fields AFTER reset
+                if (categoryField) categoryField.value = lastCategory || '';
+                if (subcategoryField) subcategoryField.value = lastSubcategory || '';
+                if (categoryBadge) categoryBadge.textContent = lastCategory || 'Program';
+
+                if (formContainer) formContainer.classList.remove('hidden');
+                if (successMessage) successMessage.classList.add('hidden');
+
+                // Show modal
+                if (modal) {
+                    modal.classList.add('active');
+                    modal.setAttribute('aria-hidden', 'false');
+                }
+
+                // Focus first input for accessibility
+                if (bookingForm) {
+                    const firstInput = bookingForm.querySelector('input:not([type=hidden]), textarea, button');
+                    if (firstInput) firstInput.focus();
+                }
+            });
+
+            // Close modal function
+            function closeModalFn() {
+                if (!modal) return;
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+
+            if (closeModal) closeModal.addEventListener('click', closeModalFn);
+            if (successCloseElems && successCloseElems.length) {
+                successCloseElems.forEach(el => el.addEventListener('click', closeModalFn));
+            }
+
+            // Close when clicking outside modal-content
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModalFn();
+                });
+            }
+
+            // Close on Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModalFn();
+            });
+
+            // Form submit handling
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    // remove old date input if any
+                    const oldDate = bookingForm.querySelector('input[name="date"]');
+                    if (oldDate) oldDate.remove();
+
+                    // Add current date hidden field (ISO)
+                    const now = new Date();
+                    const dateField = document.createElement('input');
+                    dateField.type = 'hidden';
+                    dateField.name = 'date';
+                    dateField.value = now.toISOString();
+                    bookingForm.appendChild(dateField);
+
+                    // Ensure readonly fields (in case reset cleared them)
+                    if (categoryField && !categoryField.value) categoryField.value = lastCategory || '';
+                    if (subcategoryField && !subcategoryField.value) subcategoryField.value = lastSubcategory || '';
+
+                    // Send with EmailJS if available
+                    if (typeof emailjs !== 'undefined' && typeof emailjs.sendForm === 'function') {
+                        // Use your existing service & template IDs (unchanged)
+                        emailjs.sendForm('service_wbeo8md', 'template_9gj0ctn', bookingForm)
+                            .then(() => {
+                                if (formContainer) formContainer.classList.add('hidden');
+                                if (successMessage) successMessage.classList.remove('hidden');
+                            })
+                            .catch((error) => {
+                                alert('Failed to send booking request. Please try again.');
+                                console.error('EmailJS Error:', error);
+                            });
+                    } else {
+                        // Fallback for dev/testing — show success locally
+                        console.warn('EmailJS not initialized — skipping send (dev mode).');
+                        if (formContainer) formContainer.classList.add('hidden');
+                        if (successMessage) successMessage.classList.remove('hidden');
+                    }
+                });
+            }
+        }
+
+        /* ---------- Init on DOMContentLoaded ---------- */
+        document.addEventListener('DOMContentLoaded', () => {
+
+            initBookingModal();
+            animateProgramCards();
+
+            if (chatbotInput) chatbotInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+        });
+    </script>
+</body>
+
+</html>

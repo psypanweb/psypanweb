@@ -1,0 +1,2983 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogs - Psyche Panacea</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0052cc',
+            secondary: '#4da8ff',
+            dark: '#1a1a1a',
+            light: '#f8f9fa',
+            accent: '#f59e0b',
+            insta: '#E1306C',
+            header: '#1877F2',
+          },
+          fontFamily: {
+            sans: ['Noto Sans', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out',
+            'slide': 'slide 25s linear infinite',
+            'popup-fade': 'popupFadeIn 0.3s ease forwards',
+            'slide-up': 'slideUp 0.3s ease forwards',
+            'message-fade': 'messageFadeIn 0.3s ease',
+          },
+          keyframes: {
+            fadeIn: {
+              from: { opacity: 0 },
+              to: { opacity: 1 },
+            },
+            slide: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            },
+            popupFadeIn: {
+              from: { transform: 'scale(0.95)', opacity: 0 },
+              to: { transform: 'scale(1)', opacity: 1 },
+            },
+            slideUp: {
+              from: { transform: 'translateY(20px)', opacity: 0 },
+              to: { transform: 'translateY(0)', opacity: 1 },
+            },
+            messageFadeIn: {
+              from: { opacity: 0, transform: 'translateY(10px)' },
+              to: { opacity: 1, transform: 'translateY(0)' },
+            },
+          }
+        }
+      }
+    }
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA8t0YBEkZ-hDHmw7u8aud-jwNybYEKnbU",
+      authDomain: "psypanweb-7747a.firebaseapp.com",
+      projectId: "psypanweb-7747a",
+      storageBucket: "psypanweb-7747a.appspot.com",
+      messagingSenderId: "441049264188",
+      appId: "1:441049264188:web:4dab8de0554b2c7c741339",
+      measurementId: "G-C1CTMX729Z"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #fafafa;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    .tab-gradient {
+      background: linear-gradient(135deg, #0052cc, #4da8ff);
+    }
+
+    /* Fixed navbar solution */
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 12vh;
+      z-index: 1000;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #0052cc;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile menu quick-toggle styles (drop into your CSS) */
+
+    #mobile-menu.hidden {
+      opacity: 0;
+      transform-origin: top center;
+      transform: scaleY(.96) translateY(-4px);
+      pointer-events: none;
+      transition: opacity 120ms ease, transform 120ms ease;
+      will-change: opacity, transform;
+    }
+
+    /* Visible state */
+    #mobile-menu.open {
+      opacity: 1;
+      transform: scaleY(1) translateY(0);
+      pointer-events: auto;
+      transition: opacity 120ms ease, transform 120ms ease;
+    }
+
+    /* Small visual polish for the mobile panel */
+    #mobile-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 20px;
+      /* adjust if your header height differs */
+      z-index: 1001;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      box-shadow: 0 10px 30px rgba(6, 11, 26, 0.12);
+      overflow: hidden;
+    }
+
+    /* Keep inner links comfortable and tappable */
+    #mobile-menu .px-2 {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    #mobile-menu a {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.06);
+    }
+
+    /* Slight background and separation so it feels snappy */
+    #mobile-menu {
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(15, 23, 42, 0.04);
+    }
+
+    /* Responsive safety: ensure hidden on desktop by CSS if needed */
+    @media (min-width: 768px) {
+      #mobile-menu {
+        display: none !important;
+      }
+    }
+
+    /* Utility class to block body scroll while menu open */
+    .body-no-scroll {
+      overflow: hidden !important;
+    }
+
+    /* Instagram Style Blog Card */
+    .blog-card {
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background: white;
+      border: 1px solid #efefef;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .blog-card:hover {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-image,
+    .blog-video {
+      height: 280px;
+      width: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .blog-card:hover .blog-image,
+    .blog-card:hover .blog-video {
+      transform: scale(1.02);
+    }
+
+    .content-preview {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .read-more-btn {
+      color: #0052cc;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .read-more-btn:hover {
+      color: #4da8ff;
+    }
+
+    .social-btn {
+      transition: all 0.3s ease;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .like-btn:hover {
+      background-color: rgba(255, 0, 85, 0.1);
+      color: #ff0055;
+    }
+
+    .comment-btn:hover {
+      background-color: rgba(0, 184, 124, 0.1);
+      color: #00b87c;
+    }
+
+    .share-btn:hover {
+      background-color: rgba(0, 119, 255, 0.1);
+      color: #0077ff;
+    }
+
+    /* Instagram Style Modal */
+    .blog-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .blog-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 900px;
+      width: 90%;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .blog-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    /* Instagram-like modal */
+    .modal-header {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #efefef;
+      background-color: #1877F2;
+      color: white;
+    }
+
+    .modal-username {
+      font-weight: 600;
+      margin-left: 12px;
+      font-size: 14px;
+      color: white;
+    }
+
+    .modal-image-container {
+      position: relative;
+      background: #f0f2f5;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-image,
+    .modal-video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .modal-actions {
+      padding: 12px 16px;
+      border-bottom: 1px solid #efefef;
+      background-color: #f0f2f5;
+    }
+
+    .action-icons {
+      display: flex;
+      gap: 16px;
+    }
+
+    .like-count {
+      font-weight: 600;
+      padding: 8px 16px 4px;
+      font-size: 14px;
+      background-color: #f0f2f5;
+    }
+
+    .modal-caption {
+      padding: 0 16px 12px;
+      font-size: 14px;
+      background-color: #f0f2f5;
+    }
+
+    .caption-username {
+      font-weight: 600;
+      margin-right: 8px;
+      font-size: 14px;
+    }
+
+    .post-time {
+      color: #8e8e8e;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      padding: 0 16px 12px;
+      text-transform: uppercase;
+      background-color: #f0f2f5;
+    }
+
+    .comment-section {
+      border-top: 1px solid #efefef;
+      padding: 16px;
+      flex-grow: 1;
+      overflow-y: auto;
+      max-height: 200px;
+      background-color: white;
+    }
+
+    .comment-card {
+      display: flex;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .comment-user {
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    .comment-input-container {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #efefef;
+      padding: 14px 16px;
+      background-color: #f0f2f5;
+      flex-direction: column;
+    }
+
+    .commenter-name-container {
+      width: 100%;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .commenter-name-container.active {
+      display: flex;
+      align-items: center;
+    }
+
+    .comment-input {
+      flex-grow: 1;
+      border: none;
+      padding: 8px 12px;
+      outline: none;
+      font-size: 14px;
+      background: white;
+      border-radius: 20px;
+      width: 100%;
+    }
+
+    .post-comment-btn {
+      color: #1877F2;
+      font-weight: 600;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 10px;
+      padding: 8px 16px;
+    }
+
+    .comment-input-row {
+      display: flex;
+      width: 100%;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .blog-item {
+      animation: slideUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+
+      .hero-section {
+        padding-top: 100px;
+      }
+
+      .modal-content {
+        width: 95%;
+        max-height: 85vh;
+      }
+
+      .modal-image-container {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .modal-content {
+        height: 90vh;
+      }
+    }
+
+
+
+    /* Instagram-like blog card styling */
+    .blog-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: #1877F2;
+      color: white;
+    }
+
+    .blog-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .blog-footer {
+      padding: 12px 16px;
+      border-top: 1px solid #efefef;
+      background-color: #f0f2f5;
+    }
+
+    .blog-actions {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .blog-likes {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .blog-comments-count {
+      color: #8e8e8e;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .blog-date {
+      color: #8e8e8e;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Instagram gradient heart */
+    .liked {
+      color: #ed4956 !important;
+    }
+
+    /* Loading spinner */
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #1877F2;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      display: inline-block;
+      animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error-message {
+      color: #e53e3e;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .video-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 5px;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .media-container {
+      position: relative;
+    }
+
+    /* Share Modal Styles */
+    .share-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .share-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .share-modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      padding: 0;
+      overflow: hidden;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .share-modal.active .share-modal-content {
+      transform: scale(1);
+    }
+
+    .share-modal-header {
+      padding: 16px;
+      border-bottom: 1px solid #efefef;
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .share-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .share-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .share-option:hover {
+      background-color: #f0f2f5;
+    }
+
+    .share-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      font-size: 20px;
+      color: white;
+    }
+
+    .share-label {
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .share-modal-footer {
+      padding: 16px;
+      border-top: 1px solid #efefef;
+      text-align: center;
+    }
+
+    .cancel-share {
+      background: none;
+      border: none;
+      color: #1877F2;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 16px;
+    }
+
+    .typing-animation {
+      overflow: hidden;
+      border-right: .15em solid #3b82f6;
+      white-space: nowrap;
+      animation: typing 1s steps(40, end), blink-caret .75s step-end infinite;
+    }
+
+    .bot-typing .bot-typing-text {
+      border-right: .15em solid #3b82f6;
+      white-space: pre-wrap;
+      /* allow wrapped typed text */
+      display: inline-block;
+      animation: blink-caret .75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0
+      }
+
+      to {
+        width: 100%
+      }
+    }
+
+    @keyframes blink-caret {
+
+      from,
+      to {
+        border-color: transparent
+      }
+
+      50% {
+        border-color: #3b82f6;
+      }
+    }
+
+    .chatbot-body {
+      scroll-behavior: smooth;
+      height: 250px;
+    }
+
+    #chatbotWindow {
+      transition: all 0.3s ease;
+    }
+
+    .option-btn {
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    #chatbotToggle {
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #chatbotToggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+    }
+
+    .chatbot-message {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .chatbot-window {
+        width: 90vw;
+        max-width: 90vw;
+        right: 5px;
+        max-height: 70vh;
+      }
+
+      .chatbot-input {
+        padding: 0.5rem;
+      }
+
+      .chatbot-input input {
+        padding: 0.5rem;
+      }
+
+      .chatbot-toggle {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    /* ---------- Marquee base styles (single track) ---------- */
+    .clients-marquee-section {
+      width: 100%;
+      background: #ffffff;
+      padding: 1rem 0;
+      box-sizing: border-box;
+    }
+
+    .clients-marquee-wrap {
+      --marquee-gap: 1.25rem;
+      --logo-height-desktop: 80px;
+      --logo-height-mobile: 56px;
+      --px-per-second: 120;
+
+      max-width: 1300px;
+      margin: 0 auto;
+      overflow: hidden;
+      position: relative;
+      padding: 0 1rem;
+    }
+
+    /* SINGLE track that will contain clients + a duplicated set for seamless looping */
+    .marquee-track {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--marquee-gap);
+      white-space: nowrap;
+      will-change: transform;
+      animation-name: marquee-scroll;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-duration: 20s;
+      /* fallback; JS will set correct duration */
+      animation-play-state: running;
+    }
+
+    /* Pause on hover */
+    .clients-marquee-wrap:hover .marquee-track {
+      animation-play-state: paused;
+    }
+
+    /* item */
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+    }
+
+    .marquee-item .logo-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--logo-height-desktop);
+      min-width: calc(var(--logo-height-desktop) * 2);
+      padding: 0.3rem 0.75rem;
+      box-sizing: border-box;
+      border-radius: 6px;
+      background: transparent;
+    }
+
+    .marquee-item img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* animation: translate left by 50% (we duplicate content inside the same track) */
+    @keyframes marquee-scroll {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .clients-marquee-wrap {
+        --logo-height-desktop: 64px;
+      }
+
+      .marquee-item .logo-box {
+        min-width: calc(var(--logo-height-desktop) * 1.8);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .clients-marquee-wrap {
+        --logo-height-desktop: var(--logo-height-mobile);
+        padding: 0 0.5rem;
+      }
+
+      .marquee-item .logo-box {
+        min-width: calc(var(--logo-height-mobile) * 1.8);
+        padding: 0.2rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="flex items-center space-x-2">
+      <img class="h-16 w-14" src="/images/psypan-logo-transparent.png" alt="Psyche Panacea"
+        style="height: 80px; width: 80px;">
+      <div class="text-2xl font-bold text-primary">Psyche Panacea</div>
+    </div>
+    <nav class="hidden md:flex items-center space-x-6">
+      <a href="index.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Home</a>
+      <a href="services.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Services</a>
+      <a href="flagship-programs.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Flagship
+        Programs</a>
+      <a href="events.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Events</a>
+      <a href="gallery.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Gallery</a>
+      <a href="about-us.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">About Us</a>
+      <a href="blogs.html" class="text-primary font-semibold transition-colors px-2 py-1">Blogs</a>
+      <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Contact</a>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden flex items-center" style="height: 40px;">
+      <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="mt-16 md:hidden bg-white shadow-lg rounded-b-lg hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a href="index.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Home</a>
+      <a href="services.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Services</a>
+      <a href="flagship-programs.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Flagship
+        Programs</a>
+      <a href="events.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Events</a>
+      <a href="gallery.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Gallery</a>
+      <a href="about-us.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">About
+        Us</a>
+      <a href="blogs.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary bg-blue-50">Blogs</a>
+      <a href="contact.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Contact</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section pt-32 pb-20 bg-gradient-to-r from-primary to-blue-600 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Psyche Panacea Blogs</h1>
+      <div class="h-1 w-24 bg-white mx-auto rounded mb-8"></div>
+      <p class="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">
+        Insights, stories, and perspectives from our team of experts
+      </p>
+    </div>
+  </section>
+
+  <!-- Blogs Section -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Social Feed</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Discover real-time updates, highlights, and posts that showcase our
+          work and impact.</p>
+      </div>
+
+      <!-- Blog Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blogs-container">
+        <!-- Blogs will be loaded here dynamically -->
+        <div class="text-center py-10 col-span-full">
+          <div class="inline-block mb-4">
+            <span class="loader"></span>
+          </div>
+          <p class="text-gray-500">Loading blogs...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Modal -->
+  <div class="blog-modal fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center"
+    style="z-index: 2000;" id="blog-modal">
+    <div
+      class="modal-content bg-white w-full max-w-3xl h-[90vh] md:h-[85vh] rounded-lg shadow-lg flex flex-col overflow-hidden">
+
+      <!-- Modal Header -->
+      <div class="modal-header flex items-center p-4 border-b border-gray-200 bg-gray-100">
+        <div
+          class="blog-avatar bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">PP
+        </div>
+        <div class="modal-username ml-3 font-semibold text-gray-800">psyche_panacea</div>
+        <button class="ml-auto text-2xl text-gray-600 hover:text-black" id="close-modal">&times;</button>
+      </div>
+
+      <!-- Modal Media -->
+      <div class="modal-image-container h-64 md:h-80 w-full">
+        <img id="modal-image" src="" alt="" class="modal-image w-full h-full object-cover hidden">
+        <video id="modal-video" class="modal-video w-full h-full" controls style="display: none;"></video>
+      </div>
+
+      <!-- Scrollable Body -->
+      <div class="flex-1 overflow-y-auto bg-white">
+
+        <!-- Modal Actions -->
+        <div class="modal-actions px-4 py-3 border-b border-gray-200">
+          <div class="action-icons flex space-x-4 items-center text-gray-600">
+            <button class="like-btn social-btn" id="modal-like-btn">
+              <i class="far fa-heart text-xl hover:text-red-500 transition"></i>
+            </button>
+            <button class="comment-btn social-btn">
+              <i class="far fa-comment text-xl hover:text-blue-500 transition"></i>
+            </button>
+            <button class="share-btn social-btn" id="share-btn">
+              <i class="fas fa-share-alt text-xl hover:text-green-500 transition"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Like Count -->
+        <div class="like-count px-4 py-2 font-semibold text-sm text-gray-800">
+          <span id="like-count">0</span> likes
+        </div>
+
+        <!-- Caption -->
+        <div class="modal-caption px-4 pb-2 text-sm text-gray-700">
+          <span class="caption-username font-semibold">psyche_panacea</span>
+          <span id="modal-caption"></span>
+        </div>
+
+        <!-- Post Time -->
+        <div class="post-time px-4 text-xs text-gray-400 uppercase tracking-wide" id="modal-date"></div>
+
+        <!-- Comments Section -->
+        <div id="comments-container" class="comment-section px-4 py-4 space-y-4 text-sm text-gray-800">
+          <!-- Sample comments (replace with dynamic ones) -->
+          <div class="text-center py-6 text-gray-400" id="no-comments">
+            <i class="fas fa-comment-alt text-2xl mb-2"></i>
+            <p>No comments yet</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comment Input (Sticky Footer) -->
+      <div class="comment-input-container border-t border-gray-200 bg-white p-3">
+        <!-- Commenter Name Input -->
+        <div class="commenter-name-container" id="commenter-name-container">
+          <input type="text" id="commenter-name" placeholder="Your Name"
+            class="comment-input flex-1 px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-primary">
+          <button id="save-name-btn"
+            class="post-comment-btn text-primary font-semibold text-sm hover:underline ml-2">Save</button>
+        </div>
+
+        <!-- Comment Input -->
+        <div class="comment-input-row">
+          <input type="text" id="comment-input" placeholder="Add a comment..."
+            class="comment-input flex-1 px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-primary">
+          <button id="submit-comment"
+            class="post-comment-btn text-primary font-semibold text-sm hover:underline">Post</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div class="share-modal" id="share-modal">
+    <div class="share-modal-content">
+      <div class="share-modal-header">
+        Share
+      </div>
+      <div class="share-options">
+        <div class="share-option" id="copy-link">
+          <div class="share-icon" style="background-color: #6c757d;">
+            <i class="fas fa-link"></i>
+          </div>
+          <span class="share-label">Copy Link</span>
+        </div>
+        <div class="share-option" id="share-facebook">
+          <div class="share-icon" style="background-color: #1877F2;">
+            <i class="fab fa-facebook-f"></i>
+          </div>
+          <span class="share-label">Facebook</span>
+        </div>
+        <div class="share-option" id="share-messenger">
+          <div class="share-icon" style="background-color: #0084FF;">
+            <i class="fab fa-facebook-messenger"></i>
+          </div>
+          <span class="share-label">Messenger</span>
+        </div>
+        <div class="share-option" id="share-whatsapp">
+          <div class="share-icon" style="background-color: #25D366;">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <span class="share-label">WhatsApp</span>
+        </div>
+        <div class="share-option" id="share-email">
+          <div class="share-icon" style="background-color: #D44638;">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <span class="share-label">Email</span>
+        </div>
+        <div class="share-option" id="share-threads">
+          <div class="share-icon" style="background-color: #000000;">
+            <i class="fab fa-threads"></i>
+          </div>
+          <span class="share-label">Threads</span>
+        </div>
+      </div>
+      <div class="share-modal-footer">
+        <button class="cancel-share" id="cancel-share">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT LOGO MARQUEE (single-row, no double-vertical logos) -->
+  <section id="clients-marquee" class="clients-marquee-section" aria-label="Our clients">
+    <div class="clients-marquee-wrap">
+      <div class="marquee-track" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <!-- Left half: Map -->
+        <div class="w-full h-full map-container rounded-xl overflow-hidden border-2 border-blue-700 shadow-lg">
+          <iframe src="https://maps.google.com/maps?q=28.467519771527627,77.03697016794533&z=15&output=embed"
+            width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen loading="lazy"
+            class="filter grayscale hover:grayscale-0 transition-all duration-500 pointer-events-auto"
+            gestureHandling="greedy">
+          </iframe>
+        </div>
+
+        <!-- Right half: Content -->
+        <div class="grid grid-cols-1 gap-8">
+          <!-- Company Info -->
+          <div>
+            <div class="flex items-center mb-4">
+              <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-2 rounded-lg mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-blue-400">Psyche Panacea</h3>
+            </div>
+            <p class="text-gray-400">
+              Pioneers of innovative and breakthrough methodologies in the Indian consultation arena,
+              transforming organizations through strategic HR solutions.
+            </p>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="text-lg font-semibold mb-3 text-blue-400 border-b border-blue-700 pb-1">Contact Us
+            </h4>
+            <ul class="space-y-4 text-gray-400 text-sm">
+              <li class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 mt-1 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>308/2, Old Delhi Rd, adjacent Country Inn,<br>Sector 12 A, Anamika
+                  Enclave,<br>Gurugram, Haryana 122001 India</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <button onclick="window.location.href='tel:09810323292'">09810323292</button>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <button onclick="window.location.href='mailto:hr@psypanconsulting.com'">hr@psypanconsulting.com</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="border-t border-gray-800 mt-12 pt-6 text-center text-gray-500 text-sm">
+        <p>© 2025 Psyche Panacea. All rights reserved. Designed by Psyche Panacea Team.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chatbot -->
+  <div class="chatbot fixed bottom-6 right-4 z-50" style="z-index: 1000;">
+    <!-- Toggle / Floating Button -->
+    <button id="chatbotToggle"
+      class="chatbot-toggle w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center cursor-pointer shadow-lg text-white"
+      aria-label="Open chat">
+      <img src="Chatbot.gif" alt="">
+    </button>
+
+    <!-- Chat window -->
+    <div id="chatbotWindow"
+      class="chatbot-window w-80 sm:w-96 max-h-[540px] absolute bottom-20 sm:bottom-24 right-0 bg-white rounded-xl shadow-2xl hidden border border-blue-100 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div
+        class="chatbot-header bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 sm:p-4 rounded-t-xl flex justify-between items-center">
+        <div>
+          <div class="font-bold text-sm sm:text-base">PsypanChatbot</div>
+          <div class="text-xs opacity-90">Your virtual guide</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="chatbotClose" class="chatbot-close text-2xl leading-none">×</button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div id="chatbotBody" class="chatbot-body p-3 sm:p-4 overflow-y-auto flex-1 space-y-3 bg-white">
+        <!-- Messages will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Options Container -->
+      <div id="chatOptions" class="p-3 bg-white border-t border-gray-200">
+        <!-- Options will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Input area -->
+      <div class="chatbot-input p-2 sm:p-3 border-t border-gray-200 flex gap-2 items-center">
+        <input id="chatbotInput" type="text"
+          class="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
+          placeholder="Type your message here...">
+        <button id="chatbotSend"
+          class="bg-blue-500 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-600 transition">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    (function () {
+      const chatBody = document.getElementById('chatbotBody');
+      if (!chatBody) return;
+
+      // typing speed in ms per character (tweak if you want faster/slower)
+      const TYPE_SPEED = 18;
+
+      // Remove any existing typing-indicator nodes (class 'typing-animation') helper
+      function clearTypingIndicators() {
+        const ind = chatBody.querySelectorAll('.typing-animation');
+        ind.forEach(node => node.remove());
+      }
+
+      // Smooth scroll helper
+      function scrollToBottom() {
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      // Type text into target span element char-by-char
+      function typeText(span, fullText, onDone) {
+        let i = 0;
+        function step() {
+          if (i <= fullText.length) {
+            // keep caret visible as we type
+            span.textContent = fullText.slice(0, i);
+            i++;
+            scrollToBottom();
+            timer = setTimeout(step, TYPE_SPEED);
+          } else {
+            if (typeof onDone === 'function') onDone();
+          }
+        }
+        let timer = setTimeout(step, TYPE_SPEED);
+        return () => clearTimeout(timer);
+      }
+
+      // Observe added bot messages
+      const observer = new MutationObserver((mutations) => {
+        for (const mut of mutations) {
+          for (const node of mut.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue;
+
+            // ignore typing-indicator nodes
+            if (node.classList.contains('typing-animation')) continue;
+
+            // only act on bot messages (class includes 'bot')
+            if (node.classList.contains('bot') && !node.dataset.typed) {
+              // mark to avoid double-processing
+              node.dataset.typed = 'processing';
+
+              // capture original HTML and plain text
+              const originalHTML = node.innerHTML || '';
+              const plainText = node.textContent ? node.textContent.trim() : '';
+
+              // Clear possible typing indicator(s) so we show our typed text cleanly
+              // (we don't remove them earlier to avoid interfering with original flow)
+              clearTypingIndicators();
+
+              // Prepare typed container
+              node.innerHTML = ''; // remove content
+              node.classList.add('bot-typing');
+
+              // create a span to receive typed characters
+              const span = document.createElement('span');
+              span.className = 'bot-typing-text';
+              node.appendChild(span);
+              scrollToBottom();
+
+              // If the original content contains HTML tags, we will type its plain-text first,
+              // then replace with originalHTML at the end (so lists and markup render properly).
+              // If original was plain text, we type it fully and leave as-is.
+              const textToType = plainText.length ? plainText : originalHTML.replace(/<[^>]*>/g, '');
+
+              typeText(span, textToType, () => {
+                // done typing: if originalHTML had markup, set it now (so lists render)
+                if (/<[a-z][\s\S]*>/i.test(originalHTML)) {
+                  node.innerHTML = originalHTML;
+                } else {
+                  // ensure final text exactly matches original (in case of trimming)
+                  span.textContent = plainText || originalHTML;
+                }
+                node.classList.remove('bot-typing');
+                node.dataset.typed = 'true';
+                scrollToBottom();
+              });
+            }
+          }
+        }
+      });
+
+      observer.observe(chatBody, { childList: true, subtree: false });
+
+      // Also make existing bot messages (already present on load) appear typed
+      // by triggering a small re-process for any untyped bot nodes
+      window.addEventListener('load', () => {
+        const existing = Array.from(chatBody.querySelectorAll('.bot')).filter(n => !n.dataset.typed);
+        existing.forEach(n => {
+          // trigger MutationObserver by re-appending node (no visual move)
+          // create a shallow clone then replace to fire the observer logic
+          const clone = n.cloneNode(true);
+          n.replaceWith(clone);
+        });
+      });
+
+      // tidy: expose a function to force-enable or disable this enhancer if needed
+      window.__psypanBotTypingEnhancer = {
+        disconnect: () => observer.disconnect(),
+        reconnect: () => observer.observe(chatBody, { childList: true, subtree: false })
+      };
+    })();
+
+
+
+    (function () {
+      const btn = document.getElementById('mobile-menu-button');
+      const menu = document.getElementById('mobile-menu');
+
+      if (!btn || !menu) return;
+
+      // initialize aria states
+      btn.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+
+      // helper to open/close
+      function openMenu() {
+        menu.classList.remove('hidden');
+        menu.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-hidden', 'false');
+        document.documentElement.classList.add('body-no-scroll');
+
+        // focus first link for keyboard users
+        const firstLink = menu.querySelector('a, button');
+        if (firstLink) firstLink.focus({ preventScroll: true });
+      }
+
+      function closeMenu() {
+        menu.classList.remove('open');
+        // keep hidden attribute until transition finishes for smoothness
+        menu.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        document.documentElement.classList.remove('body-no-scroll');
+
+        // after transition end hide completely to remove pointer-events if .hidden used elsewhere
+        const onTransEnd = () => {
+          menu.classList.add('hidden');
+          menu.removeEventListener('transitionend', onTransEnd);
+        };
+        // if no transition fire immediately
+        const computed = getComputedStyle(menu);
+        const dur = parseFloat(computed.transitionDuration) || 0;
+        if (dur > 0) {
+          menu.addEventListener('transitionend', onTransEnd);
+        } else {
+          onTransEnd();
+        }
+
+        // return focus to button
+        btn.focus({ preventScroll: true });
+      }
+
+      // toggle handler
+      btn.addEventListener('click', (e) => {
+        const isOpen = menu.classList.contains('open');
+        if (isOpen) closeMenu();
+        else openMenu();
+      });
+
+      // close when a menu link is clicked
+      menu.addEventListener('click', (e) => {
+        const target = e.target.closest('a, button');
+        if (!target) return;
+        // small delay so native navigation begins without abrupt UI change
+        setTimeout(closeMenu, 60);
+      });
+
+      // close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('open')) {
+          closeMenu();
+        }
+      });
+
+      // close on outside click (outside menu and outside button)
+      document.addEventListener('click', (e) => {
+        if (!menu.classList.contains('open')) return;
+        const isInsideMenu = !!e.target.closest('#mobile-menu');
+        const isOnButton = !!e.target.closest('#mobile-menu-button');
+        if (!isInsideMenu && !isOnButton) closeMenu();
+      });
+
+      // ensure correct initial state if menu had no "hidden" class in markup
+      if (!menu.classList.contains('hidden') && !menu.classList.contains('open')) {
+        menu.classList.add('hidden');
+        menu.setAttribute('aria-hidden', 'true');
+      }
+    })();
+
+    // chatbot
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatbotWindow = document.getElementById("chatbotWindow");
+      const chatbotToggle = document.getElementById("chatbotToggle");
+      const chatbotClose = document.getElementById("chatbotClose");
+
+
+      // Toggle chatbot when floating button is clicked
+      chatbotToggle.addEventListener("click", () => {
+        chatbotWindow.classList.toggle("hidden");
+      });
+
+      // Close chatbot when "×" is clicked
+      chatbotClose.addEventListener("click", () => {
+        chatbotWindow.classList.add("hidden");
+      });
+    });
+
+    window.addEventListener("DOMContentLoaded", function () {
+      const input = document.getElementById("chatbotInput");
+      const sendBtn = document.getElementById("chatbotSend");
+
+      // Simulate typing effect
+      let message = "hii";
+      let i = 0;
+
+      function typeMessage() {
+        if (i < message.length) {
+          input.value += message.charAt(i);
+          i++;
+          setTimeout(typeMessage, 150); // typing speed
+        } else {
+          // Click send button after typing
+          setTimeout(() => {
+            sendBtn.click();
+          }, 500);
+        }
+      }
+
+      typeMessage();
+    });
+  </script>
+
+  <script>
+    // Firebase Firestore references
+    const blogsCollection = db.collection("blogs");
+    const commentsCollection = db.collection("comments");
+
+    // DOM elements
+    const blogsContainer = document.getElementById('blogs-container');
+    const blogModal = document.getElementById('blog-modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalImage = document.getElementById('modal-image');
+    const modalVideo = document.getElementById('modal-video');
+    const modalCaption = document.getElementById('modal-caption');
+    const modalDate = document.getElementById('modal-date');
+    const likeBtn = document.getElementById('modal-like-btn');
+    const likeCount = document.getElementById('like-count');
+    const shareBtn = document.getElementById('share-btn');
+    const commentsContainer = document.getElementById('comments-container');
+    const commentInput = document.getElementById('comment-input');
+    const submitComment = document.getElementById('submit-comment');
+    const commenterNameInput = document.getElementById('commenter-name');
+    const saveNameBtn = document.getElementById('save-name-btn');
+    const commenterNameContainer = document.getElementById('commenter-name-container');
+    const shareModal = document.getElementById('share-modal');
+    const cancelShare = document.getElementById('cancel-share');
+
+    // Current blog ID for modal
+    let currentBlogId = null;
+    let currentBlogData = null;
+    let currentCommenterName = localStorage.getItem('commenterName') || '';
+
+    // Track comment timers for real-time updates
+    const commentTimers = {};
+
+    // Format relative time for comments
+    function formatRelativeTime(timestamp) {
+      const now = new Date();
+      const diff = now - timestamp; // in milliseconds
+
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+
+      if (seconds < 60) {
+        return 'just now';
+      } else if (minutes < 60) {
+        return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+      } else if (hours < 24) {
+        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      } else if (days < 30) {
+        return `${days} day${days > 1 ? 's' : ''} ago`;
+      } else {
+        return timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+    }
+
+    // Update relative time for a comment element
+    function updateRelativeTime(element, timestamp) {
+      element.textContent = formatRelativeTime(timestamp);
+    }
+
+    // Start a timer to update relative time for a comment
+    function startRelativeTimeUpdater(element, timestamp) {
+      // Clear any existing interval for this element
+      if (commentTimers[element.id]) {
+        clearInterval(commentTimers[element.id]);
+      }
+
+      // Update immediately
+      updateRelativeTime(element, timestamp);
+
+      // If the comment is less than 60 minutes old, update every minute
+      const now = new Date();
+      const diff = now - timestamp;
+      if (diff < 60 * 60 * 1000) {
+        commentTimers[element.id] = setInterval(() => {
+          updateRelativeTime(element, timestamp);
+        }, 60000); // Update every minute
+      }
+    }
+
+    // Check if URL is a video
+    function isVideo(url) {
+      const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov'];
+      return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+    }
+
+    // Load blogs from Firestore
+    function loadBlogs() {
+      blogsContainer.innerHTML = '<div class="text-center py-10 col-span-full"><div class="inline-block mb-4"><span class="loader"></span></div><p class="text-gray-500">Loading blogs...</p></div>';
+
+      blogsCollection.orderBy("createdAt", "desc").get().then(querySnapshot => {
+        blogsContainer.innerHTML = '';
+
+        if (querySnapshot.empty) {
+          blogsContainer.innerHTML = `
+            <div class="text-center py-10 col-span-full">
+              <div class="inline-block mb-4">
+                <i class="fas fa-file-alt text-4xl text-gray-400"></i>
+              </div>
+              <p class="text-gray-500">No blog posts found</p>
+            </div>
+          `;
+          return;
+        }
+
+        let delay = 0;
+        querySnapshot.forEach(doc => {
+          const blog = doc.data();
+          const blogId = doc.id;
+
+          // Convert Firestore timestamp to JavaScript Date
+          const createdAt = blog.createdAt ? blog.createdAt.toDate() : new Date();
+          const formattedDate = createdAt.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+
+          // Check if user has liked this blog in current session
+          const hasLiked = sessionStorage.getItem(`liked_${blogId}`) === 'true';
+          const heartIcon = hasLiked ? 'fas fa-heart text-xl liked' : 'far fa-heart text-xl';
+
+          const blogElement = document.createElement('div');
+          blogElement.className = 'blog-item blog-card bg-white';
+          blogElement.style.animationDelay = `${delay}ms`;
+          delay += 150;
+
+          // Truncate content for preview
+          const truncatedContent = blog.content.length > 120 ?
+            blog.content.substring(0, 120) + '...' : blog.content;
+
+          // Determine if media is image or video
+          const mediaUrl = blog.image || '';
+          const isVideoMedia = isVideo(mediaUrl);
+
+          blogElement.innerHTML = `
+            <div class="blog-header">
+              <div class="blog-avatar">PP</div>
+              <div class="modal-username">psyche_panacea</div>
+            </div>
+            <div class="media-container relative">
+            ${isVideoMedia ?
+              `<video id="blog-video-${blogId}" 
+            class="blog-video w-full" 
+            poster="${blog.thumbnail || ''}" 
+            autoplay muted controls controlsList="nodownload"
+            style="object-fit: cover;">
+      <source src="${mediaUrl}" type="video/mp4">
+    </video>
+
+    <!-- Play Icon Overlay -->
+    <div id="play-icon-${blogId}" 
+         class="video-icon absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer">
+      <i class="fas fa-play text-white text-2xl"></i>
+    </div>`
+              :
+              `<img src="${mediaUrl}" alt="${blog.title}" class="blog-image w-full">`
+            }
+</div>
+
+            <div class="blog-footer">
+              <div class="blog-actions">
+                <button class="like-btn social-btn" data-id="${blogId}">
+                  <i class="${heartIcon}"></i>
+                </button>
+                <button class="comment-btn social-btn" data-id="${blogId}">
+                  <i class="far fa-comment text-xl"></i>
+                </button>
+                <button class="share-btn social-btn" data-id="${blogId}">
+                  <i class="fas fa-share-alt text-xl"></i>
+                </button>
+              </div>
+              <div class="blog-likes">
+                <span id="like-count-${blogId}">${blog.likes || 0}</span> likes
+              </div>
+              <div class="content-preview text-gray-800 text-sm mb-2">
+                <span class="font-semibold">psyche_panacea</span> ${truncatedContent}
+              </div>
+              <div class="blog-comments-count" id="comment-count-${blogId}">
+                View all <span>${blog.comments || 0}</span> comments
+              </div>
+              <div class="blog-date">
+                ${formattedDate}
+              </div>
+            </div>
+          `;
+
+          blogsContainer.appendChild(blogElement);
+
+          // Add event listeners to buttons
+          blogElement.querySelector(`.like-btn[data-id="${blogId}"]`).addEventListener('click', () => {
+            toggleLike(blogId);
+          });
+
+          blogElement.querySelector(`.comment-btn[data-id="${blogId}"]`).addEventListener('click', () => {
+            openBlogModal(blogId);
+          });
+
+          blogElement.querySelector(`.share-btn[data-id="${blogId}"]`).addEventListener('click', () => {
+            showShareModal(blog, blogId);
+          });
+
+          // Add play button functionality for videos
+          if (isVideoMedia) {
+            const videoElement = blogElement.querySelector('video');
+            const playButton = blogElement.querySelector('.video-icon');
+
+            playButton.addEventListener('click', () => {
+              videoElement.play();
+              playButton.style.display = 'none';
+            });
+
+            videoElement.addEventListener('pause', () => {
+              playButton.style.display = 'flex';
+            });
+          }
+        });
+      }).catch(error => {
+        console.error("Error loading blogs: ", error);
+        blogsContainer.innerHTML = `
+          <div class="text-center py-10 col-span-full">
+            <div class="inline-block mb-4">
+              <i class="fas fa-exclamation-triangle text-4xl text-red-500"></i>
+            </div>
+            <p class="text-gray-500">Error loading blogs. Please try again later.</p>
+          </div>
+        `;
+      });
+    }
+
+    // Toggle like for a blog
+    function toggleLike(blogId) {
+      // Check if user has already liked in this session
+      const hasLiked = sessionStorage.getItem(`liked_${blogId}`) === 'true';
+      let increment = 1;
+
+      if (hasLiked) {
+        // User is unliking
+        increment = -1;
+        sessionStorage.setItem(`liked_${blogId}`, 'false');
+      } else {
+        // User is liking
+        sessionStorage.setItem(`liked_${blogId}`, 'true');
+      }
+
+      const likeCountElement = document.getElementById(`like-count-${blogId}`);
+      const currentCount = parseInt(likeCountElement.textContent);
+      const likeButtonIcon = document.querySelector(`.like-btn[data-id="${blogId}"] i`);
+
+      // Update UI immediately
+      likeCountElement.textContent = currentCount + increment;
+
+      if (hasLiked) {
+        likeButtonIcon.className = "far fa-heart text-xl";
+      } else {
+        likeButtonIcon.className = "fas fa-heart text-xl liked";
+      }
+
+      // Update Firestore
+      const blogRef = blogsCollection.doc(blogId);
+
+      blogRef.update({
+        likes: firebase.firestore.FieldValue.increment(increment)
+      })
+        .catch(error => {
+          console.error("Error updating like: ", error);
+          // Revert UI if update fails
+          likeCountElement.textContent = currentCount;
+          if (hasLiked) {
+            likeButtonIcon.className = "fas fa-heart text-xl liked";
+            sessionStorage.setItem(`liked_${blogId}`, 'true');
+          } else {
+            likeButtonIcon.className = "far fa-heart text-xl";
+            sessionStorage.setItem(`liked_${blogId}`, 'false');
+          }
+        });
+
+      // If modal is open for this blog, update modal UI
+      if (currentBlogId === blogId) {
+        const modalLikeBtn = document.getElementById('modal-like-btn');
+        const modalLikeCount = document.getElementById('like-count');
+        const modalCurrentCount = parseInt(modalLikeCount.textContent);
+
+        modalLikeCount.textContent = modalCurrentCount + increment;
+
+        if (hasLiked) {
+          modalLikeBtn.innerHTML = '<i class="far fa-heart text-xl"></i>';
+        } else {
+          modalLikeBtn.innerHTML = '<i class="fas fa-heart text-xl liked"></i>';
+        }
+      }
+    }
+
+    // Open blog modal
+    function openBlogModal(blogId) {
+      currentBlogId = blogId;
+
+      // Show loading state
+      commentsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Loading blog...</p>';
+
+      // Fetch blog data from Firestore
+      blogsCollection.doc(blogId).get().then(doc => {
+        if (!doc.exists) {
+          commentsContainer.innerHTML = '<p class="text-center text-red-500 py-4">Blog not found!</p>';
+          setTimeout(closeBlogModal, 2000);
+          return;
+        }
+
+        const blog = doc.data();
+        currentBlogData = blog;
+
+        // Set blog data in modal
+        const mediaUrl = blog.image || '';
+        const isVideoMedia = isVideo(mediaUrl);
+
+        if (isVideoMedia) {
+          modalImage.style.display = 'none';
+          modalVideo.style.display = 'block';
+          modalVideo.src = mediaUrl;
+          modalVideo.poster = blog.thumbnail || '';
+          modalVideo.controls = true;
+        } else {
+          modalVideo.style.display = 'none';
+          modalImage.style.display = 'block';
+          modalImage.src = mediaUrl;
+          modalImage.alt = blog.title;
+        }
+
+        modalCaption.textContent = blog.content.substring(0, 200) + (blog.content.length > 200 ? '...' : '');
+
+        // Set formatted date
+        const createdAt = blog.createdAt ? blog.createdAt.toDate() : new Date();
+        const timeDiff = Date.now() - createdAt;
+        const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+        let timeText;
+        if (daysAgo === 0) {
+          timeText = 'TODAY';
+        } else if (daysAgo === 1) {
+          timeText = '1 DAY AGO';
+        } else {
+          timeText = `${daysAgo} DAYS AGO`;
+        }
+
+        modalDate.textContent = timeText;
+
+        // Set like count
+        likeCount.textContent = blog.likes || 0;
+
+        // Check if user has liked this blog in current session
+        const hasLiked = sessionStorage.getItem(`liked_${blogId}`) === 'true';
+        if (hasLiked) {
+          likeBtn.innerHTML = '<i class="fas fa-heart text-xl liked"></i>';
+        } else {
+          likeBtn.innerHTML = '<i class="far fa-heart text-xl"></i>';
+        }
+
+        // Load comments
+        loadComments(blogId);
+
+        // Open modal
+        blogModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Show name input if not set
+        if (!currentCommenterName) {
+          commenterNameContainer.classList.add('active');
+        }
+      }).catch(error => {
+        console.error("Error loading blog: ", error);
+        commentsContainer.innerHTML = '<p class="text-center text-red-500 py-4">Error loading blog!</p>';
+        setTimeout(closeBlogModal, 2000);
+      });
+    }
+
+    // Close blog modal
+    function closeBlogModal() {
+      blogModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+
+      // Clear any comment timers
+      for (const timerId in commentTimers) {
+        clearInterval(commentTimers[timerId]);
+        delete commentTimers[timerId];
+      }
+
+      // Pause any playing video
+      if (modalVideo) {
+        modalVideo.pause();
+      }
+    }
+
+    // Load comments for a blog
+    function loadComments(blogId) {
+      commentsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">Loading comments...</p>';
+
+      // Check if collection exists
+      commentsCollection.get().then(() => {
+        // Collection exists, load comments
+        commentsCollection.where("blogId", "==", blogId)
+          .get()
+          .then(querySnapshot => {
+            commentsContainer.innerHTML = '';
+
+            if (querySnapshot.empty) {
+              commentsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">No comments yet. Be the first to comment!</p>';
+              return;
+            }
+
+            // Convert to array and sort by timestamp
+            const comments = [];
+            querySnapshot.forEach(doc => {
+              const commentData = doc.data();
+              commentData.id = doc.id;
+              comments.push(commentData);
+            });
+
+            // Sort by timestamp descending
+            comments.sort((a, b) => {
+              const aTime = a.timestamp ? a.timestamp.toDate().getTime() : 0;
+              const bTime = b.timestamp ? b.timestamp.toDate().getTime() : 0;
+              return bTime - aTime;
+            });
+
+            // Display sorted comments
+            comments.forEach(comment => {
+              const commentDate = comment.timestamp ? comment.timestamp.toDate() : new Date();
+
+              const commentElement = document.createElement('div');
+              commentElement.className = 'comment-card';
+              commentElement.innerHTML = `
+                <div class="flex-shrink-0 mr-3">
+                  <div class="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
+                    <span class="text-xs font-bold text-gray-600">${comment.author.charAt(0).toUpperCase() || 'U'}</span>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="comment-user font-semibold">${comment.author || 'Anonymous'}</span>
+                    <span class="text-xs text-gray-500" id="comment-time-${comment.id}"></span>
+                  </div>
+                  <p class="text-gray-800">${comment.content}</p>
+                </div>
+              `;
+
+              commentsContainer.appendChild(commentElement);
+
+              // Set and update relative time
+              const timeElement = document.getElementById(`comment-time-${comment.id}`);
+              if (timeElement) {
+                updateRelativeTime(timeElement, commentDate);
+                startRelativeTimeUpdater(timeElement, commentDate);
+              }
+            });
+          })
+          .catch(error => {
+            console.error("Error loading comments: ", error);
+            commentsContainer.innerHTML = '<p class="error-message">Error loading comments. Please try again later.</p>';
+          });
+      }).catch(() => {
+        // Collection doesn't exist yet
+        commentsContainer.innerHTML = '<p class="text-center text-gray-500 py-4">No comments yet. Be the first to comment!</p>';
+      });
+    }
+
+    // Like a blog from modal
+    function likeBlogModal() {
+      if (!currentBlogId) return;
+
+      // Check if user has already liked in this session
+      const hasLiked = sessionStorage.getItem(`liked_${currentBlogId}`) === 'true';
+      let increment = 1;
+
+      if (hasLiked) {
+        // User is unliking
+        increment = -1;
+        sessionStorage.setItem(`liked_${currentBlogId}`, 'false');
+      } else {
+        // User is liking
+        sessionStorage.setItem(`liked_${currentBlogId}`, 'true');
+      }
+
+      const currentCount = parseInt(likeCount.textContent);
+      const likeCountElement = document.getElementById(`like-count-${currentBlogId}`);
+      const likeButtonIcon = document.querySelector(`.like-btn[data-id="${currentBlogId}"] i`);
+
+      // Update UI immediately
+      likeCount.textContent = currentCount + increment;
+
+      if (hasLiked) {
+        likeBtn.innerHTML = '<i class="far fa-heart text-xl"></i>';
+      } else {
+        likeBtn.innerHTML = '<i class="fas fa-heart text-xl liked"></i>';
+      }
+
+      if (likeCountElement) {
+        likeCountElement.textContent = parseInt(likeCountElement.textContent) + increment;
+      }
+      if (likeButtonIcon) {
+        if (hasLiked) {
+          likeButtonIcon.className = "far fa-heart text-xl";
+        } else {
+          likeButtonIcon.className = "fas fa-heart text-xl liked";
+        }
+      }
+
+      // Update Firestore
+      const blogRef = blogsCollection.doc(currentBlogId);
+
+      blogRef.update({
+        likes: firebase.firestore.FieldValue.increment(increment)
+      })
+        .catch(error => {
+          console.error("Error updating like: ", error);
+          // Revert UI if update fails
+          likeCount.textContent = currentCount;
+          if (hasLiked) {
+            likeBtn.innerHTML = '<i class="fas fa-heart text-xl liked"></i>';
+            sessionStorage.setItem(`liked_${currentBlogId}`, 'true');
+          } else {
+            likeBtn.innerHTML = '<i class="far fa-heart text-xl"></i>';
+            sessionStorage.setItem(`liked_${currentBlogId}`, 'false');
+          }
+          if (likeCountElement) likeCountElement.textContent = currentCount;
+          if (likeButtonIcon) {
+            if (hasLiked) {
+              likeButtonIcon.className = "fas fa-heart text-xl liked";
+            } else {
+              likeButtonIcon.className = "far fa-heart text-xl";
+            }
+          }
+        });
+    }
+
+    // Show share modal
+    function showShareModal(blog, blogId) {
+      currentBlogData = blog;
+      currentBlogId = blogId;
+
+      // Set up share options
+      const shareUrl = `${window.location.origin}${window.location.pathname}?blogId=${blogId}`;
+
+      // Copy link
+      document.getElementById('copy-link').onclick = () => {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert('Link copied to clipboard!');
+          closeShareModal();
+        });
+      };
+
+      // Facebook
+      document.getElementById('share-facebook').onclick = () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+        closeShareModal();
+      };
+
+      // Messenger
+      document.getElementById('share-messenger').onclick = () => {
+        window.open(`fb-messenger://share/?link=${encodeURIComponent(shareUrl)}`, '_blank');
+        closeShareModal();
+      };
+
+      // WhatsApp
+      document.getElementById('share-whatsapp').onclick = () => {
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareUrl)}`, '_blank');
+        closeShareModal();
+      };
+
+      // Email
+      document.getElementById('share-email').onclick = () => {
+        window.open(`mailto:?subject=${encodeURIComponent(blog.title)}&body=${encodeURIComponent(blog.content.substring(0, 100) + '...\n\n' + shareUrl)}`, '_blank');
+        closeShareModal();
+      };
+
+      // Threads
+      document.getElementById('share-threads').onclick = () => {
+        // Threads doesn't have a direct share URL, so we'll use the same as Facebook
+        window.open(`https://www.threads.net/intent/post?text=${encodeURIComponent(blog.content.substring(0, 100) + '... ' + shareUrl)}`, '_blank');
+        closeShareModal();
+      };
+
+      shareModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close share modal
+    function closeShareModal() {
+      shareModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Save commenter name
+    function saveCommenterName() {
+      const name = commenterNameInput.value.trim();
+      if (name) {
+        currentCommenterName = name;
+        localStorage.setItem('commenterName', name);
+        commenterNameContainer.classList.remove('active');
+      }
+    }
+
+    // Add a comment
+    function addComment() {
+      if (!currentBlogId) return;
+
+      const content = commentInput.value.trim();
+
+      if (!content) {
+        alert('Please enter a comment');
+        return;
+      }
+
+      // Use saved name or "Anonymous" if not set
+      const author = currentCommenterName || 'Anonymous';
+
+      // Add comment to Firestore
+      commentsCollection.add({
+        blogId: currentBlogId,
+        content: content,
+        author: author,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      })
+        .then((docRef) => {
+          // Update blog comment count
+          const blogRef = blogsCollection.doc(currentBlogId);
+          blogRef.update({
+            comments: firebase.firestore.FieldValue.increment(1)
+          })
+            .then(() => {
+              // Update comment count in modal and on blog card
+              const commentCountElement = document.getElementById(`comment-count-${currentBlogId}`);
+              if (commentCountElement) {
+                const currentCount = parseInt(commentCountElement.querySelector('span').textContent);
+                commentCountElement.querySelector('span').textContent = currentCount + 1;
+              }
+
+              // Add the new comment to the UI immediately
+              const commentElement = document.createElement('div');
+              commentElement.className = 'comment-card';
+              const commentId = `comment-${Date.now()}`;
+              commentElement.innerHTML = `
+                <div class="flex-shrink-0 mr-3">
+                  <div class="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
+                    <span class="text-xs font-bold text-gray-600">${author.charAt(0).toUpperCase() || 'U'}</span>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="comment-user font-semibold">${author}</span>
+                    <span class="text-xs text-gray-500" id="${commentId}-time"></span>
+                  </div>
+                  <p class="text-gray-800">${content}</p>
+                </div>
+              `;
+
+              // If the "no comments" message is present, remove it
+              if (commentsContainer.querySelector('.text-center')) {
+                commentsContainer.innerHTML = '';
+              }
+
+              // Add the new comment at the top
+              commentsContainer.insertBefore(commentElement, commentsContainer.firstChild);
+
+              // Set and update relative time for new comment
+              const commentDate = new Date();
+              const timeElement = document.getElementById(`${commentId}-time`);
+              if (timeElement) {
+                updateRelativeTime(timeElement, commentDate);
+                startRelativeTimeUpdater(timeElement, commentDate);
+              }
+
+              // Clear input
+              commentInput.value = '';
+            });
+        })
+        .catch(error => {
+          console.error("Error adding comment: ", error);
+          alert('Error adding comment. Please try again.');
+        });
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load blogs
+      loadBlogs();
+
+      // Event listeners
+      closeModal.addEventListener('click', closeBlogModal);
+      likeBtn.addEventListener('click', likeBlogModal);
+
+      shareBtn.addEventListener('click', () => {
+        if (currentBlogData) {
+          showShareModal(currentBlogData, currentBlogId);
+        }
+      });
+
+      cancelShare.addEventListener('click', closeShareModal);
+
+      // Close share modal when clicking outside
+      shareModal.addEventListener('click', (e) => {
+        if (e.target === shareModal) {
+          closeShareModal();
+        }
+      });
+
+      submitComment.addEventListener('click', addComment);
+      saveNameBtn.addEventListener('click', saveCommenterName);
+
+      // Press Enter to submit comment
+      commentInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          addComment();
+        }
+      });
+
+      // Press Enter to save name
+      commenterNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          saveCommenterName();
+        }
+      });
+
+      // Show name input when comment input is focused and name not set
+      commentInput.addEventListener('focus', () => {
+        if (!currentCommenterName) {
+          commenterNameContainer.classList.add('active');
+        }
+      });
+
+      // Close modal when clicking outside
+      blogModal.addEventListener('click', (e) => {
+        if (e.target === blogModal) {
+          closeBlogModal();
+        }
+      });
+
+      // Check for blogId in URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const blogIdFromUrl = urlParams.get('blogId');
+      if (blogIdFromUrl) {
+        // Wait for blogs to load, then open the modal
+        setTimeout(() => {
+          openBlogModal(blogIdFromUrl);
+        }, 1000);
+      }
+    });
+
+    /* Use your clients array exactly as provided */
+    const clients = [
+      // Automotive
+      { name: "Honda", image: "honda.png", category: "automotive", tagline: "The Power of Dreams" },
+      { name: "Maruti Suzuki", image: "maruti.png", category: "automotive", tagline: "Way of Life" },
+      { name: "Hero", image: "hero.png", category: "automotive", tagline: "Desh Ki Dhadkan" },
+      { name: "JCB", image: "jcb.png", category: "automotive", tagline: "Powering Progress" },
+      { name: "Yamaha", image: "BirlaYamaha.png", category: "automotive", tagline: "Revs Your Heart" },
+      { name: "Suzuki Motorcycles", image: "Suzuki-Motorcycles.png", category: "automotive" },
+      { name: "JK Tyres", image: "jktyre.png", category: "automotive" },
+      { name: "Escort", image: "Escort.png", category: "automotive" },
+      { name: "Sona Koyo", image: "Sona-Koyo.jpg", category: "automotive" },
+      { name: "Minda", image: "minda.png", category: "automotive" },
+      { name: "JBM Group", image: "jbm.png", category: "automotive" },
+
+      // Manufacturing
+      { name: "ACC", image: "acc.png", category: "manufacturing", tagline: "The Professional's Choice" },
+      { name: "Amtek", image: "Amtek.jpg", category: "manufacturing" },
+      { name: "Anchor", image: "Anchor.jpg", category: "manufacturing" },
+      { name: "Asahi Glass", image: "Asahi-Glass.png", category: "manufacturing" },
+      { name: "ATO", image: "ato.png", category: "manufacturing" },
+      { name: "BIRLA POWER", image: "birla-power.png", category: "manufacturing", tagline: "POWER... the ability to change" },
+      { name: "Bria", image: "Birla.jpg", category: "manufacturing" },
+      { name: "Chemsys", image: "Chemsys.png", category: "manufacturing" },
+      { name: "Colgate and Palmolive", image: "ColgateandPalmolive.png", category: "manufacturing" },
+      { name: "Daikin", image: "Daikin.png", category: "manufacturing" },
+      { name: "Dabur", image: "dabur.png", category: "manufacturing" },
+      { name: "Ester Industries", image: "Ester-Industries.png", category: "manufacturing" },
+      { name: "Grasim", image: "Grasim.jpg", category: "manufacturing" },
+      { name: "Hindustan Zinc", image: "Hindustan-Zinc.png", category: "manufacturing" },
+      { name: "Indian Oil", image: "indian-oil.png", category: "manufacturing" },
+      { name: "NTPC", image: "ntpc.png", category: "manufacturing" },
+      { name: "Shree Cements", image: "Shree-Cements.jpg", category: "manufacturing" },
+      { name: "SRF", image: "SRF.png", category: "manufacturing" },
+
+      // Technology
+      { name: "Bharti", image: "Bharti.png", category: "technology" },
+      { name: "HCL", image: "hcl.png", category: "technology" },
+      { name: "Hughes Software", image: "Hughes-Software.png", category: "technology" },
+      { name: "ICICI Bank", image: "icici-bank.png", category: "technology" },
+      { name: "Mizuho Bank", image: "Mizuho-Bank.png", category: "technology" },
+      { name: "RMSI", image: "RMSI.png", category: "technology" },
+      { name: "Safran", image: "Safran.png", category: "technology" },
+      { name: "SPIL", image: "SPIL.png", category: "technology" },
+      { name: "Tech Mahindra", image: "tech-mahindra.png", category: "technology" },
+      { name: "TMTL", image: "TMTL.png", category: "technology" },
+      { name: "Wabag", image: "Wabag.png", category: "technology" },
+      { name: "OMAX Technology", image: "LOGO_OMAX-technology.png", category: "technology" },
+      { name: "Nex-Gen", image: "Nex-Gen.png", category: "technology" },
+      { name: "Biotech", image: "Biotech.webp", category: "technology" },
+
+      // FMCG
+      { name: "Pepsi", image: "pepsi.png", category: "fmg" },
+      { name: "Parle-G", image: "Parle-G.jpg", category: "fmg" },
+      { name: "Dabur", image: "DABUR (1).png", category: "fmg" },
+      { name: "Colgate and Palmolive", image: "Colgate-and-Palmoliv.png", category: "fmg" },
+      { name: "Whirlpool", image: "whirl-pool.png", category: "fmg" },
+      { name: "Spencer's", image: "spencers.png", category: "fmg" },
+      { name: "Van Melle", image: "Van-Melle.png", category: "fmg" },
+      { name: "Mother Dairy", image: "Mother-Dairy.jpg", category: "fmg" },
+      { name: "BSES", image: "bses.png", category: "fmg" },
+      { name: "Antheme", image: "Antheme.png", category: "fmg" },
+      { name: "BPT", image: "BPT.png", category: "fmg" },
+      { name: "EIL", image: "eil.png", category: "fmg" },
+      { name: "LBL", image: "lbl.png", category: "fmg" },
+      { name: "UD-Trucks", image: "UD-trucks-logo-637x426.jpg", category: "fmg" },
+      { name: "UNO MINDA", image: "UNO MINDA.png", category: "fmg" },
+      { name: "Vecv", image: "Vecv.png", category: "fmg" },
+    ];
+
+    const COMMON_PATH = 'images/clients/'; // common path requested
+    const DEFAULT_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='; // tiny transparent pixel
+
+    function createItemNode(client) {
+      const item = document.createElement('div');
+      item.className = 'marquee-item';
+      const box = document.createElement('div');
+      box.className = 'logo-box';
+
+      const img = document.createElement('img');
+      img.alt = client.name || '';
+      img.src = COMMON_PATH + client.image;
+      img.onerror = function () {
+        this.onerror = null;
+        // try a safe placeholder in images/clients/ first (if you have it), else use transparent pixel
+        this.src = COMMON_PATH + 'placeholder.png';
+        // if placeholder.png doesn't exist on server, the browser will try that and hit onerror again
+        // but we already removed onerror to avoid infinite loop; in that case you will see broken image or provide placeholder.png
+      };
+
+      box.appendChild(img);
+      item.appendChild(box);
+      return item;
+    }
+
+    function populateSingleTrack() {
+      const track = document.querySelector('.marquee-track');
+      if (!track) return;
+      track.innerHTML = '';
+
+      // create fragment of original items
+      const frag = document.createDocumentFragment();
+      clients.forEach(c => frag.appendChild(createItemNode(c)));
+
+      // append original items
+      track.appendChild(frag);
+
+      // append a clone of the same items to the same track (seamless loop)
+      // we clone nodes to avoid reusing the exact same elements (keeps DOM stable)
+      const nodesToClone = Array.from(track.children).slice(0, clients.length);
+      nodesToClone.forEach(n => track.appendChild(n.cloneNode(true)));
+    }
+
+    function adjustDurationSingleTrack() {
+      const wrap = document.querySelector('.clients-marquee-wrap');
+      const track = document.querySelector('.marquee-track');
+      if (!wrap || !track) return;
+
+      // One set width is half the scrollWidth because we duplicated content inside same track
+      const total = track.scrollWidth;
+      const oneSetWidth = total / 2 || track.getBoundingClientRect().width / 2;
+
+      const style = getComputedStyle(wrap);
+      const pxPerSecond = Math.max(40, parseFloat(style.getPropertyValue('--px-per-second')) || 120);
+
+      // duration so that oneSetWidth travels at pxPerSecond speed (seconds)
+      const duration = Math.max(6, (oneSetWidth / pxPerSecond));
+      track.style.animationDuration = duration + 's';
+    }
+
+    // init
+    function initSingleMarquee() {
+      populateSingleTrack();
+
+      // wait a bit for images to load and layout to settle before measuring
+      setTimeout(() => {
+        adjustDurationSingleTrack();
+      }, 80);
+
+      // recalc on resize (debounced)
+      let t;
+      window.addEventListener('resize', () => {
+        clearTimeout(t);
+        t = setTimeout(adjustDurationSingleTrack, 150);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initSingleMarquee);
+
+
+    (function () {
+      // --- configuration / content (edit as needed) ---
+      const contactInfo = {
+        address: '08/2, Old Delhi Rd, adjacent Country In, Sector 12 A, Anamika Enclave,Sector 14, Gurugram, Haryana 122001',
+        phones: ['+91 9810319292', '+91 9810323292'],
+        email: 'hr@psypanconsulting.com',
+      };
+
+      // PAGE URL map
+      const pageUrlMap = {
+        'Services': 'services.html',
+        'Contact': 'contact.html',
+        'Gallery': 'gallery.html',
+        'Global Programs': 'https://psychepan-mba.netlify.app'
+      };
+
+      // Main menu options
+      const mainOptions = [
+        { id: 1, label: 'Services Offered', icon: '🌐' },
+        { id: 2, label: 'Management Trainings', icon: '📊' },
+        { id: 3, label: 'Global Executive Devp Programs', icon: '🌍' },
+        { id: 4, label: 'Emp Engagement', icon: '👥' },
+        { id: 5, label: 'Emp Assistance', icon: '🤝' },
+        { id: 6, label: 'OBT Training', icon: '🏕️' },
+        { id: 7, label: 'Offsites', icon: '🏞️' },
+        { id: 8, label: 'Contact Us', icon: '📞' }
+      ];
+
+      // Sub-options for each main option
+      const subOptions = {
+        1: [
+          { label: 'Management Trainings', action: 'redirect', target: 'Services' },
+          { label: 'Employee Engagement', action: 'redirect', target: 'Services' },
+          { label: 'Global Executive Development', action: 'menu', target: 3 },
+          { label: 'Outbound Training', action: 'redirect', target: 'Services' },
+          { label: 'Offsites', action: 'redirect', target: 'Services' },
+          { label: 'Employee Assistance', action: 'redirect', target: 'Services' }
+        ],
+        2: [
+          { label: '📘 Featured Trainings', action: 'Trainings' },
+          { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+        ],
+        3: [
+          { label: '🌍 Global MBA', action: 'redirect', target: 'Global Programs' },
+          { label: '✅ Eligibility', action: 'redirect', target: 'Global Programs' }
+        ],
+        4: [
+          { label: '🎯 EEP Services', action: 'EEPServices' },
+          { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+        ],
+        5: [
+          { label: '🧩 EAP Details', action: 'EAPDetails' },
+          { label: '📞 Request Call Back', action: 'Phone' }
+        ],
+        6: [
+          { label: '🏖 Venue Options', action: 'Venues' },
+          { label: '🎯 Format Details', action: 'FormatDetails' }
+        ],
+        7: [
+          { label: '🏞 Sample Activities', action: 'SampleActivities' },
+          { label: '📸 Go to Gallery', action: 'redirect', target: 'Gallery' }
+        ],
+        8: [
+          { label: '📩 Talk to a Human', action: 'redirect', target: 'Contact' },
+          { label: '📅 Book a Consultation', action: 'Email' },
+          { label: '📞 Request a Call Back', action: 'Phone' }
+        ]
+      };
+
+      // Content for various options
+      const content = {
+        trainings: [
+          'Result Oriented Trainings',
+          'Impact Assessment Program',
+          'Tailormade Program',
+          'Employee Feedback Analysis',
+          'People & Team Leadership',
+          'Strategy & Operational Excellence'
+        ],
+        eepServices: [
+          'Employee Wellness Programme',
+          'Employee Development',
+          'Employee Konnect',
+          'Employee Offsite Program'
+        ],
+        eapDetails: [
+          'Workplace / Mental Health Counselling',
+          'Wellness Assessment',
+          'Wellness Survey',
+          'Wellness Report'
+        ],
+        venues: [
+          'Panchgani', 'Chandipur', 'Bubhneshwar', 'Lonavala', 'Khandala',
+          'Jim Corbett', 'Nanital', 'Ranikhet', 'Kausani', 'Kausali',
+          'Chail', 'Dhanulti', 'Mussorie', 'Solan', 'Shoghi',
+          'Nalagarh', 'Garh Mukteshwar'
+        ],
+        formatDetails: [
+          'Result Oriented OBTs',
+          'Strategic OBTs',
+          'Immersive Experience',
+          'Experiential Strategic & Challenging Group activities'
+        ],
+        sampleActivities: [
+          'Big Picture',
+          'Street Jam',
+          'Pixel Challenge',
+          'Drone Making',
+          'Olympic Challenge',
+          'Treasure Hunt',
+          'Pyramid Challenge',
+          'Drop the ball',
+          'Ripple Effect',
+          'Gladiator'
+        ]
+      };
+
+
+      // Bot responses for main options
+      const botResponses = {
+        1: "We offer a portfolio of services to support organizations and individuals with growth, learning, and transformation. Would you like to explore specific services such as Management Trainings, Employee Engagement, or Outbound Programs?",
+        2: "Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness. They can be customized for different levels of management. Would you like to see available training modules or connect with our team for details?",
+        3: "We bring world-class executive development programs through our global collaborations with leading universities and experts. These programs focus on leadership, innovation, and future-ready skills. Would you like an overview or check eligibility to join?",
+        4: "We design employee engagement initiatives to boost motivation, collaboration, and workplace satisfaction. Programs include workshops, cultural initiatives, and interactive experiences. Would you like examples of engagement activities?",
+        5: "Our Employee Assistance Programs (EAPs) provide confidential support to employees for work-life balance, stress management, and well-being. Would you like to know more about our EAP offerings?",
+        6: "Our outbound training programs combine learning with adventure, designed to build teamwork, leadership, and resilience. Would you like to see sample activities or discuss a custom OBT for your team?",
+        7: "We organize corporate offsites to strengthen bonding, align strategy, and recharge teams in engaging environments. Would you like options for venues and formats?",
+        8: "Would you like to connect with our team directly?"
+      };
+
+      // Fallback response
+      const fallbackResponse = "❓ I may not know that yet…➡️ Explore services👨‍💼 Talk to a consultant";
+
+      // Track the last question asked by the bot
+      let lastQuestionContext = null;
+
+      // Keyword responses (typed input fallback)
+      function getBotResponse(message) {
+        const lower = message.toLowerCase();
+
+        // Handle yes/no responses to bot questions
+        if (lastQuestionContext) {
+          if (lower === 'yes' || lower === 'y' || lower === 'yeah' || lower === 'yep') {
+            // Handle the "yes" response based on the last question context
+            handleActionSelect(lastQuestionContext.action, lastQuestionContext.target);
+            lastQuestionContext = null;
+            return "";
+          } else if (lower === 'no' || lower === 'n' || lower === 'nope') {
+            // Clear chat and show main options for "no" response
+            bodyEl.innerHTML = '';
+            initChatbot();
+            lastQuestionContext = null;
+            return "";
+          }
+        }
+
+        // Common words mapping
+        if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+          return "Hello! How can I help you today?";
+        }
+        if (lower.includes('thank')) {
+          return "You're welcome! Is there anything else I can help you with?";
+        }
+        if (lower.includes('bye') || lower.includes('goodbye')) {
+          return "Thank you for chatting with me. Have a great day!";
+        }
+        if (lower.includes('contact') || lower.includes('address')) {
+          return `Our office is located at ${contactInfo.address}`;
+        }
+        if (lower.includes('phone') || lower.includes('call') || lower.includes('contact number') || lower.includes('number')) {
+          return `You can reach us at ${contactInfo.phones.join(' or ')}.`;
+        }
+        if (lower.includes('email') || lower.includes('mail')) {
+          return `For inquiries, please email us at ${contactInfo.email}`;
+        }
+        if (lower.includes('training') || lower.includes('program') || lower.includes('course')) {
+          return 'We offer various training programs including Management Training, Employee Engagement, and Outbound Training.';
+        }
+        if (lower.includes('service') || lower.includes('offer') || lower.includes('provide')) {
+          return 'We provide corporate training solutions in leadership development, team building, and mental wellness programs.';
+        }
+        if (lower.includes('management') || lower.includes('leadership')) {
+          return 'Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness.';
+        }
+        if (lower.includes('employee') || lower.includes('staff')) {
+          return 'We offer Employee Engagement and Employee Assistance programs to support your workforce.';
+        }
+        if (lower.includes('global') || lower.includes('executive') || lower.includes('mba')) {
+          return 'We bring world-class executive development programs through our global collaborations with leading universities.';
+        }
+        if (lower.includes('outbound') || lower.includes('obt') || lower.includes('team building')) {
+          return 'Our outbound training programs combine learning with adventure, designed to build teamwork and leadership.';
+        }
+        if (lower.includes('offsites') || lower.includes('offsite')) {
+          return 'We organize corporate offsites to strengthen bonding and align strategy in engaging environments.';
+        }
+        if (lower.includes('help') || lower.includes('support')) {
+          return "I'm here to help! You can ask me about our services, training programs, or how to contact us.";
+        }
+
+        // fallback
+        return fallbackResponse;
+      }
+
+      // --- DOM references ---
+      const sendBtn = document.getElementById('chatbotSend');
+      const inputEl = document.getElementById('chatbotInput');
+      const bodyEl = document.getElementById('chatbotBody');
+      const optionsContainer = document.getElementById('chatOptions');
+
+      // Track current menu state
+      let currentMenu = null;
+
+      // --- helpers ---
+      function scrollChatToBottom() {
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+      }
+
+      function createMessage({ text, who = 'bot', html = false, typing = false }) {
+        const wrapper = document.createElement('div');
+        wrapper.className =
+          'chatbot-message ' +
+          (who === 'user'
+            ? 'user bg-blue-500 text-white rounded-lg p-3 mb-3 max-w-[80%] ml-auto clear-both text-sm'
+            : 'bot bg-blue-50 text-gray-800 rounded-lg p-3 mb-3 max-w-[80%] clear-both text-sm');
+
+        if (typing) {
+          wrapper.classList.add('typing-animation');
+          wrapper.style.width = 'fit-content';
+        }
+
+        if (html) wrapper.innerHTML = text;
+        else wrapper.textContent = text;
+
+        bodyEl.appendChild(wrapper);
+        scrollChatToBottom();
+        return wrapper;
+      }
+
+      function createTypingIndicator() {
+        return createMessage({ text: 'PsypanChatbot is typing...', who: 'bot', typing: true });
+      }
+
+      function removeTypingIndicator(indicator) {
+        if (indicator && indicator.parentNode) {
+          indicator.classList.remove('typing-animation');
+          indicator.style.borderRight = 'none';
+        }
+      }
+
+      // Show main options
+      function showMainOptions() {
+        optionsContainer.innerHTML = '';
+
+        mainOptions.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+          btn.innerHTML = `${opt.icon} ${opt.label}`;
+          btn.dataset.option = opt.id;
+          optionsContainer.appendChild(btn);
+        });
+
+        currentMenu = null;
+        scrollChatToBottom();
+      }
+
+      // Show sub options
+      function showSubOptions(optionId) {
+        optionsContainer.innerHTML = '';
+
+        if (subOptions[optionId]) {
+          subOptions[optionId].forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn px-3 py-2 mb-2 mr-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+            btn.textContent = opt.label;
+            btn.dataset.action = opt.action;
+            if (opt.target) btn.dataset.target = opt.target;
+            optionsContainer.appendChild(btn);
+          });
+        }
+
+        // Add back button
+        const backBtn = document.createElement('button');
+        backBtn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
+        backBtn.textContent = '⬅ Back to Main Menu';
+        backBtn.addEventListener('click', () => {
+          createMessage({ text: 'What would you like to know about?', who: 'bot' });
+          showMainOptions();
+        });
+        optionsContainer.appendChild(backBtn);
+
+        currentMenu = optionId;
+        scrollChatToBottom();
+      }
+
+      // Show list of items
+      function showList(items, redirectUrl = null) {
+        let listHtml = '';
+        if (redirectUrl) {
+          listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li class="cursor-pointer hover:underline" onclick="window.location.href='${redirectUrl}'">${item}</li>`).join('')}</ul>
+                    </div>`;
+        } else {
+          listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li>${item}</li>`).join('')}</ul>
+                    </div>`;
+        }
+        createMessage({ text: listHtml, who: 'bot', html: true });
+      }
+
+      // Redirect to page
+      function redirectToPage(page) {
+        if (pageUrlMap[page]) {
+          createMessage({ text: `Redirecting you to ${page}...`, who: 'bot' });
+          setTimeout(() => {
+            if (pageUrlMap[page].startsWith('http')) {
+              window.open(pageUrlMap[page], '_blank');
+            } else {
+              window.location.href = pageUrlMap[page];
+            }
+          }, 1000);
+        } else {
+          createMessage({ text: `The ${page} page is not available at the moment.`, who: 'bot' });
+        }
+      }
+
+      // Show phone number
+      function showPhone() {
+        createMessage({ text: `You can call us at: ${contactInfo.phones[1]}`, who: 'bot' });
+      }
+
+      // Show email
+      function showEmail() {
+        createMessage({ text: `Please email us at: ${contactInfo.email}`, who: 'bot' });
+      }
+
+      // Handle option selection
+      function handleOptionSelect(optionId) {
+        // Create user message
+        const optionText = mainOptions.find(opt => opt.id == optionId).label;
+        createMessage({ text: optionText, who: 'user' });
+
+        // Show typing indicator
+        const typingIndicator = createTypingIndicator();
+
+        // After delay, show bot response and options
+        setTimeout(() => {
+          removeTypingIndicator(typingIndicator);
+          createMessage({ text: botResponses[optionId], who: 'bot' });
+
+          // Set last question context if the response ends with a question mark
+          if (botResponses[optionId].endsWith('?')) {
+            const firstSubOption = subOptions[optionId] && subOptions[optionId][0];
+            if (firstSubOption) {
+              lastQuestionContext = {
+                action: firstSubOption.action,
+                target: firstSubOption.target
+              };
+            }
+          }
+
+          showSubOptions(optionId);
+        }, 1500);
+      }
+
+      // Handle action selection
+      function handleActionSelect(action, target) {
+        // Create user message
+        const actionText = event ? event.target.textContent : "Yes";
+        createMessage({ text: actionText, who: 'user' });
+
+        // Show typing indicator
+        const typingIndicator = createTypingIndicator();
+
+        // After delay, handle the action
+        setTimeout(() => {
+          removeTypingIndicator(typingIndicator);
+
+          switch (action) {
+            case 'menu':
+              handleOptionSelect(target);
+              break;
+            case 'Trainings':
+              showList(content.trainings, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'EEPServices':
+              showList(content.eepServices, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'EAPDetails':
+              showList(content.eapDetails, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'Venues':
+              showList(content.venues, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'FormatDetails':
+              showList(content.formatDetails, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'SampleActivities':
+              showList(content.sampleActivities);
+              showSubOptions(currentMenu);
+              break;
+            case 'Phone':
+              showPhone();
+              showSubOptions(currentMenu);
+              break;
+            case 'Email':
+              showEmail();
+              showSubOptions(currentMenu);
+              break;
+            case 'redirect':
+              redirectToPage(target);
+              break;
+            default:
+              createMessage({ text: "I'm not sure how to help with that.", who: 'bot' });
+              showMainOptions();
+          }
+
+          // Clear the last question context after handling the action
+          lastQuestionContext = null;
+        }, 1500);
+      }
+
+      // Initialize chatbot
+      function initChatbot() {
+        createMessage({ text: "Hello! PsypanChatbot here 👋 Ready to explore our Website?", who: 'bot' });
+        showMainOptions();
+      }
+
+      // --- event handlers ---
+      sendBtn.addEventListener('click', () => {
+        const message = inputEl.value.trim();
+        if (message) {
+          createMessage({ text: message, who: 'user' });
+          inputEl.value = '';
+
+          const typingIndicator = createTypingIndicator();
+
+          setTimeout(() => {
+            removeTypingIndicator(typingIndicator);
+            const response = getBotResponse(message);
+
+            if (response) {
+              createMessage({ text: response, who: 'bot' });
+
+              if (response === fallbackResponse) {
+                const html = `<div class="flex gap-2 mt-2">
+                                    <button data-action="redirect" data-target="Services" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🌐 Explore Services</button>
+                                    <button data-action="redirect" data-target="Contact" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🤝 Talk to Consultant</button>
+                                </div>`;
+                createMessage({ text: html, who: 'bot', html: true });
+              } else {
+                showMainOptions();
+              }
+            }
+          }, 1000);
+        }
+      });
+
+      inputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendBtn.click();
+        }
+      });
+
+      // Delegate option clicks
+      optionsContainer.addEventListener('click', (e) => {
+        if (e.target.dataset.option) {
+          handleOptionSelect(e.target.dataset.option);
+        } else if (e.target.dataset.action) {
+          handleActionSelect(e.target.dataset.action, e.target.dataset.target);
+        }
+      });
+
+      // Initialize the chatbot when the page loads
+      document.addEventListener('DOMContentLoaded', function () {
+        initChatbot();
+      });
+    })();
+
+    (function () {
+      const chatBody = document.getElementById('chatbotBody');
+      if (!chatBody) return;
+
+      // typing speed in ms per character (tweak if you want faster/slower)
+      const TYPE_SPEED = 18;
+
+      // Remove any existing typing-indicator nodes (class 'typing-animation') helper
+      function clearTypingIndicators() {
+        const ind = chatBody.querySelectorAll('.typing-animation');
+        ind.forEach(node => node.remove());
+      }
+
+      // Smooth scroll helper
+      function scrollToBottom() {
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      // Type text into target span element char-by-char
+      function typeText(span, fullText, onDone) {
+        let i = 0;
+        function step() {
+          if (i <= fullText.length) {
+            // keep caret visible as we type
+            span.textContent = fullText.slice(0, i);
+            i++;
+            scrollToBottom();
+            timer = setTimeout(step, TYPE_SPEED);
+          } else {
+            if (typeof onDone === 'function') onDone();
+          }
+        }
+        let timer = setTimeout(step, TYPE_SPEED);
+        return () => clearTimeout(timer);
+      }
+
+      // Observe added bot messages
+      const observer = new MutationObserver((mutations) => {
+        for (const mut of mutations) {
+          for (const node of mut.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue;
+
+            // ignore typing-indicator nodes
+            if (node.classList.contains('typing-animation')) continue;
+
+            // only act on bot messages (class includes 'bot')
+            if (node.classList.contains('bot') && !node.dataset.typed) {
+              // mark to avoid double-processing
+              node.dataset.typed = 'processing';
+
+              // capture original HTML and plain text
+              const originalHTML = node.innerHTML || '';
+              const plainText = node.textContent ? node.textContent.trim() : '';
+
+              // Clear possible typing indicator(s) so we show our typed text cleanly
+              // (we don't remove them earlier to avoid interfering with original flow)
+              clearTypingIndicators();
+
+              // Prepare typed container
+              node.innerHTML = ''; // remove content
+              node.classList.add('bot-typing');
+
+              // create a span to receive typed characters
+              const span = document.createElement('span');
+              span.className = 'bot-typing-text';
+              node.appendChild(span);
+              scrollToBottom();
+
+              // If the original content contains HTML tags, we will type its plain-text first,
+              // then replace with originalHTML at the end (so lists and markup render properly).
+              // If original was plain text, we type it fully and leave as-is.
+              const textToType = plainText.length ? plainText : originalHTML.replace(/<[^>]*>/g, '');
+
+              typeText(span, textToType, () => {
+                // done typing: if originalHTML had markup, set it now (so lists render)
+                if (/<[a-z][\s\S]*>/i.test(originalHTML)) {
+                  node.innerHTML = originalHTML;
+                } else {
+                  // ensure final text exactly matches original (in case of trimming)
+                  span.textContent = plainText || originalHTML;
+                }
+                node.classList.remove('bot-typing');
+                node.dataset.typed = 'true';
+                scrollToBottom();
+              });
+            }
+          }
+        }
+      });
+
+
+    })();
+  </script>
+</body>
+
+</html>

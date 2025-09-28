@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+</head>
+<body>
+  <h2>Scan for Feedback</h2>
+  <canvas id="qrcode"></canvas>
+
+  <script>
+    QRCode.toCanvas(document.getElementById("qrcode"), "https://psychepan-feedback.netlify.app/", function (error) {
+      if (error) console.error(error);
+      console.log("QR code generated!");
+    });
+  </script>
+</body>
+</html>

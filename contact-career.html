@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact & Careers - Psyche Panacea</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="/images/psypan-logo-transparent.png">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0052cc',
+            secondary: '#4da8ff',
+            dark: '#1a1a1a',
+            light: '#f8f9fa',
+            accent: '#f59e0b',
+          },
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif']
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-out',
+            'slide': 'slide 25s linear infinite',
+            'popup-fade': 'popupFadeIn 0.5s ease forwards',
+            'slide-up': 'slideUp 0.5s ease forwards',
+            'message-fade': 'messageFadeIn 0.3s ease',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              from: { opacity: 0 },
+              to: { opacity: 1 },
+            },
+            slide: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            },
+            popupFadeIn: {
+              from: { transform: 'scale(0.7)', opacity: 0 },
+              to: { transform: 'scale(1)', opacity: 1 },
+            },
+            slideUp: {
+              from: { transform: 'translateY(30px)', opacity: 0 },
+              to: { transform: 'translateY(0)', opacity: 1 },
+            },
+            messageFadeIn: {
+              from: { opacity: 0, transform: 'translateY(10px)' },
+              to: { opacity: 1, transform: 'translateY(0)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-15px)' },
+            },
+            pulse: {
+              '0%, 100%': { opacity: 1 },
+              '50%': { opacity: 0.8 },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+      (function () {
+        emailjs.init("6KRvQp4CW2Wc9Ir-x"); // Replace with your actual EmailJS User ID
+      })();
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #ffffff;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    .contact-hero {
+      background: linear-gradient(135deg, #0052cc, #4da8ff);
+      padding-top: 120px;
+      padding-bottom: 60px;
+    }
+
+    .form-section {
+      background: url('https://images.unsplash.com/photo-1522071901873-411886a10004?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
+
+    .form-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.92);
+      z-index: 0;
+    }
+
+    .form-container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: -60px auto 0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      animation: slideUp 0.8s ease-out forwards;
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, #0052cc, #4da8ff);
+      padding: 25px;
+      text-align: center;
+    }
+
+    .form-body {
+      background: white;
+      padding: 30px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideUp 0.5s ease forwards;
+    }
+
+    .form-group:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .form-group:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .form-group:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .form-group:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .form-group:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .form-group:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: all 0.3s;
+      font-size: 16px;
+      background: #f9fafb;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #4da8ff;
+      box-shadow: 0 0 0 3px rgba(77, 168, 255, 0.2);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9fafb;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+    }
+
+    .form-textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: all 0.3s;
+      background: #f9fafb;
+    }
+
+    .form-textarea:focus {
+      outline: none;
+      border-color: #4da8ff;
+      box-shadow: 0 0 0 3px rgba(77, 168, 255, 0.2);
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #0052cc, #4da8ff);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 82, 204, 0.2);
+      animation: pulse 2s infinite;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 82, 204, 0.3);
+      animation: none;
+    }
+
+    .submit-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Success Modal */
+    .success-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .success-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+    }
+
+    .success-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-icon {
+      width: 80px;
+      height: 80px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      animation: popupFadeIn 0.5s ease forwards;
+    }
+
+    .modal-icon i {
+      font-size: 40px;
+      color: white;
+    }
+
+    /* Header */
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      height: 12vh;
+      z-index: 1000;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideDown 0.5s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    nav a {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #0052cc;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .active-nav {
+      color: #0052cc;
+      font-weight: 600;
+    }
+
+    .active-nav::after {
+      width: 100%;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .typing-animation {
+      overflow: hidden;
+      border-right: .15em solid #3b82f6;
+      white-space: nowrap;
+      animation: typing 1s steps(40, end), blink-caret .75s step-end infinite;
+    }
+
+    .bot-typing .bot-typing-text {
+      border-right: .15em solid #3b82f6;
+      white-space: pre-wrap;
+      /* allow wrapped typed text */
+      display: inline-block;
+      animation: blink-caret .75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0
+      }
+
+      to {
+        width: 100%
+      }
+    }
+
+    @keyframes blink-caret {
+
+      from,
+      to {
+        border-color: transparent
+      }
+
+      50% {
+        border-color: #3b82f6;
+      }
+    }
+
+    .chatbot-body {
+      scroll-behavior: smooth;
+      height: 250px;
+    }
+
+    #chatbotWindow {
+      transition: all 0.3s ease;
+    }
+
+    .option-btn {
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    #chatbotToggle {
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #chatbotToggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+    }
+
+    .chatbot-message {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .chatbot-window {
+        width: 90vw;
+        max-width: 90vw;
+        right: 5px;
+        max-height: 70vh;
+      }
+
+      .chatbot-input {
+        padding: 0.5rem;
+      }
+
+      .chatbot-input input {
+        padding: 0.5rem;
+      }
+
+      .chatbot-toggle {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    /* Mobile menu quick-toggle styles (drop into your CSS) */
+
+    #mobile-menu.hidden {
+      opacity: 0;
+      transform-origin: top center;
+      transform: scaleY(.96) translateY(-4px);
+      pointer-events: none;
+      transition: opacity 120ms ease, transform 120ms ease;
+      will-change: opacity, transform;
+    }
+
+    /* Visible state */
+    #mobile-menu.open {
+      opacity: 1;
+      transform: scaleY(1) translateY(0);
+      pointer-events: auto;
+      transition: opacity 120ms ease, transform 120ms ease;
+    }
+
+    /* Small visual polish for the mobile panel */
+    #mobile-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 20px;
+      /* adjust if your header height differs */
+      z-index: 1001;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      box-shadow: 0 10px 30px rgba(6, 11, 26, 0.12);
+      overflow: hidden;
+    }
+
+    /* Keep inner links comfortable and tappable */
+    #mobile-menu .px-2 {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    #mobile-menu a {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.06);
+    }
+
+    /* Slight background and separation so it feels snappy */
+    #mobile-menu {
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(15, 23, 42, 0.04);
+    }
+
+    /* Responsive safety: ensure hidden on desktop by CSS if needed */
+    @media (min-width: 768px) {
+      #mobile-menu {
+        display: none !important;
+      }
+    }
+
+    /* Utility class to block body scroll while menu open */
+    .body-no-scroll {
+      overflow: hidden !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="flex items-center space-x-2">
+      <img class="h-16 w-14" src="/images/psypan-logo-transparent.png" alt="Psyche Panacea"
+        style="height: 80px; width: 80px;">
+      <div class="text-2xl font-bold text-primary">Psyche Panacea</div>
+    </div>
+    <nav class="hidden md:flex items-center space-x-6">
+      <a href="index.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Home</a>
+      <a href="services.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Services</a>
+      <a href="flagship-programs.html" class="text-gray-700 transition-colors px-2 py-1">Flagship
+        Programs</a>
+      <a href="events.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Events</a>
+      <a href="gallery.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Gallery</a>
+      <a href="about-us.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">About Us</a>
+      <a href="blogs.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Blogs</a>
+      <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Contact</a>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden flex items-center" style="height: 40px;">
+      <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="md:hidden bg-white shadow-lg rounded-b-lg hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a href="index.html" style="margin-top: 60px;"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Home</a>
+      <a href="services.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Services</a>
+      <a href="flagship-programs.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 bg-blue-50">Flagship Programs</a>
+      <a href="events.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Events</a>
+      <a href="gallery.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Gallery</a>
+      <a href="about-us.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">About
+        Us</a>
+      <a href="blogs.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Blogs</a>
+      <a href="contact.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Contact</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="contact-hero">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 animate__animated animate__fadeInDown">Contact Us & Career
+        Opportunities</h1>
+      <div class="h-1 w-24 bg-white mx-auto rounded mb-8 animate__animated animate__fadeIn"></div>
+      <p class="text-xl mb-8 text-blue-100 max-w-3xl mx-auto animate__animated animate__fadeInUp">
+        Reach out to us for inquiries or explore career opportunities with our innovative team
+      </p>
+    </div>
+  </section>
+
+  <!-- Form Section -->
+  <section class="form-section py-20">
+    <div class="form-container floating">
+      <div class="form-header">
+        <h2 class="text-2xl font-bold text-white">Get in Touch</h2>
+        <p class="text-blue-100 mt-1">We'll respond within 24 business hours</p>
+      </div>
+
+      <div class="form-body">
+        <form id="contact-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="first-name" class="form-label">First Name</label>
+              <input type="text" id="first-name" name="first_name" class="form-input" placeholder="First Name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="last-name" class="form-label">Last Name</label>
+              <input type="text" id="last-name" name="last_name" class="form-input" placeholder="Last Name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email *</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="Email Address" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">Phone No.</label>
+            <input type="tel" id="phone" name="phone" class="form-input" placeholder="Phone No.">
+          </div>
+
+          <div class="form-group">
+            <label for="services" class="form-label">Services</label>
+            <select id="services" name="services" class="form-select">
+              <option value="" selected disabled>- Select -</option>
+              <option value="Management Training">Management Training</option>
+              <option value="Employee Engagement Program">Employee Engagement Program</option>
+              <option value="HR Consulting">HR Consulting</option>
+              <option value="Employee Assistance Program">Employee Assistance Program</option>
+              <option value="Career Inquiry">Career Inquiry</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="form-label">Your Message *</label>
+            <textarea id="message" name="message" class="form-textarea" placeholder="Your Message" required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <!-- Left half: Map -->
+        <div class="w-full h-full map-container rounded-xl overflow-hidden border-2 border-blue-700 shadow-lg">
+          <iframe src="https://maps.google.com/maps?q=28.467519771527627,77.03697016794533&z=15&output=embed"
+            width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen loading="lazy"
+            class="filter grayscale hover:grayscale-0 transition-all duration-500 pointer-events-auto"
+            gestureHandling="greedy">
+          </iframe>
+        </div>
+
+        <!-- Right half: Content -->
+        <div class="grid grid-cols-1 gap-8">
+          <!-- Company Info -->
+          <div>
+            <div class="flex items-center mb-4">
+              <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-2 rounded-lg mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-blue-400">Psyche Panacea</h3>
+            </div>
+            <p class="text-gray-400">
+              Pioneers of innovative and breakthrough methodologies in the Indian consultation arena,
+              transforming organizations through strategic HR solutions.
+            </p>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="text-lg font-semibold mb-3 text-blue-400 border-b border-blue-700 pb-1">Contact Us
+            </h4>
+            <ul class="space-y-4 text-gray-400 text-sm">
+              <li class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 mt-1 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>308/2, Old Delhi Rd, adjacent Country Inn,<br>Sector 12 A, Anamika
+                  Enclave,<br>Gurugram, Haryana 122001 India</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <button onclick="window.location.href='tel:09810323292'">09810323292</button>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <button onclick="window.location.href='mailto:hr@psypanconsulting.com'">hr@psypanconsulting.com</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="border-t border-gray-800 mt-12 pt-6 text-center text-gray-500 text-sm">
+        <p>© 2025 Psyche Panacea. All rights reserved. Designed by Psyche Panacea Team.</p>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!-- Chatbot -->
+  <div class="chatbot fixed bottom-6 right-4 z-50" style="z-index: 1000;">
+    <!-- Toggle / Floating Button -->
+    <button id="chatbotToggle"
+      class="chatbot-toggle w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center cursor-pointer shadow-lg text-white"
+      aria-label="Open chat">
+      <img src="Chatbot.gif" alt="">
+    </button>
+
+    <!-- Chat window -->
+    <div id="chatbotWindow"
+      class="chatbot-window w-80 sm:w-96 max-h-[540px] absolute bottom-20 sm:bottom-24 right-0 bg-white rounded-xl shadow-2xl hidden border border-blue-100 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div
+        class="chatbot-header bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 sm:p-4 rounded-t-xl flex justify-between items-center">
+        <div>
+          <div class="font-bold text-sm sm:text-base">PsypanChatbot</div>
+          <div class="text-xs opacity-90">Your virtual guide</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="chatbotClose" class="chatbot-close text-2xl leading-none">×</button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div id="chatbotBody" class="chatbot-body p-3 sm:p-4 overflow-y-auto flex-1 space-y-3 bg-white">
+        <!-- Messages will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Options Container -->
+      <div id="chatOptions" class="p-3 bg-white border-t border-gray-200">
+        <!-- Options will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Input area -->
+      <div class="chatbot-input p-2 sm:p-3 border-t border-gray-200 flex gap-2 items-center">
+        <input id="chatbotInput" type="text"
+          class="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
+          placeholder="Type your message here...">
+        <button id="chatbotSend"
+          class="bg-blue-500 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-600 transition">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="success-modal">
+    <div class="modal-content">
+      <div class="modal-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Message Sent Successfully!</h3>
+      <p class="text-gray-700 mb-6">
+        Thank you for contacting us. We've received your message and will respond within 24 business hours.
+      </p>
+      <button id="close-modal"
+        class="bg-primary text-white font-bold py-3 px-8 rounded-lg transition-all hover:bg-blue-700">
+        Continue
+      </button>
+    </div>
+  </div>
+  <!-- Put this JS before </body> -->
+  <script>
+    (function () {
+      const btn = document.getElementById('mobile-menu-button');
+      const menu = document.getElementById('mobile-menu');
+
+      if (!btn || !menu) return;
+
+      // initialize aria states
+      btn.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+
+      // helper to open/close
+      function openMenu() {
+        menu.classList.remove('hidden');
+        menu.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-hidden', 'false');
+        document.documentElement.classList.add('body-no-scroll');
+
+        // focus first link for keyboard users
+        const firstLink = menu.querySelector('a, button');
+        if (firstLink) firstLink.focus({ preventScroll: true });
+      }
+
+      function closeMenu() {
+        menu.classList.remove('open');
+        // keep hidden attribute until transition finishes for smoothness
+        menu.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        document.documentElement.classList.remove('body-no-scroll');
+
+        // after transition end hide completely to remove pointer-events if .hidden used elsewhere
+        const onTransEnd = () => {
+          menu.classList.add('hidden');
+          menu.removeEventListener('transitionend', onTransEnd);
+        };
+        // if no transition fire immediately
+        const computed = getComputedStyle(menu);
+        const dur = parseFloat(computed.transitionDuration) || 0;
+        if (dur > 0) {
+          menu.addEventListener('transitionend', onTransEnd);
+        } else {
+          onTransEnd();
+        }
+
+        // return focus to button
+        btn.focus({ preventScroll: true });
+      }
+
+      // toggle handler
+      btn.addEventListener('click', (e) => {
+        const isOpen = menu.classList.contains('open');
+        if (isOpen) closeMenu();
+        else openMenu();
+      });
+
+      // close when a menu link is clicked
+      menu.addEventListener('click', (e) => {
+        const target = e.target.closest('a, button');
+        if (!target) return;
+        // small delay so native navigation begins without abrupt UI change
+        setTimeout(closeMenu, 60);
+      });
+
+      // close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('open')) {
+          closeMenu();
+        }
+      });
+
+      // close on outside click (outside menu and outside button)
+      document.addEventListener('click', (e) => {
+        if (!menu.classList.contains('open')) return;
+        const isInsideMenu = !!e.target.closest('#mobile-menu');
+        const isOnButton = !!e.target.closest('#mobile-menu-button');
+        if (!isInsideMenu && !isOnButton) closeMenu();
+      });
+
+      // ensure correct initial state if menu had no "hidden" class in markup
+      if (!menu.classList.contains('hidden') && !menu.classList.contains('open')) {
+        menu.classList.add('hidden');
+        menu.setAttribute('aria-hidden', 'true');
+      }
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const chatBody = document.getElementById('chatbotBody');
+      if (!chatBody) return;
+
+      // typing speed in ms per character (tweak if you want faster/slower)
+      const TYPE_SPEED = 18;
+
+      // Remove any existing typing-indicator nodes (class 'typing-animation') helper
+      function clearTypingIndicators() {
+        const ind = chatBody.querySelectorAll('.typing-animation');
+        ind.forEach(node => node.remove());
+      }
+
+      // Smooth scroll helper
+      function scrollToBottom() {
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      // Type text into target span element char-by-char
+      function typeText(span, fullText, onDone) {
+        let i = 0;
+        function step() {
+          if (i <= fullText.length) {
+            // keep caret visible as we type
+            span.textContent = fullText.slice(0, i);
+            i++;
+            scrollToBottom();
+            timer = setTimeout(step, TYPE_SPEED);
+          } else {
+            if (typeof onDone === 'function') onDone();
+          }
+        }
+        let timer = setTimeout(step, TYPE_SPEED);
+        return () => clearTimeout(timer);
+      }
+
+      // Observe added bot messages
+      const observer = new MutationObserver((mutations) => {
+        for (const mut of mutations) {
+          for (const node of mut.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue;
+
+            // ignore typing-indicator nodes
+            if (node.classList.contains('typing-animation')) continue;
+
+            // only act on bot messages (class includes 'bot')
+            if (node.classList.contains('bot') && !node.dataset.typed) {
+              // mark to avoid double-processing
+              node.dataset.typed = 'processing';
+
+              // capture original HTML and plain text
+              const originalHTML = node.innerHTML || '';
+              const plainText = node.textContent ? node.textContent.trim() : '';
+
+              // Clear possible typing indicator(s) so we show our typed text cleanly
+              // (we don't remove them earlier to avoid interfering with original flow)
+              clearTypingIndicators();
+
+              // Prepare typed container
+              node.innerHTML = ''; // remove content
+              node.classList.add('bot-typing');
+
+              // create a span to receive typed characters
+              const span = document.createElement('span');
+              span.className = 'bot-typing-text';
+              node.appendChild(span);
+              scrollToBottom();
+
+              // If the original content contains HTML tags, we will type its plain-text first,
+              // then replace with originalHTML at the end (so lists and markup render properly).
+              // If original was plain text, we type it fully and leave as-is.
+              const textToType = plainText.length ? plainText : originalHTML.replace(/<[^>]*>/g, '');
+
+              typeText(span, textToType, () => {
+                // done typing: if originalHTML had markup, set it now (so lists render)
+                if (/<[a-z][\s\S]*>/i.test(originalHTML)) {
+                  node.innerHTML = originalHTML;
+                } else {
+                  // ensure final text exactly matches original (in case of trimming)
+                  span.textContent = plainText || originalHTML;
+                }
+                node.classList.remove('bot-typing');
+                node.dataset.typed = 'true';
+                scrollToBottom();
+              });
+            }
+          }
+        }
+      });
+
+      observer.observe(chatBody, { childList: true, subtree: false });
+
+      // Also make existing bot messages (already present on load) appear typed
+      // by triggering a small re-process for any untyped bot nodes
+      window.addEventListener('load', () => {
+        const existing = Array.from(chatBody.querySelectorAll('.bot')).filter(n => !n.dataset.typed);
+        existing.forEach(n => {
+          // trigger MutationObserver by re-appending node (no visual move)
+          // create a shallow clone then replace to fire the observer logic
+          const clone = n.cloneNode(true);
+          n.replaceWith(clone);
+        });
+      });
+
+      // tidy: expose a function to force-enable or disable this enhancer if needed
+      window.__psypanBotTypingEnhancer = {
+        disconnect: () => observer.disconnect(),
+        reconnect: () => observer.observe(chatBody, { childList: true, subtree: false })
+      };
+      window.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("chatbotInput");
+        const sendBtn = document.getElementById("chatbotSend");
+
+        // Simulate typing effect
+        let message = "hii";
+        let i = 0;
+
+        function typeMessage() {
+          if (i < message.length) {
+            input.value += message.charAt(i);
+            i++;
+            setTimeout(typeMessage, 150); // typing speed
+          } else {
+            // Click send button after typing
+            setTimeout(() => {
+              sendBtn.click();
+            }, 500);
+          }
+        }
+
+        typeMessage();
+      });
+    })();
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatbotWindow = document.getElementById("chatbotWindow");
+      const chatbotToggle = document.getElementById("chatbotToggle");
+      const chatbotClose = document.getElementById("chatbotClose");
+
+
+      // Toggle chatbot when floating button is clicked
+      chatbotToggle.addEventListener("click", () => {
+        chatbotWindow.classList.toggle("hidden");
+      });
+
+      // Close chatbot when "×" is clicked
+      chatbotClose.addEventListener("click", () => {
+        chatbotWindow.classList.add("hidden");
+      });
+    });
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+
+      (function () {
+        // --- configuration / content (edit as needed) ---
+        const contactInfo = {
+          address: '08/2, Old Delhi Rd, adjacent Country In, Sector 12 A, Anamika Enclave,Sector 14, Gurugram, Haryana 122001',
+          phones: ['+91 9810319292', '+91 9810323292'],
+          email: 'hr@psypanconsulting.com',
+        };
+
+        // PAGE URL map
+        const pageUrlMap = {
+          'Services': 'services.html',
+          'Contact': 'contact.html',
+          'Gallery': 'gallery.html',
+          'Global Programs': 'https://psychepan-mba.netlify.app'
+        };
+
+        // Main menu options
+        const mainOptions = [
+          { id: 1, label: 'Services Offered', icon: '🌐' },
+          { id: 2, label: 'Management Trainings', icon: '📊' },
+          { id: 3, label: 'Global Executive Devp Programs', icon: '🌍' },
+          { id: 4, label: 'Emp Engagement', icon: '👥' },
+          { id: 5, label: 'Emp Assistance', icon: '🤝' },
+          { id: 6, label: 'OBT Training', icon: '🏕️' },
+          { id: 7, label: 'Offsites', icon: '🏞️' },
+          { id: 8, label: 'Contact Us', icon: '📞' }
+        ];
+
+        // Sub-options for each main option
+        const subOptions = {
+          1: [
+            { label: 'Management Trainings', action: 'redirect', target: 'Services' },
+            { label: 'Employee Engagement', action: 'redirect', target: 'Services' },
+            { label: 'Global Executive Development', action: 'menu', target: 3 },
+            { label: 'Outbound Training', action: 'redirect', target: 'Services' },
+            { label: 'Offsites', action: 'redirect', target: 'Services' },
+            { label: 'Employee Assistance', action: 'redirect', target: 'Services' }
+          ],
+          2: [
+            { label: '📘 Featured Trainings', action: 'Trainings' },
+            { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+          ],
+          3: [
+            { label: '🌍 Global MBA', action: 'redirect', target: 'Global Programs' },
+            { label: '✅ Eligibility', action: 'redirect', target: 'Global Programs' }
+          ],
+          4: [
+            { label: '🎯 EEP Services', action: 'EEPServices' },
+            { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+          ],
+          5: [
+            { label: '🧩 EAP Details', action: 'EAPDetails' },
+            { label: '📞 Request Call Back', action: 'Phone' }
+          ],
+          6: [
+            { label: '🏖 Venue Options', action: 'Venues' },
+            { label: '🎯 Format Details', action: 'FormatDetails' }
+          ],
+          7: [
+            { label: '🏞 Sample Activities', action: 'SampleActivities' },
+            { label: '📸 Go to Gallery', action: 'redirect', target: 'Gallery' }
+          ],
+          8: [
+            { label: '📩 Talk to a Human', action: 'redirect', target: 'Contact' },
+            { label: '📅 Book a Consultation', action: 'Email' },
+            { label: '📞 Request a Call Back', action: 'Phone' }
+          ]
+        };
+
+        // Content for various options
+        const content = {
+          trainings: [
+            'Result Oriented Trainings',
+            'Impact Assessment Program',
+            'Tailormade Program',
+            'Employee Feedback Analysis',
+            'People & Team Leadership',
+            'Strategy & Operational Excellence'
+          ],
+          eepServices: [
+            'Employee Wellness Programme',
+            'Employee Development',
+            'Employee Konnect',
+            'Employee Offsite Program'
+          ],
+          eapDetails: [
+            'Workplace / Mental Health Counselling',
+            'Wellness Assessment',
+            'Wellness Survey',
+            'Wellness Report'
+          ],
+          venues: [
+            'Panchgani', 'Chandipur', 'Bubhneshwar', 'Lonavala', 'Khandala',
+            'Jim Corbett', 'Nanital', 'Ranikhet', 'Kausani', 'Kausali',
+            'Chail', 'Dhanulti', 'Mussorie', 'Solan', 'Shoghi',
+            'Nalagarh', 'Garh Mukteshwar'
+          ],
+          formatDetails: [
+            'Result Oriented OBTs',
+            'Strategic OBTs',
+            'Immersive Experience',
+            'Experiential Strategic & Challenging Group activities'
+          ],
+          sampleActivities: [
+            'Big Picture',
+            'Street Jam',
+            'Pixel Challenge',
+            'Drone Making',
+            'Olympic Challenge',
+            'Treasure Hunt',
+            'Pyramid Challenge',
+            'Drop the ball',
+            'Ripple Effect',
+            'Gladiator'
+          ]
+        };
+
+
+        // Bot responses for main options
+        const botResponses = {
+          1: "We offer a portfolio of services to support organizations and individuals with growth, learning, and transformation. Would you like to explore specific services such as Management Trainings, Employee Engagement, or Outbound Programs?",
+          2: "Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness. They can be customized for different levels of management. Would you like to see available training modules or connect with our team for details?",
+          3: "We bring world-class executive development programs through our global collaborations with leading universities and experts. These programs focus on leadership, innovation, and future-ready skills. Would you like an overview or check eligibility to join?",
+          4: "We design employee engagement initiatives to boost motivation, collaboration, and workplace satisfaction. Programs include workshops, cultural initiatives, and interactive experiences. Would you like examples of engagement activities?",
+          5: "Our Employee Assistance Programs (EAPs) provide confidential support to employees for work-life balance, stress management, and well-being. Would you like to know more about our EAP offerings?",
+          6: "Our outbound training programs combine learning with adventure, designed to build teamwork, leadership, and resilience. Would you like to see sample activities or discuss a custom OBT for your team?",
+          7: "We organize corporate offsites to strengthen bonding, align strategy, and recharge teams in engaging environments. Would you like options for venues and formats?",
+          8: "Would you like to connect with our team directly?"
+        };
+
+        // Fallback response
+        const fallbackResponse = "❓ I may not know that yet…➡️ Explore services👨‍💼 Talk to a consultant";
+
+        // Track the last question asked by the bot
+        let lastQuestionContext = null;
+
+        // Keyword responses (typed input fallback)
+        function getBotResponse(message) {
+          const lower = message.toLowerCase();
+
+          // Handle yes/no responses to bot questions
+          if (lastQuestionContext) {
+            if (lower === 'yes' || lower === 'y' || lower === 'yeah' || lower === 'yep') {
+              // Handle the "yes" response based on the last question context
+              handleActionSelect(lastQuestionContext.action, lastQuestionContext.target);
+              lastQuestionContext = null;
+              return "";
+            } else if (lower === 'no' || lower === 'n' || lower === 'nope') {
+              // Clear chat and show main options for "no" response
+              bodyEl.innerHTML = '';
+              initChatbot();
+              lastQuestionContext = null;
+              return "";
+            }
+          }
+
+          // Common words mapping
+          if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+            return "Hello! How can I help you today?";
+          }
+          if (lower.includes('thank')) {
+            return "You're welcome! Is there anything else I can help you with?";
+          }
+          if (lower.includes('bye') || lower.includes('goodbye')) {
+            return "Thank you for chatting with me. Have a great day!";
+          }
+          if (lower.includes('contact') || lower.includes('address')) {
+            return `Our office is located at ${contactInfo.address}`;
+          }
+          if (lower.includes('phone') || lower.includes('call') || lower.includes('contact number') || lower.includes('number')) {
+            return `You can reach us at ${contactInfo.phones.join(' or ')}.`;
+          }
+          if (lower.includes('email') || lower.includes('mail')) {
+            return `For inquiries, please email us at ${contactInfo.email}`;
+          }
+          if (lower.includes('training') || lower.includes('program') || lower.includes('course')) {
+            return 'We offer various training programs including Management Training, Employee Engagement, and Outbound Training.';
+          }
+          if (lower.includes('service') || lower.includes('offer') || lower.includes('provide')) {
+            return 'We provide corporate training solutions in leadership development, team building, and mental wellness programs.';
+          }
+          if (lower.includes('management') || lower.includes('leadership')) {
+            return 'Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness.';
+          }
+          if (lower.includes('employee') || lower.includes('staff')) {
+            return 'We offer Employee Engagement and Employee Assistance programs to support your workforce.';
+          }
+          if (lower.includes('global') || lower.includes('executive') || lower.includes('mba')) {
+            return 'We bring world-class executive development programs through our global collaborations with leading universities.';
+          }
+          if (lower.includes('outbound') || lower.includes('obt') || lower.includes('team building')) {
+            return 'Our outbound training programs combine learning with adventure, designed to build teamwork and leadership.';
+          }
+          if (lower.includes('offsites') || lower.includes('offsite')) {
+            return 'We organize corporate offsites to strengthen bonding and align strategy in engaging environments.';
+          }
+          if (lower.includes('help') || lower.includes('support')) {
+            return "I'm here to help! You can ask me about our services, training programs, or how to contact us.";
+          }
+
+          // fallback
+          return fallbackResponse;
+        }
+
+        // --- DOM references ---
+        const sendBtn = document.getElementById('chatbotSend');
+        const inputEl = document.getElementById('chatbotInput');
+        const bodyEl = document.getElementById('chatbotBody');
+        const optionsContainer = document.getElementById('chatOptions');
+
+        // Track current menu state
+        let currentMenu = null;
+
+        // --- helpers ---
+        function scrollChatToBottom() {
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+        }
+
+        function createMessage({ text, who = 'bot', html = false, typing = false }) {
+          const wrapper = document.createElement('div');
+          wrapper.className =
+            'chatbot-message ' +
+            (who === 'user'
+              ? 'user bg-blue-500 text-white rounded-lg p-3 mb-3 max-w-[80%] ml-auto clear-both text-sm'
+              : 'bot bg-blue-50 text-gray-800 rounded-lg p-3 mb-3 max-w-[80%] clear-both text-sm');
+
+          if (typing) {
+            wrapper.classList.add('typing-animation');
+            wrapper.style.width = 'fit-content';
+          }
+
+          if (html) wrapper.innerHTML = text;
+          else wrapper.textContent = text;
+
+          bodyEl.appendChild(wrapper);
+          scrollChatToBottom();
+          return wrapper;
+        }
+
+        function createTypingIndicator() {
+          return createMessage({ text: 'PsypanChatbot is typing...', who: 'bot', typing: true });
+        }
+
+        function removeTypingIndicator(indicator) {
+          if (indicator && indicator.parentNode) {
+            indicator.classList.remove('typing-animation');
+            indicator.style.borderRight = 'none';
+          }
+        }
+
+        // Show main options
+        function showMainOptions() {
+          optionsContainer.innerHTML = '';
+
+          mainOptions.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+            btn.innerHTML = `${opt.icon} ${opt.label}`;
+            btn.dataset.option = opt.id;
+            optionsContainer.appendChild(btn);
+          });
+
+          currentMenu = null;
+          scrollChatToBottom();
+        }
+
+        // Show sub options
+        function showSubOptions(optionId) {
+          optionsContainer.innerHTML = '';
+
+          if (subOptions[optionId]) {
+            subOptions[optionId].forEach(opt => {
+              const btn = document.createElement('button');
+              btn.className = 'option-btn px-3 py-2 mb-2 mr-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+              btn.textContent = opt.label;
+              btn.dataset.action = opt.action;
+              if (opt.target) btn.dataset.target = opt.target;
+              optionsContainer.appendChild(btn);
+            });
+          }
+
+          // Add back button
+          const backBtn = document.createElement('button');
+          backBtn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
+          backBtn.textContent = '⬅ Back to Main Menu';
+          backBtn.addEventListener('click', () => {
+            createMessage({ text: 'What would you like to know about?', who: 'bot' });
+            showMainOptions();
+          });
+          optionsContainer.appendChild(backBtn);
+
+          currentMenu = optionId;
+          scrollChatToBottom();
+        }
+
+        // Show list of items
+        function showList(items, redirectUrl = null) {
+          let listHtml = '';
+          if (redirectUrl) {
+            listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li class="cursor-pointer hover:underline" onclick="window.location.href='${redirectUrl}'">${item}</li>`).join('')}</ul>
+                    </div>`;
+          } else {
+            listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li>${item}</li>`).join('')}</ul>
+                    </div>`;
+          }
+          createMessage({ text: listHtml, who: 'bot', html: true });
+        }
+
+        // Redirect to page
+        function redirectToPage(page) {
+          if (pageUrlMap[page]) {
+            createMessage({ text: `Redirecting you to ${page}...`, who: 'bot' });
+            setTimeout(() => {
+              if (pageUrlMap[page].startsWith('http')) {
+                window.open(pageUrlMap[page], '_blank');
+              } else {
+                window.location.href = pageUrlMap[page];
+              }
+            }, 1000);
+          } else {
+            createMessage({ text: `The ${page} page is not available at the moment.`, who: 'bot' });
+          }
+        }
+
+        // Show phone number
+        function showPhone() {
+          createMessage({ text: `You can call us at: ${contactInfo.phones[1]}`, who: 'bot' });
+        }
+
+        // Show email
+        function showEmail() {
+          createMessage({ text: `Please email us at: ${contactInfo.email}`, who: 'bot' });
+        }
+
+        // Handle option selection
+        function handleOptionSelect(optionId) {
+          // Create user message
+          const optionText = mainOptions.find(opt => opt.id == optionId).label;
+          createMessage({ text: optionText, who: 'user' });
+
+          // Show typing indicator
+          const typingIndicator = createTypingIndicator();
+
+          // After delay, show bot response and options
+          setTimeout(() => {
+            removeTypingIndicator(typingIndicator);
+            createMessage({ text: botResponses[optionId], who: 'bot' });
+
+            // Set last question context if the response ends with a question mark
+            if (botResponses[optionId].endsWith('?')) {
+              const firstSubOption = subOptions[optionId] && subOptions[optionId][0];
+              if (firstSubOption) {
+                lastQuestionContext = {
+                  action: firstSubOption.action,
+                  target: firstSubOption.target
+                };
+              }
+            }
+
+            showSubOptions(optionId);
+          }, 1500);
+        }
+
+        // Handle action selection
+        function handleActionSelect(action, target) {
+          // Create user message
+          const actionText = event ? event.target.textContent : "Yes";
+          createMessage({ text: actionText, who: 'user' });
+
+          // Show typing indicator
+          const typingIndicator = createTypingIndicator();
+
+          // After delay, handle the action
+          setTimeout(() => {
+            removeTypingIndicator(typingIndicator);
+
+            switch (action) {
+              case 'menu':
+                handleOptionSelect(target);
+                break;
+              case 'Trainings':
+                showList(content.trainings, pageUrlMap['Services']);
+                showSubOptions(currentMenu);
+                break;
+              case 'EEPServices':
+                showList(content.eepServices, pageUrlMap['Services']);
+                showSubOptions(currentMenu);
+                break;
+              case 'EAPDetails':
+                showList(content.eapDetails, pageUrlMap['Services']);
+                showSubOptions(currentMenu);
+                break;
+              case 'Venues':
+                showList(content.venues, pageUrlMap['Services']);
+                showSubOptions(currentMenu);
+                break;
+              case 'FormatDetails':
+                showList(content.formatDetails, pageUrlMap['Services']);
+                showSubOptions(currentMenu);
+                break;
+              case 'SampleActivities':
+                showList(content.sampleActivities);
+                showSubOptions(currentMenu);
+                break;
+              case 'Phone':
+                showPhone();
+                showSubOptions(currentMenu);
+                break;
+              case 'Email':
+                showEmail();
+                showSubOptions(currentMenu);
+                break;
+              case 'redirect':
+                redirectToPage(target);
+                break;
+              default:
+                createMessage({ text: "I'm not sure how to help with that.", who: 'bot' });
+                showMainOptions();
+            }
+
+            // Clear the last question context after handling the action
+            lastQuestionContext = null;
+          }, 1500);
+        }
+
+        // Initialize chatbot
+        function initChatbot() {
+          createMessage({ text: "Hello! PsypanChatbot here 👋 Ready to explore our Website?", who: 'bot' });
+          showMainOptions();
+        }
+
+        // --- event handlers ---
+        sendBtn.addEventListener('click', () => {
+          const message = inputEl.value.trim();
+          if (message) {
+            createMessage({ text: message, who: 'user' });
+            inputEl.value = '';
+
+            const typingIndicator = createTypingIndicator();
+
+            setTimeout(() => {
+              removeTypingIndicator(typingIndicator);
+              const response = getBotResponse(message);
+
+              if (response) {
+                createMessage({ text: response, who: 'bot' });
+
+                if (response === fallbackResponse) {
+                  const html = `<div class="flex gap-2 mt-2">
+                                    <button data-action="redirect" data-target="Services" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🌐 Explore Services</button>
+                                    <button data-action="redirect" data-target="Contact" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🤝 Talk to Consultant</button>
+                                </div>`;
+                  createMessage({ text: html, who: 'bot', html: true });
+                } else {
+                  showMainOptions();
+                }
+              }
+            }, 1000);
+          }
+        });
+
+        inputEl.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            sendBtn.click();
+          }
+        });
+
+        // Delegate option clicks
+        optionsContainer.addEventListener('click', (e) => {
+          if (e.target.dataset.option) {
+            handleOptionSelect(e.target.dataset.option);
+          } else if (e.target.dataset.action) {
+            handleActionSelect(e.target.dataset.action, e.target.dataset.target);
+          }
+        });
+
+        // Initialize the chatbot when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+          initChatbot();
+        });
+      })();
+
+      // Form submission with EmailJS + "Sending..." + Success Modal
+      const contactForm = document.getElementById('contact-form');
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      const successModal = document.getElementById('success-modal');
+      const closeModal = document.getElementById('close-modal');
+
+      contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Show sending state
+        submitBtn.textContent = 'Sending…';
+        submitBtn.disabled = true;
+
+        // Collect form data
+        const formData = {
+          first_name: document.getElementById('first-name').value,
+          last_name: document.getElementById('last-name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          services: document.getElementById('services').value,
+          message: document.getElementById('message').value
+        };
+
+        // Send email via EmailJS
+        emailjs.send('service_wbeo8md', 'template_9gj0ctn', formData)
+          .then(function (response) {
+            console.log('SUCCESS!', response.status, response.text);
+
+            // Show success modal
+            successModal.classList.add('active');
+
+            // Reset form
+            contactForm.reset();
+          })
+          .catch(function (error) {
+            console.error('FAILED...', error);
+            // You could also show an error modal or alert here
+            alert('Oops! Something went wrong. Please try again.');
+          })
+          .finally(function () {
+            // Restore button
+            submitBtn.textContent = 'Send Message';
+            submitBtn.disabled = false;
+          });
+      });
+
+      // Close modal functionality
+      closeModal.addEventListener('click', function () {
+        successModal.classList.remove('active');
+      });
+
+      // Close modal when clicking outside
+      successModal.addEventListener('click', function (e) {
+        if (e.target === successModal) {
+          successModal.classList.remove('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

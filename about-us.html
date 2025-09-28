@@ -1,0 +1,3336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Psyche Panacea</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="/images/psypan-logo-transparent.png">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0052cc',
+            secondary: '#4da8ff',
+            dark: '#1a1a1a',
+            light: '#f8f9fa',
+            accent: '#f59e0b',
+          },
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif']
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-out',
+            'slide': 'slide 25s linear infinite',
+            'popup-fade': 'popupFadeIn 0.5s ease forwards',
+            'slide-up': 'slideUp 0.5s ease forwards',
+            'message-fade': 'messageFadeIn 0.3s ease',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              from: { opacity: 0 },
+              to: { opacity: 1 },
+            },
+            slide: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            },
+            popupFadeIn: {
+              from: { transform: 'scale(0.7)', opacity: 0 },
+              to: { transform: 'scale(1)', opacity: 1 },
+            },
+            slideUp: {
+              from: { transform: 'translateY(30px)', opacity: 0 },
+              to: { transform: 'translateY(0)', opacity: 1 },
+            },
+            messageFadeIn: {
+              from: { opacity: 0, transform: 'translateY(10px)' },
+              to: { opacity: 1, transform: 'translateY(0)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-15px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #ffffff;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    .tab-gradient {
+      background: linear-gradient(135deg, #0052cc, #4da8ff);
+    }
+
+    /* Fixed navbar solution */
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 12vh;
+      z-index: 1000;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #0052cc;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+
+    .tab-btn {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      color: #555;
+    }
+
+    .tab-btn.active {
+      color: #0052cc;
+      border-bottom: 3px solid #0052cc;
+      background: rgba(0, 82, 204, 0.05);
+    }
+
+    .tab-btn:hover:not(.active) {
+      background: rgba(0, 82, 204, 0.1);
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Careers Section */
+    .career-card {
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .career-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 82, 204, 0.2);
+    }
+
+    /* Client Grid */
+    .client-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem;
+      place-items: center;
+    }
+
+    .client-card {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .client-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0, 82, 204, 0.15);
+    }
+
+    /* Testimonial Carousel */
+    .testimonial-slide {
+      display: none;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .testimonial-slide.active {
+      display: block;
+    }
+
+    .rating i {
+      color: #f59e0b;
+      font-size: 1.2rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+
+      .tab-btn {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
+      .client-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .client-card {
+        height: 100px;
+      }
+    }
+
+    .floating-element {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    .client-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      background-color: #f9fafb;
+    }
+
+    .client-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .lightbox {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .lightbox-content {
+      animation: scaleIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.9);
+      }
+
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .filter-btn.active {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .typing-animation {
+      overflow: hidden;
+      border-right: .15em solid #3b82f6;
+      white-space: nowrap;
+      animation: typing 1s steps(40, end), blink-caret .75s step-end infinite;
+    }
+
+    .bot-typing .bot-typing-text {
+      border-right: .15em solid #3b82f6;
+      white-space: pre-wrap;
+      /* allow wrapped typed text */
+      display: inline-block;
+      animation: blink-caret .75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0
+      }
+
+      to {
+        width: 100%
+      }
+    }
+
+    @keyframes blink-caret {
+
+      from,
+      to {
+        border-color: transparent
+      }
+
+      50% {
+        border-color: #3b82f6;
+      }
+    }
+
+    .chatbot-body {
+      scroll-behavior: smooth;
+      height: 250px;
+    }
+
+    #chatbotWindow {
+      transition: all 0.3s ease;
+    }
+
+    .option-btn {
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    #chatbotToggle {
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #chatbotToggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+    }
+
+    .chatbot-message {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .chatbot-window {
+        width: 90vw;
+        max-width: 90vw;
+        right: 5px;
+        max-height: 70vh;
+      }
+
+      .chatbot-input {
+        padding: 0.5rem;
+      }
+
+      .chatbot-input input {
+        padding: 0.5rem;
+      }
+
+      .chatbot-toggle {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    /* Map container */
+    .map-container {
+      height: 300px;
+    }
+
+    /* Mobile menu quick-toggle styles (drop into your CSS) */
+
+    #mobile-menu.hidden {
+      opacity: 0;
+      transform-origin: top center;
+      transform: scaleY(.96) translateY(-4px);
+      pointer-events: none;
+      transition: opacity 120ms ease, transform 120ms ease;
+      will-change: opacity, transform;
+    }
+
+    /* Visible state */
+    #mobile-menu.open {
+      opacity: 1;
+      transform: scaleY(1) translateY(0);
+      pointer-events: auto;
+      transition: opacity 120ms ease, transform 120ms ease;
+    }
+
+    /* Small visual polish for the mobile panel */
+    #mobile-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 20px;
+      /* adjust if your header height differs */
+      z-index: 1001;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      box-shadow: 0 10px 30px rgba(6, 11, 26, 0.12);
+      overflow: hidden;
+    }
+
+    /* Keep inner links comfortable and tappable */
+    #mobile-menu .px-2 {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    #mobile-menu a {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.06);
+    }
+
+    /* Slight background and separation so it feels snappy */
+    #mobile-menu {
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(15, 23, 42, 0.04);
+    }
+
+    /* Responsive safety: ensure hidden on desktop by CSS if needed */
+    @media (min-width: 768px) {
+      #mobile-menu {
+        display: none !important;
+      }
+    }
+
+    /* Utility class to block body scroll while menu open */
+    .body-no-scroll {
+      overflow: hidden !important;
+    }
+
+    /* File Upload Styles */
+    .file-upload-container {
+      margin-bottom: 1.5rem;
+    }
+
+    #resume {
+      display: none;
+    }
+
+    .file-upload-label {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #0052cc, #4da8ff);
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .file-upload-label:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 82, 204, 0.3);
+    }
+
+    .file-upload-label i {
+      margin-right: 8px;
+    }
+
+    .file-name {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background-color: #f0f7ff;
+      color: #0052cc;
+      display: none;
+    }
+
+    .upload-status {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .upload-success {
+      background-color: #f0fff4;
+      color: #38a169;
+      border: 1px solid #c6f6d5;
+    }
+
+    .upload-error {
+      background-color: #fff5f5;
+      color: #e53e3e;
+      border: 1px solid #fed7d7;
+    }
+
+    .loading-indicator {
+      display: none;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border-left-color: #0052cc;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* PDF Viewer */
+    .pdf-viewer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 2000;
+    }
+
+    .pdf-container {
+      width: 90%;
+      height: 90%;
+      margin: 2% auto;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .pdf-toolbar {
+      background: #0052cc;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pdf-frame {
+      width: 100%;
+      height: calc(100% - 45px);
+      border: none;
+    }
+
+    /* New styles for the solution */
+    .download-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .download-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      background-color: #f0f7ff;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      color: #0052cc;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .download-button:hover {
+      background-color: #e6f2ff;
+      transform: translateY(-2px);
+    }
+
+    .view-button {
+      background-color: #f0fff4;
+      color: #38a169;
+      border-color: #c6f6d5;
+    }
+
+    .view-button:hover {
+      background-color: #e6ffee;
+    }
+
+    /* Success Animation */
+    @keyframes successAnimation {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      70% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-animation {
+      animation: successAnimation 0.7s ease forwards;
+    }
+
+    .floating-element {
+      animation: float 5s infinite ease-in-out;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .gradient-border {
+      position: relative;
+      border-radius: 1.5rem;
+      overflow: hidden;
+    }
+
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #0d9488, #38bdf8, #0d9488);
+      z-index: -1;
+      border-radius: 1.5rem;
+      animation: border-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes border-pulse {
+
+      0%,
+      100% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .animate-fade-in-left {
+      animation: fadeInLeft 1s ease-out forwards;
+    }
+
+    .animate-fade-in-right {
+      animation: fadeInRight 1s ease-out forwards;
+    }
+
+    @keyframes fadeInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+      animation: float 8s infinite ease-in-out;
+    }
+
+    .achievement-badge {
+      transition: all 0.3s ease;
+    }
+
+    .achievement-badge:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .logo-item {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .logo-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* about section */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(13, 148, 136, 0.6), rgba(56, 189, 248, 0.4));
+      animation: float 5s infinite ease-in-out;
+      opacity: 0.7;
+    }
+
+    .gradient-border {
+      position: relative;
+      border-radius: 1.5rem;
+      overflow: hidden;
+    }
+
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #0d9488, #38bdf8, #0d9488);
+      z-index: -1;
+      border-radius: 1.5rem;
+      animation: border-pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes border-pulse {
+
+      0%,
+      100% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .feature-card {
+      border-left: 4px solid;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .animate-delay-100 {
+      animation-delay: 100ms;
+    }
+
+    .animate-delay-200 {
+      animation-delay: 200ms;
+    }
+
+    .animate-delay-300 {
+      animation-delay: 300ms;
+    }
+
+    /* ---------- Marquee base styles (single track) ---------- */
+    .clients-marquee-section {
+      width: 100%;
+      background: #ffffff;
+      padding: 1rem 0;
+      box-sizing: border-box;
+    }
+
+    .clients-marquee-wrap {
+      --marquee-gap: 1.25rem;
+      --logo-height-desktop: 80px;
+      --logo-height-mobile: 56px;
+      --px-per-second: 120;
+
+      max-width: 1300px;
+      margin: 0 auto;
+      overflow: hidden;
+      position: relative;
+      padding: 0 1rem;
+    }
+
+    /* SINGLE track that will contain clients + a duplicated set for seamless looping */
+    .marquee-track {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--marquee-gap);
+      white-space: nowrap;
+      will-change: transform;
+      animation-name: marquee-scroll;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-duration: 20s;
+      /* fallback; JS will set correct duration */
+      animation-play-state: running;
+    }
+
+    /* Pause on hover */
+    .clients-marquee-wrap:hover .marquee-track {
+      animation-play-state: paused;
+    }
+
+    /* item */
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+    }
+
+    .marquee-item .logo-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--logo-height-desktop);
+      min-width: calc(var(--logo-height-desktop) * 2);
+      padding: 0.3rem 0.75rem;
+      box-sizing: border-box;
+      border-radius: 6px;
+      background: transparent;
+    }
+
+    .marquee-item img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* animation: translate left by 50% (we duplicate content inside the same track) */
+    @keyframes marquee-scroll {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .clients-marquee-wrap {
+        --logo-height-desktop: 64px;
+      }
+
+      .marquee-item .logo-box {
+        min-width: calc(var(--logo-height-desktop) * 1.8);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .clients-marquee-wrap {
+        --logo-height-desktop: var(--logo-height-mobile);
+        padding: 0 0.5rem;
+      }
+
+      .marquee-item .logo-box {
+        min-width: calc(var(--logo-height-mobile) * 1.8);
+        padding: 0.2rem 0.5rem;
+      }
+    }
+
+    .body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #f0f9ff 0%, #e0f2fe 100%);
+      min-height: 10vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      perspective: 1000px;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-content {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .front-face,
+    .back-face {
+      width: 50%;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .front-face {
+      justify-content: center;
+      align-items: center;
+      background: white;
+    }
+
+    .back-face {
+      background: linear-gradient(to bottom right, #3b82f6, #1d4ed8);
+      color: white;
+    }
+
+    .card-container:hover .card-content {
+      transform: translateX(-50%);
+    }
+
+    .icon-container {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      text-align: center;
+    }
+
+    .description {
+      margin-top: 12px;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .learn-more {
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .learn-more:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 50px;
+      color: #1e3a8a;
+      position: relative;
+    }
+
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 5px;
+      background: linear-gradient(to right, #3b82f6, #1d4ed8);
+      border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="flex items-center space-x-2">
+      <img class="h-16 w-14" src="/images/psypan-logo-transparent.png" alt="Psyche Panacea"
+        style="height: 80px; width: 80px;">
+      <div class="text-2xl font-bold text-primary">Psyche Panacea</div>
+    </div>
+
+    <nav class="hidden md:flex items-center space-x-6">
+      <a href="index.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Home</a>
+      <a href="services.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Services</a>
+      <a href="flagship-programs.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Flagship
+        Programs</a>
+      <a href="events.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Events</a>
+      <a href="gallery.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Gallery</a>
+      <a href="about-us.html" class="text-primary font-semibold transition-colors px-2 py-1">About Us</a>
+      <a href="blogs.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Blogs</a>
+      <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors px-2 py-1">Contact</a>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden flex items-center" style="height: 40px;">
+      <button id="mobile-menu-button" class="text-gray-700 hover:text-primary">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="mt-16 md:hidden bg-white shadow-lg rounded-b-lg hidden" style="z-index: 1000;">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a href="index.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Home</a>
+      <a href="services.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Services</a>
+      <a href="flagship-programs.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Flagship
+        Programs</a>
+      <a href="events.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Events</a>
+      <a href="gallery.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Gallery</a>
+      <a href="about-us.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary bg-blue-50">About
+        Us</a>
+      <a href="blogs.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Blogs</a>
+      <a href="contact.html"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50">Contact</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 bg-gradient-to-r from-primary to-blue-600 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">About Psyche Panacea</h1>
+      <div class="h-1 w-24 bg-white mx-auto rounded mb-8"></div>
+      <p class="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">
+        Pioneers of innovative and breakthrough methodologies in the Indian consultation arena, transforming
+        organizations through strategic HR solutions.
+      </p>
+    </div>
+  </section>
+
+  <!-- About The Director Section -->
+  <section id="about-director" class="relative py-16 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <!-- Background decorative elements -->
+      <div class="floating-shape w-64 h-64 bg-teal-300 -top-32 -left-32" style="animation-delay: 0s"></div>
+      <div class="floating-shape w-40 h-40 bg-blue-300 bottom-10 right-10" style="animation-delay: 1s"></div>
+      <div class="floating-shape w-32 h-32 bg-teal-200 top-1/2 right-1/3" style="animation-delay: 2s"></div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Left Content -->
+        <div class="space-y-8 animate-fade-in-left">
+          <div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 relative inline-block">
+              About <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-500">The
+                Director</span>
+              <span
+                class="absolute -bottom-3 left-0 w-20 h-1.5 bg-gradient-to-r from-teal-500 to-blue-400 rounded-full"></span>
+            </h2>
+          </div>
+
+          <div class="space-y-5 text-gray-700">
+            <p class="text-lg leading-relaxed">
+              Mrs. <strong class="text-teal-700">Deepa Vats</strong>, Director of <strong>Psyche Panacea</strong>,
+              is a phenomenal entrepreneur who has been making waves in her industry.
+              She is a visionary leader, a mother, creative thinker, business development expert,
+              HR consultant, and a true inspiration to aspiring entrepreneurs.
+            </p>
+
+            <p class="leading-relaxed">
+              With her innovative ideas and unwavering determination, she has successfully built
+              a thriving business that is making a significant impact in the market. Under her
+              leadership, Psyche Panacea has grown multi-folds.
+            </p>
+
+            <div class="bg-teal-50 p-5 rounded-xl border-l-4 border-teal-500">
+              <p class="text-gray-700">
+                She has helped spread the importance of HR programs for corporate like
+                <strong>Honda, Reliance, Hero Moto Corp</strong>, and more.
+              </p>
+            </div>
+
+            <p class="leading-relaxed">
+              She introduced <strong class="text-teal-700">Result-Oriented Trainings</strong> when the industry
+              was still underdeveloped. With her passion for societal change and empowerment,
+              she has aligned Psyche Panacea's pursuits with CSR portfolios of several
+              companies—benefiting local communities, women, youth, and organizations
+              in terms of value branding.
+            </p>
+          </div>
+
+          <!-- Achievements -->
+          <div class="grid grid-cols-2 gap-4 pt-4">
+            <div class="achievement-badge bg-white p-4 rounded-xl shadow-md flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                  </path>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">25+ Years</p>
+                <p class="text-sm text-gray-600">Experience</p>
+              </div>
+            </div>
+
+            <div class="achievement-badge bg-white p-4 rounded-xl shadow-md flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                  </path>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-800">350+</p>
+                <p class="text-sm text-gray-600">Clients</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Image -->
+        <div class="relative group animate-fade-in-right">
+          <div
+            class="gradient-border rounded-2xl overflow-hidden shadow-2xl transform transition duration-700 group-hover:scale-[1.02]">
+            <img src="/images/deepa-vats.jpg" alt="Mrs. Deepa Vats" class="w-full h-[560px] object-cover">
+          </div>
+
+          <!-- Floating info card -->
+          <div
+            class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-xl shadow-xl p-4 w-4/5 group-hover:-translate-y-2 transition-transform duration-500">
+            <h3 class="font-bold text-gray-900 text-center">Mrs. Deepa Vats</h3>
+            <p class="text-sm text-teal-600 text-center">Director & Founder</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Psyche Panacea -->
+  <section id="about-psyche" class="relative py-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Left: Image block with particles -->
+        <div class="relative order-1 lg:order-1">
+          <div
+            class="gradient-border rounded-2xl overflow-hidden shadow-2xl transform transition duration-700 hover:scale-[1.02]">
+            <img src="/images/about-psyche.jpg" alt="Psyche Panacea team discussion"
+              class="w-full h-[560px] object-cover">
+          </div>
+
+          <!-- Animated particles -->
+          <div class="particle w-4 h-4 -top-4 -left-4 animate-float-slow"></div>
+          <div class="particle w-6 h-6 -bottom-2 -right-4 animate-float-medium" style="animation-delay: 1s"></div>
+          <div class="particle w-3 h-3 top-1/2 -right-6 animate-float-fast" style="animation-delay: 2s"></div>
+          <div class="particle w-5 h-5 bottom-10 -left-6 animate-float-slow" style="animation-delay: 1.5s"></div>
+          <div class="particle w-4 h-4 top-8 -right-8 animate-float-medium" style="animation-delay: 0.5s"></div>
+
+          <!-- Decorative elements -->
+          <div
+            class="absolute -z-10 -bottom-10 -right-10 w-40 h-40 bg-teal-200 rounded-full opacity-20 animate-pulse-soft">
+          </div>
+          <div class="absolute -z-10 -top-6 -left-6 w-24 h-24 bg-blue-300 rounded-full opacity-30 animate-pulse-soft"
+            style="animation-delay: 1s"></div>
+        </div>
+
+        <!-- Right: Text block -->
+        <div class="order-2 lg:order-2 space-y-8">
+          <h2 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+            About <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-500">Psyche
+              Panacea</span>
+          </h2>
+
+          <div class="space-y-4 text-gray-700">
+            <p class="text-lg leading-relaxed">
+              Welcome to <strong class="text-teal-700">Psyche Panacea</strong>, where 24+ years of expertise have
+              established us as a premier consultancy and training agency delivering result-oriented learning solutions.
+            </p>
+
+            <p class="leading-relaxed">
+              With a rich history and a strong foundation, we have been providing top-notch training programs to
+              individuals and organizations pan India. Our expertise, gained over the years, allows us to deliver
+              exceptional learning experiences that meet the evolving needs of our clients.
+            </p>
+
+            <p class="leading-relaxed">
+              Customers have regarded us as trend-setters in the learning sector for years. Given our ability to foresee
+              potential difficulties in the future, clients have always found us to be ready to meet their demands when
+              they emerge. In past two decades we have studied the market trends and challenges in the market, which
+              differentiate us among other players.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <a href="mailto:hr@psypanconsulting.com"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-blue-500 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+              <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+              Get In Touch
+            </a>
+
+            <a href="services.html"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-teal-500 text-teal-600 rounded-lg hover:bg-teal-50 transition-colors duration-300">
+              Learn about our services
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Vision Section -->
+  <section id="our-vision" class="py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-teal-100 rounded-full opacity-20"></div>
+    <div class="absolute -bottom-16 -left-16 w-80 h-80 bg-blue-100 rounded-full opacity-30"></div>
+
+    <div class="max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
+      <!-- Heading and intro -->
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center justify-center p-2 bg-teal-100 rounded-full mb-6">
+          <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+            </path>
+          </svg>
+        </div>
+        <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Our Vision
+        </h3>
+        <p class="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
+          We empower organizations and individuals to unlock their full potential — driving sustainable growth,
+          continuous learning, and measurable impact through innovative consulting and tailored training solutions.
+          Our unwavering commitment to excellence, integrity, and transformative impact will make us the preferred
+          choice for organizations seeking to thrive in an ever-evolving business landscape
+        </p>
+      </div>
+
+      <div class="body">
+        <div class="w-full max-w-7xl mx-auto px-4 py-12">
+          <h1 class="section-title">Our Core Features</h1>
+
+          <div class="grid-container">
+            <!-- Card 1 -->
+            <div class="card-container">
+              <div class="card-content">
+                <div class="front-face">
+                  <div class="icon-container bg-blue-100">
+                    <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+                  </div>
+                  <h3 class="title text-gray-800">Sustainable Growth</h3>
+                </div>
+                <div class="back-face">
+                  <h3 class="title">Sustainable Growth</h3>
+                  <p class="description">Strategies and training to scale capability and achieve lasting business
+                    outcomes through continuous development.</p>
+                  <a href="flagship-programs.html" class="learn-more">
+                    Learn more
+                    <i class="fas fa-arrow-right ml-2"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card-container">
+              <div class="card-content">
+                <div class="front-face">
+                  <div class="icon-container bg-blue-100">
+                    <i class="fas fa-users text-blue-600 text-2xl"></i>
+                  </div>
+                  <h3 class="title text-gray-800">Human-Centered Culture</h3>
+                </div>
+                <div class="back-face">
+                  <h3 class="title">Human-Centered Culture</h3>
+                  <p class="description">Build resilient teams with empathy-driven leadership and wellbeing programs
+                    that foster collaboration and innovation.</p>
+                  <a href="flagship-programs.html" class="learn-more">
+                    Learn more
+                    <i class="fas fa-arrow-right ml-2"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card-container">
+              <div class="card-content">
+                <div class="front-face">
+                  <div class="icon-container bg-blue-100">
+                    <i class="fas fa-lightbulb text-blue-600 text-2xl"></i>
+                  </div>
+                  <h3 class="title text-gray-800">Innovative Impact</h3>
+                </div>
+                <div class="back-face">
+                  <h3 class="title">Innovative Impact</h3>
+                  <p class="description">Deliver measurable, outcome-focused learning interventions that solve
+                    real-world problems and drive organizational success.</p>
+                  <a href="services.html" class="learn-more">
+                    Learn more
+                    <i class="fas fa-arrow-right ml-2"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="clients-tab">Our Clients</button>
+    <button class="tab-btn" data-tab="careers">Careers</button>
+    <button class="tab-btn" data-tab="testimonials">Testimonials</button>
+  </div>
+
+  <!-- Careers Tab Content (updated: reduced spacing, compact design, professional icons) -->
+  <section id="careers" class="tab-content py-12 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="career-card bg-white rounded-xl p-6 shadow-sm">
+        <div class="text-center mb-6">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Dear Candidates</h2>
+          <p class="text-gray-700 text-base">
+            Connect with <span class="font-semibold">Psyche Panacea</span> by sharing your details:
+          </p>
+        </div>
+
+        <div class="mb-6">
+          <ul class="space-y-2 text-gray-700">
+            <li class="flex items-start gap-3">
+              <span class="mt-1 text-primary"><i class="fas fa-user-check"></i></span>
+              <span>Fill out the form below with your basic details</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-1 text-primary"><i class="fas fa-file-upload"></i></span>
+              <span>Upload and send your updated resume (PDF / DOC / DOCX)</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-1 text-primary"><i class="fas fa-handshake"></i></span>
+              <span>Our team will connect with you for suitable opportunities</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="border-t border-gray-200 pt-6 mb-6"></div>
+
+        <form id="career-form" method="POST" action="https://usebasin.com/f/04f341d6d131" enctype="multipart/form-data"
+          class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-700 font-medium mb-1" for="first-name">
+                <i class="fas fa-user mr-2 text-gray-500"></i>First Name *
+              </label>
+              <input type="text" id="first-name" name="first_name" required
+                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium mb-1" for="last-name">
+                <i class="fas fa-user mr-2 text-gray-500"></i>Last Name
+              </label>
+              <input type="text" id="last-name" name="last_name"
+                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-700 font-medium mb-1" for="email">
+                <i class="fas fa-envelope mr-2 text-gray-500"></i>Email *
+              </label>
+              <input type="email" id="email" name="email" required
+                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-medium mb-1" for="phone">
+                <i class="fas fa-phone mr-2 text-gray-500"></i>Phone
+              </label>
+              <input type="tel" id="phone" name="phone"
+                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-medium mb-1" for="job">
+              <i class="fas fa-briefcase mr-2 text-gray-500"></i>Job Applying For: *
+            </label>
+            <select id="job" name="job" required
+              class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+              <option value="">Select a position</option>
+              <option value="HR Consultant: HR/Psychology">HR Consultant: HR/Psychology</option>
+              <option value="Corporate Trainer">Corporate Trainer</option>
+              <option value="Program Manager">Program Manager</option>
+              <option value="Event Coordinator">Event Coordinator</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <!-- Hidden text field for "Other" -->
+            <input type="text" id="otherJob" placeholder="Please specify"
+              class="w-full p-3 border border-gray-300 rounded-lg mt-2 hidden focus:outline-none focus:ring-2 focus:ring-primary" />
+          </div>
+
+
+          <!-- File Upload Section (compact & styled) -->
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">
+              <i class="fas fa-file-alt mr-2 text-gray-500"></i>Upload Resume *
+            </label>
+
+            <div class="flex items-center gap-3">
+              <input type="file" id="resume" name="resume" required accept=".pdf,.doc,.docx" class="hidden">
+              <label for="resume"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 cursor-pointer hover:shadow-sm">
+                <i class="fas fa-cloud-upload-alt text-gray-600"></i>
+                <span class="text-sm text-gray-700">Choose file</span>
+              </label>
+
+              <div id="file-name" class="text-sm text-gray-600">
+                <i class="fas fa-file mr-2 text-gray-400"></i>
+                <span id="file-name-text">No file chosen</span>
+              </div>
+            </div>
+
+            <p class="text-gray-500 text-xs mt-2">Supported: PDF, DOC, DOCX — Max 5MB</p>
+          </div>
+
+          <div class="text-center pt-4">
+            <button type="submit" id="submit-btn"
+              class="bg-gradient-to-r from-primary to-blue-700 hover:from-blue-700 hover:to-primary text-white font-semibold py-3 px-10 rounded-lg transition-transform transform hover:scale-105 shadow">
+              <i class="fas fa-paper-plane mr-2"></i>Submit Application
+            </button>
+          </div>
+        </form>
+
+        <div class="mt-6 text-center text-gray-600 text-sm">
+          <p>Don't find a match? Email <a href="mailto:hr@psypanconsulting.com"
+              class="text-primary font-medium">hr@psypanconsulting.com</a> for future reference.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Our Clients Tab Content -->
+  <section id="clients-tab" class="tab-content active py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Esteemed Clients</h2>
+        <div class="h-1 w-20 bg-primary mx-auto rounded mb-6"></div>
+        <p class="text-gray-700 mt-6 max-w-2xl mx-auto text-lg">
+          We've had the privilege of working with industry leaders who trust us to deliver exceptional training and
+          consulting solutions.
+        </p>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12">
+        <button class="active px-4 py-2 rounded-full bg-primary text-white font-medium transition-all"
+          data-filter="all">Partners in Growth</button>
+      </div>
+
+      <!-- Client Gallery -->
+      <div class="client-gallery grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <!-- Client cards will be generated dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden items-center justify-center p-4 lightbox">
+    <div class="relative max-w-4xl w-full lightbox-content">
+      <button id="close-lightbox"
+        class="absolute -top-12 right-0 text-white text-3xl hover:text-gray-300 transition-colors">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="bg-black rounded-lg overflow-hidden shadow-2xl">
+        <img id="lightbox-image" alt="Client Logo" class="w-full max-h-[80vh] object-contain">
+        <div class="p-4 text-center bg-gray-500">
+          <h3 id="lightbox-title" class="text-xl font-bold text-gray-900"></h3>
+          <p id="lightbox-tagline" class="text-gray-600 mt-1"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonials Tab Content (live Firestore-driven) -->
+  <section id="testimonials" class="tab-content py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">TESTIMONIALS</h2>
+        <div class="h-1 w-20 bg-primary mx-auto rounded"></div>
+        <p class="text-gray-700 mt-6 max-w-2xl mx-auto">
+          Associated with Psyche Panacea, Well Experienced Trainers Available In Pan India.
+        </p>
+      </div>
+
+      <div class="relative" id="testimonials-relative">
+        <!-- Slides will be injected here by JS as elements with class="testimonial-slide" -->
+        <div id="tp-testimonials-loader" class="w-full text-center py-12 text-gray-500">Loading testimonials...</div>
+
+        <!-- Navigation Buttons (keep same IDs) -->
+        <div class="flex justify-center mt-10 space-x-4">
+          <button id="prev-testimonial"
+            class="bg-primary text-white p-3 rounded-full hover:bg-blue-800 transition-colors">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button id="next-testimonial"
+            class="bg-primary text-white p-3 rounded-full hover:bg-blue-800 transition-colors">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENT LOGO MARQUEE (single-row, no double-vertical logos) -->
+  <section id="clients-marquee" class="clients-marquee-section" aria-label="Our clients">
+    <div class="clients-marquee-wrap">
+      <div class="marquee-track" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <!-- Left half: Map -->
+        <div class="w-full h-full map-container rounded-xl overflow-hidden border-2 border-blue-700 shadow-lg">
+          <iframe src="https://maps.google.com/maps?q=28.467519771527627,77.03697016794533&z=15&output=embed"
+            width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen loading="lazy"
+            class="filter grayscale hover:grayscale-0 transition-all duration-500 pointer-events-auto"
+            gestureHandling="greedy">
+          </iframe>
+        </div>
+
+        <!-- Right half: Content -->
+        <div class="grid grid-cols-1 gap-8">
+          <!-- Company Info -->
+          <div>
+            <div class="flex items-center mb-4">
+              <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-2 rounded-lg mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-blue-400">Psyche Panacea</h3>
+            </div>
+            <p class="text-gray-400">
+              Pioneers of innovative and breakthrough methodologies in the Indian consultation arena,
+              transforming organizations through strategic HR solutions.
+            </p>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="text-lg font-semibold mb-3 text-blue-400 border-b border-blue-700 pb-1">Contact Us
+            </h4>
+            <ul class="space-y-4 text-gray-400 text-sm">
+              <li class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 mt-1 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>308/2, Old Delhi Rd, adjacent Country Inn,<br>Sector 12 A, Anamika
+                  Enclave,<br>Gurugram, Haryana 122001 India</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <button onclick="window.location.href='tel:09810323292'">09810323292</button>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-blue-500" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <button onclick="window.location.href='mailto:hr@psypanconsulting.com'">hr@psypanconsulting.com</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="border-t border-gray-800 mt-12 pt-6 text-center text-gray-500 text-sm">
+        <p>© 2025 Psyche Panacea. All rights reserved. Designed by Psyche Panacea Team.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chatbot -->
+  <div class="chatbot fixed bottom-6 right-4 z-50" style="z-index: 1000;">
+    <!-- Toggle / Floating Button -->
+    <button id="chatbotToggle"
+      class="chatbot-toggle w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center cursor-pointer shadow-lg text-white"
+      aria-label="Open chat">
+      <img src="Chatbot.gif" alt="">
+    </button>
+
+    <!-- Chat window -->
+    <div id="chatbotWindow"
+      class="chatbot-window w-80 sm:w-96 max-h-[540px] absolute bottom-20 sm:bottom-24 right-0 bg-white rounded-xl shadow-2xl hidden border border-blue-100 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div
+        class="chatbot-header bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 sm:p-4 rounded-t-xl flex justify-between items-center">
+        <div>
+          <div class="font-bold text-sm sm:text-base">PsypanChatbot</div>
+          <div class="text-xs opacity-90">Your virtual guide</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="chatbotClose" class="chatbot-close text-2xl leading-none">×</button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div id="chatbotBody" class="chatbot-body p-3 sm:p-4 overflow-y-auto flex-1 space-y-3 bg-white">
+        <!-- Messages will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Options Container -->
+      <div id="chatOptions" class="p-2 bg-white border-t border-gray-200">
+        <!-- Options will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Input area -->
+      <div class="chatbot-input p-2 sm:p-3 border-t border-gray-200 flex gap-2 items-center">
+        <input id="chatbotInput" type="text"
+          class="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
+          placeholder="Type your message here...">
+        <button id="chatbotSend"
+          class="bg-blue-500 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-600 transition">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-8 max-w-md w-full text-center transform scale-95 success-animation">
+      <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <i class="fas fa-check-circle text-green-500 text-5xl"></i>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Application Submitted!</h3>
+      <p class="text-gray-700 mb-6">
+        Thank you for applying to Psyche Panacea. We've received your application and will review it within 3-5 business
+        days.
+      </p>
+      <button id="close-modal"
+        class="bg-primary text-white font-bold py-3 px-8 rounded-lg transition-all hover:bg-blue-700">
+        Continue
+      </button>
+    </div>
+  </div>
+
+
+  <script>
+
+    const jobSelect = document.getElementById("job");
+    const otherInput = document.getElementById("otherJob");
+
+    jobSelect.addEventListener("change", function () {
+      if (this.value === "Other") {
+        otherInput.classList.remove("hidden");
+        otherInput.required = true;
+      } else {
+        otherInput.classList.add("hidden");
+        otherInput.required = false;
+        otherInput.value = "";
+      }
+    });
+
+    // Update the select value with the custom text
+    otherInput.addEventListener("input", function () {
+      jobSelect.options[jobSelect.selectedIndex].value = this.value;
+      jobSelect.options[jobSelect.selectedIndex].text = this.value;
+    });
+
+
+    (function () {
+      const btn = document.getElementById('mobile-menu-button');
+      const menu = document.getElementById('mobile-menu');
+
+      if (!btn || !menu) return;
+
+      // initialize aria states
+      btn.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+
+      // helper to open/close
+      function openMenu() {
+        menu.classList.remove('hidden');
+        menu.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-hidden', 'false');
+        document.documentElement.classList.add('body-no-scroll');
+
+        // focus first link for keyboard users
+        const firstLink = menu.querySelector('a, button');
+        if (firstLink) firstLink.focus({ preventScroll: true });
+      }
+
+      function closeMenu() {
+        menu.classList.remove('open');
+        // keep hidden attribute until transition finishes for smoothness
+        menu.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        document.documentElement.classList.remove('body-no-scroll');
+
+        // after transition end hide completely to remove pointer-events if .hidden used elsewhere
+        const onTransEnd = () => {
+          menu.classList.add('hidden');
+          menu.removeEventListener('transitionend', onTransEnd);
+        };
+        // if no transition fire immediately
+        const computed = getComputedStyle(menu);
+        const dur = parseFloat(computed.transitionDuration) || 0;
+        if (dur > 0) {
+          menu.addEventListener('transitionend', onTransEnd);
+        } else {
+          onTransEnd();
+        }
+
+        // return focus to button
+        btn.focus({ preventScroll: true });
+      }
+
+      // toggle handler
+      btn.addEventListener('click', (e) => {
+        const isOpen = menu.classList.contains('open');
+        if (isOpen) closeMenu();
+        else openMenu();
+      });
+
+      // close when a menu link is clicked
+      menu.addEventListener('click', (e) => {
+        const target = e.target.closest('a, button');
+        if (!target) return;
+        // small delay so native navigation begins without abrupt UI change
+        setTimeout(closeMenu, 60);
+      });
+
+      // close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('open')) {
+          closeMenu();
+        }
+      });
+
+      // close on outside click (outside menu and outside button)
+      document.addEventListener('click', (e) => {
+        if (!menu.classList.contains('open')) return;
+        const isInsideMenu = !!e.target.closest('#mobile-menu');
+        const isOnButton = !!e.target.closest('#mobile-menu-button');
+        if (!isInsideMenu && !isOnButton) closeMenu();
+      });
+
+      // ensure correct initial state if menu had no "hidden" class in markup
+      if (!menu.classList.contains('hidden') && !menu.classList.contains('open')) {
+        menu.classList.add('hidden');
+        menu.setAttribute('aria-hidden', 'true');
+      }
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const chatBody = document.getElementById('chatbotBody');
+      if (!chatBody) return;
+
+      // typing speed in ms per character (tweak if you want faster/slower)
+      const TYPE_SPEED = 18;
+
+      // Remove any existing typing-indicator nodes (class 'typing-animation') helper
+      function clearTypingIndicators() {
+        const ind = chatBody.querySelectorAll('.typing-animation');
+        ind.forEach(node => node.remove());
+      }
+
+      // Smooth scroll helper
+      function scrollToBottom() {
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      // Type text into target span element char-by-char
+      function typeText(span, fullText, onDone) {
+        let i = 0;
+        function step() {
+          if (i <= fullText.length) {
+            // keep caret visible as we type
+            span.textContent = fullText.slice(0, i);
+            i++;
+            scrollToBottom();
+            timer = setTimeout(step, TYPE_SPEED);
+          } else {
+            if (typeof onDone === 'function') onDone();
+          }
+        }
+        let timer = setTimeout(step, TYPE_SPEED);
+        return () => clearTimeout(timer);
+      }
+
+      // Observe added bot messages
+      const observer = new MutationObserver((mutations) => {
+        for (const mut of mutations) {
+          for (const node of mut.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue;
+
+            // ignore typing-indicator nodes
+            if (node.classList.contains('typing-animation')) continue;
+
+            // only act on bot messages (class includes 'bot')
+            if (node.classList.contains('bot') && !node.dataset.typed) {
+              // mark to avoid double-processing
+              node.dataset.typed = 'processing';
+
+              // capture original HTML and plain text
+              const originalHTML = node.innerHTML || '';
+              const plainText = node.textContent ? node.textContent.trim() : '';
+
+              // Clear possible typing indicator(s) so we show our typed text cleanly
+              // (we don't remove them earlier to avoid interfering with original flow)
+              clearTypingIndicators();
+
+              // Prepare typed container
+              node.innerHTML = ''; // remove content
+              node.classList.add('bot-typing');
+
+              // create a span to receive typed characters
+              const span = document.createElement('span');
+              span.className = 'bot-typing-text';
+              node.appendChild(span);
+              scrollToBottom();
+
+              // If the original content contains HTML tags, we will type its plain-text first,
+              // then replace with originalHTML at the end (so lists and markup render properly).
+              // If original was plain text, we type it fully and leave as-is.
+              const textToType = plainText.length ? plainText : originalHTML.replace(/<[^>]*>/g, '');
+
+              typeText(span, textToType, () => {
+                // done typing: if originalHTML had markup, set it now (so lists render)
+                if (/<[a-z][\s\S]*>/i.test(originalHTML)) {
+                  node.innerHTML = originalHTML;
+                } else {
+                  // ensure final text exactly matches original (in case of trimming)
+                  span.textContent = plainText || originalHTML;
+                }
+                node.classList.remove('bot-typing');
+                node.dataset.typed = 'true';
+                scrollToBottom();
+              });
+            }
+          }
+        }
+      });
+
+      observer.observe(chatBody, { childList: true, subtree: false });
+
+      // Also make existing bot messages (already present on load) appear typed
+      // by triggering a small re-process for any untyped bot nodes
+      window.addEventListener('load', () => {
+        const existing = Array.from(chatBody.querySelectorAll('.bot')).filter(n => !n.dataset.typed);
+        existing.forEach(n => {
+          // trigger MutationObserver by re-appending node (no visual move)
+          // create a shallow clone then replace to fire the observer logic
+          const clone = n.cloneNode(true);
+          n.replaceWith(clone);
+        });
+      });
+
+      // tidy: expose a function to force-enable or disable this enhancer if needed
+      window.__psypanBotTypingEnhancer = {
+        disconnect: () => observer.disconnect(),
+        reconnect: () => observer.observe(chatBody, { childList: true, subtree: false })
+      };
+    })();
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatbotWindow = document.getElementById("chatbotWindow");
+      const chatbotToggle = document.getElementById("chatbotToggle");
+      const chatbotClose = document.getElementById("chatbotClose");
+
+
+      // Toggle chatbot when floating button is clicked
+      chatbotToggle.addEventListener("click", () => {
+        chatbotWindow.classList.toggle("hidden");
+      });
+
+      // Close chatbot when "×" is clicked
+      chatbotClose.addEventListener("click", () => {
+        chatbotWindow.classList.add("hidden");
+      });
+    });
+
+    // Add slight delay to each card for staggered animation
+    document.querySelectorAll('.card-container').forEach((card, index) => {
+      card.style.transitionDelay = `${index * 0.1}s`;
+    });
+
+    /* Use your clients array exactly as provided */
+    const client = [
+      // Automotive
+      { name: "Honda", image: "honda.png", category: "automotive", tagline: "The Power of Dreams" },
+      { name: "Maruti Suzuki", image: "maruti.png", category: "automotive", tagline: "Way of Life" },
+      { name: "Hero", image: "hero.png", category: "automotive", tagline: "Desh Ki Dhadkan" },
+      { name: "JCB", image: "jcb.png", category: "automotive", tagline: "Powering Progress" },
+      { name: "Suzuki Motorcycles", image: "Suzuki-Motorcycles.png", category: "automotive" },
+      { name: "JK Tyre", image: "jktyre.png", category: "automotive" },
+      { name: "Escort", image: "Escort.png", category: "automotive" },
+      { name: "Sona Koyo", image: "Sona-Koyo.jpg", category: "automotive" },
+      { name: "Minda", image: "minda.png", category: "automotive" },
+      { name: "JBM Group", image: "jbm.png", category: "automotive" },
+
+      // Manufacturing
+      { name: "ACC", image: "acc.png", category: "manufacturing", tagline: "The Professional's Choice" },
+      { name: "Amtek", image: "Amtek.jpg", category: "manufacturing" },
+      { name: "Anchor", image: "Anchor.jpg", category: "manufacturing" },
+      { name: "Asahi Glass", image: "Asahi-Glass.png", category: "manufacturing" },
+      { name: "ATO", image: "ato.png", category: "manufacturing" },
+      { name: "BIRLA POWER", image: "birla-power.png", category: "manufacturing", tagline: "POWER... the ability to change" },
+      { name: "Bria", image: "Birla.jpg", category: "manufacturing" },
+      { name: "Chemsys", image: "Chemsys.png", category: "manufacturing" },
+      { name: "Colgate and Palmolive", image: "ColgateandPalmolive.png", category: "manufacturing" },
+      { name: "Daikin", image: "Daikin.png", category: "manufacturing" },
+      { name: "Dabur", image: "dabur.png", category: "manufacturing" },
+      { name: "Ester Industries", image: "Ester-Industries.png", category: "manufacturing" },
+      { name: "Grasim", image: "Grasim.jpg", category: "manufacturing" },
+      { name: "Hindustan Zinc", image: "Hindustan-Zinc.png", category: "manufacturing" },
+      { name: "Indian Oil", image: "indian-oil.png", category: "manufacturing" },
+      { name: "Yamaha", image: "BirlaYamaha.png", category: "automotive", tagline: "Revs Your Heart" },
+      { name: "Shree Cements", image: "Shree-Cements.jpg", category: "manufacturing" },
+      { name: "SRF", image: "SRF.png", category: "manufacturing" },
+
+      // Technology
+      { name: "Bharti", image: "Bharti.png", category: "technology" },
+      { name: "HCL", image: "hcl.png", category: "technology" },
+      { name: "Hughes Software", image: "Hughes-Software.png", category: "technology" },
+      { name: "ICICI Bank", image: "icici-bank.png", category: "technology" },
+      { name: "Mizuho Bank", image: "Mizuho-Bank.png", category: "technology" },
+      { name: "RMSI", image: "RMSI.png", category: "technology" },
+      { name: "Safran", image: "Safran.png", category: "technology" },
+      { name: "SPIL", image: "SPIL.png", category: "technology" },
+      { name: "Tech Mahindra", image: "tech-mahindra.png", category: "technology" },
+      { name: "TMTL", image: "TMTL.png", category: "technology" },
+      { name: "Wabag", image: "Wabag.png", category: "technology" },
+      { name: "OMAX Technology", image: "LOGO_OMAX-technology.png", category: "technology" },
+      { name: "Nex-Gen", image: "Nex-Gen.png", category: "technology" },
+      { name: "Biotech", image: "Biotech.webp", category: "technology" },
+
+      // FMCG
+      { name: "Pepsi", image: "pepsi.png", category: "fmg" },
+      { name: "Parle-G", image: "Parle-G.jpg", category: "fmg" },
+      { name: "Dabur", image: "DABUR (1).png", category: "fmg" },
+      { name: "Colgate and Palmolive", image: "Colgate-and-Palmoliv.png", category: "fmg" },
+      { name: "Whirlpool", image: "whirl-pool.png", category: "fmg" },
+      { name: "Spencer's", image: "spencers.png", category: "fmg" },
+      { name: "Van Melle", image: "Van-Melle.png", category: "fmg" },
+      { name: "Mother Dairy", image: "Mother-Dairy.jpg", category: "fmg" },
+      { name: "Antheme", image: "AnthemLogo_White_01-Small.png", category: "fmg" },
+      { name: "BPT", image: "BPT.png", category: "fmg" },
+      { name: "EIL", image: "eil", category: "fmg" },
+      { name: "LBL", image: "lbl.png", category: "fmg" },
+      { name: "UD-Trucks", image: "UD-trucks-logo-637x426.jpg", category: "fmg" },
+      { name: "UNO MINDA", image: "UNO MINDA.png", category: "fmg" },
+      { name: "Vecv", image: "Vecv.png", category: "fmg" },
+      { name: "BSES", image: "bses.png", category: "fmg" }
+    ];
+
+    const COMMON_PATH = 'images/clients/'; // common path requested
+    const DEFAULT_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=='; // tiny transparent pixel
+
+    function createItemNode(client) {
+      const item = document.createElement('div');
+      item.className = 'marquee-item';
+      const box = document.createElement('div');
+      box.className = 'logo-box';
+
+      const img = document.createElement('img');
+      img.alt = client.name || '';
+      img.src = COMMON_PATH + client.image;
+      img.onerror = function () {
+        this.onerror = null;
+        // try a safe placeholder in images/clients/ first (if you have it), else use transparent pixel
+        this.src = COMMON_PATH + 'placeholder.png';
+        // if placeholder.png doesn't exist on server, the browser will try that and hit onerror again
+        // but we already removed onerror to avoid infinite loop; in that case you will see broken image or provide placeholder.png
+      };
+
+      box.appendChild(img);
+      item.appendChild(box);
+      return item;
+    }
+
+    function populateSingleTrack() {
+      const track = document.querySelector('.marquee-track');
+      if (!track) return;
+      track.innerHTML = '';
+
+      // create fragment of original items
+      const frag = document.createDocumentFragment();
+      client.forEach(c => frag.appendChild(createItemNode(c)));
+
+      // append original items
+      track.appendChild(frag);
+
+      // append a clone of the same items to the same track (seamless loop)
+      // we clone nodes to avoid reusing the exact same elements (keeps DOM stable)
+      const nodesToClone = Array.from(track.children).slice(0, client.length);
+      nodesToClone.forEach(n => track.appendChild(n.cloneNode(true)));
+    }
+
+    function adjustDurationSingleTrack() {
+      const wrap = document.querySelector('.clients-marquee-wrap');
+      const track = document.querySelector('.marquee-track');
+      if (!wrap || !track) return;
+
+      // One set width is half the scrollWidth because we duplicated content inside same track
+      const total = track.scrollWidth;
+      const oneSetWidth = total / 2 || track.getBoundingClientRect().width / 2;
+
+      const style = getComputedStyle(wrap);
+      const pxPerSecond = Math.max(40, parseFloat(style.getPropertyValue('--px-per-second')) || 120);
+
+      // duration so that oneSetWidth travels at pxPerSecond speed (seconds)
+      const duration = Math.max(6, (oneSetWidth / pxPerSecond));
+      track.style.animationDuration = duration + 's';
+    }
+
+    // init
+    function initSingleMarquee() {
+      populateSingleTrack();
+
+      // wait a bit for images to load and layout to settle before measuring
+      setTimeout(() => {
+        adjustDurationSingleTrack();
+      }, 80);
+
+      // recalc on resize (debounced)
+      let t;
+      window.addEventListener('resize', () => {
+        clearTimeout(t);
+        t = setTimeout(adjustDurationSingleTrack, 150);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initSingleMarquee);
+
+    // Add intersection observer for animations
+    document.addEventListener('DOMContentLoaded', function () {
+      const animatedElements = document.querySelectorAll('.animate-fade-in-left, .animate-fade-in-right');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateX(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      animatedElements.forEach(el => {
+        el.style.opacity = 0;
+        if (el.classList.contains('animate-fade-in-left')) {
+          el.style.transform = 'translateX(-40px)';
+        } else {
+          el.style.transform = 'translateX(40px)';
+        }
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(el);
+      });
+    });
+
+    // Create animated particles
+    document.addEventListener('DOMContentLoaded', function () {
+      const imageContainer = document.querySelector('.relative.order-1');
+
+      // Create multiple particles
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Random size between 3 and 8
+        const size = Math.floor(Math.random() * 6) + 3;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+
+        // Random position
+        const posX = Math.floor(Math.random() * 40) - 20;
+        const posY = Math.floor(Math.random() * 40) - 20;
+        particle.style.left = `${posX}px`;
+        particle.style.top = `${posY}px`;
+
+        // Random animation delay
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+
+        imageContainer.appendChild(particle);
+      }
+
+      // Add intersection observer for animations
+      const animatedElements = document.querySelectorAll('.animate-fade-in-up');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      animatedElements.forEach(el => {
+        el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700');
+        observer.observe(el);
+      });
+    });
+
+    // File upload handling
+    document.getElementById('resume').addEventListener('change', function (e) {
+      const fileName = this.files[0]?.name || '';
+      const fileNameElement = document.getElementById('file-name');
+      const fileNameText = document.getElementById('file-name-text');
+
+      if (fileName) {
+        fileNameText.textContent = fileName;
+        fileNameElement.style.display = 'block';
+      } else {
+        fileNameElement.style.display = 'none';
+      }
+    });
+
+    // Form submission handling
+    document.getElementById('career-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const form = this;
+      const submitBtn = document.getElementById('submit-btn');
+      const uploadStatus = document.getElementById('upload-status');
+
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Processing...
+      `;
+
+      // Create FormData object
+      const formData = new FormData(form);
+
+      // Submit form to UseBasin
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          if (response.ok) {
+            // Show success modal
+            document.getElementById('success-modal').classList.remove('hidden');
+            document.getElementById('success-modal').classList.add('flex');
+
+            // Reset form
+            form.reset();
+            document.getElementById('file-name').style.display = 'none';
+          } else {
+            throw new Error('Form submission failed');
+          }
+        })
+        .catch(error => {
+          console.error('Error submitting form:', error);
+          uploadStatus.innerHTML = `
+          <div class="upload-error">
+            <i class="fas fa-exclamation-circle"></i> Error: Failed to submit application. Please try again.
+          </div>
+        `;
+          uploadStatus.style.display = 'block';
+        })
+        .finally(() => {
+          // Re-enable submit button
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit Application';
+        });
+    });
+
+    // Close modal
+    document.getElementById('close-modal').addEventListener('click', function () {
+      document.getElementById('success-modal').classList.add('hidden');
+      document.getElementById('success-modal').classList.remove('flex');
+    });
+
+    // Chatbot functionality
+
+    (function () {
+      // --- configuration / content (edit as needed) ---
+      const contactInfo = {
+        address: '08/2, Old Delhi Rd, adjacent Country In, Sector 12 A, Anamika Enclave,Sector 14, Gurugram, Haryana 122001',
+        phones: ['+91 9810319292', '+91 9810323292'],
+        email: 'hr@psypanconsulting.com',
+      };
+
+      // PAGE URL map
+      const pageUrlMap = {
+        'Services': 'services.html',
+        'Contact': 'contact.html',
+        'Gallery': 'gallery.html',
+        'Global Programs': 'https://psychepan-mba.netlify.app'
+      };
+
+      // Main menu options
+      const mainOptions = [
+        { id: 1, label: 'Services Offered', icon: '🌐' },
+        { id: 2, label: 'Management Trainings', icon: '📊' },
+        { id: 3, label: 'Global Executive Devp Programs', icon: '🌍' },
+        { id: 4, label: 'Emp Engagement', icon: '👥' },
+        { id: 5, label: 'Emp Assistance', icon: '🤝' },
+        { id: 6, label: 'OBT Training', icon: '🏕️' },
+        { id: 7, label: 'Offsites', icon: '🏞️' },
+        { id: 8, label: 'Contact Us', icon: '📞' }
+      ];
+
+      // Sub-options for each main option
+      const subOptions = {
+        1: [
+          { label: 'Management Trainings', action: 'redirect', target: 'Services' },
+          { label: 'Employee Engagement', action: 'redirect', target: 'Services' },
+          { label: 'Global Executive Development', action: 'menu', target: 3 },
+          { label: 'Outbound Training', action: 'redirect', target: 'Services' },
+          { label: 'Offsites', action: 'redirect', target: 'Services' },
+          { label: 'Employee Assistance', action: 'redirect', target: 'Services' }
+        ],
+        2: [
+          { label: '📘 Featured Trainings', action: 'Trainings' },
+          { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+        ],
+        3: [
+          { label: '🌍 Global MBA', action: 'redirect', target: 'Global Programs' },
+          { label: '✅ Eligibility', action: 'redirect', target: 'Global Programs' }
+        ],
+        4: [
+          { label: '🎯 EEP Services', action: 'EEPServices' },
+          { label: '📩 Contact Our Team', action: 'redirect', target: 'Contact' }
+        ],
+        5: [
+          { label: '🧩 EAP Details', action: 'EAPDetails' },
+          { label: '📞 Request Call Back', action: 'Phone' }
+        ],
+        6: [
+          { label: '🏖 Venue Options', action: 'Venues' },
+          { label: '🎯 Format Details', action: 'FormatDetails' }
+        ],
+        7: [
+          { label: '🏞 Sample Activities', action: 'SampleActivities' },
+          { label: '📸 Go to Gallery', action: 'redirect', target: 'Gallery' }
+        ],
+        8: [
+          { label: '📩 Talk to a Human', action: 'redirect', target: 'Contact' },
+          { label: '📅 Book a Consultation', action: 'Email' },
+          { label: '📞 Request a Call Back', action: 'Phone' }
+        ]
+      };
+
+      // Content for various options
+      const content = {
+        trainings: [
+          'Result Oriented Trainings',
+          'Impact Assessment Program',
+          'Tailormade Program',
+          'Employee Feedback Analysis',
+          'People & Team Leadership',
+          'Strategy & Operational Excellence'
+        ],
+        eepServices: [
+          'Employee Wellness Programme',
+          'Employee Development',
+          'Employee Konnect',
+          'Employee Offsite Program'
+        ],
+        eapDetails: [
+          'Workplace / Mental Health Counselling',
+          'Wellness Assessment',
+          'Wellness Survey',
+          'Wellness Report'
+        ],
+        venues: [
+          'Panchgani', 'Chandipur', 'Bubhneshwar', 'Lonavala', 'Khandala',
+          'Jim Corbett', 'Nanital', 'Ranikhet', 'Kausani', 'Kausali',
+          'Chail', 'Dhanulti', 'Mussorie', 'Solan', 'Shoghi',
+          'Nalagarh', 'Garh Mukteshwar'
+        ],
+        formatDetails: [
+          'Result Oriented OBTs',
+          'Strategic OBTs',
+          'Immersive Experience',
+          'Experiential Strategic & Challenging Group activities'
+        ],
+        sampleActivities: [
+          'Big Picture',
+          'Street Jam',
+          'Pixel Challenge',
+          'Drone Making',
+          'Olympic Challenge',
+          'Treasure Hunt',
+          'Pyramid Challenge',
+          'Drop the ball',
+          'Ripple Effect',
+          'Gladiator'
+        ]
+      };
+
+
+      // Bot responses for main options
+      const botResponses = {
+        1: "We offer a portfolio of services to support organizations and individuals with growth, learning, and transformation. Would you like to explore specific services such as Management Trainings, Employee Engagement, or Outbound Programs?",
+        2: "Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness. They can be customized for different levels of management. Would you like to see available training modules or connect with our team for details?",
+        3: "We bring world-class executive development programs through our global collaborations with leading universities and experts. These programs focus on leadership, innovation, and future-ready skills. Would you like an overview or check eligibility to join?",
+        4: "We design employee engagement initiatives to boost motivation, collaboration, and workplace satisfaction. Programs include workshops, cultural initiatives, and interactive experiences. Would you like examples of engagement activities?",
+        5: "Our Employee Assistance Programs (EAPs) provide confidential support to employees for work-life balance, stress management, and well-being. Would you like to know more about our EAP offerings?",
+        6: "Our outbound training programs combine learning with adventure, designed to build teamwork, leadership, and resilience. Would you like to see sample activities or discuss a custom OBT for your team?",
+        7: "We organize corporate offsites to strengthen bonding, align strategy, and recharge teams in engaging environments. Would you like options for venues and formats?",
+        8: "Would you like to connect with our team directly?"
+      };
+
+      // Fallback response
+      const fallbackResponse = "❓ I may not know that yet…➡️ Explore services👨‍💼 Talk to a consultant";
+
+      // Track the last question asked by the bot
+      let lastQuestionContext = null;
+
+      // Keyword responses (typed input fallback)
+      function getBotResponse(message) {
+        const lower = message.toLowerCase();
+
+        // Handle yes/no responses to bot questions
+        if (lastQuestionContext) {
+          if (lower === 'yes' || lower === 'y' || lower === 'yeah' || lower === 'yep') {
+            // Handle the "yes" response based on the last question context
+            handleActionSelect(lastQuestionContext.action, lastQuestionContext.target);
+            lastQuestionContext = null;
+            return "";
+          } else if (lower === 'no' || lower === 'n' || lower === 'nope') {
+            // Clear chat and show main options for "no" response
+            bodyEl.innerHTML = '';
+            initChatbot();
+            lastQuestionContext = null;
+            return "";
+          }
+        }
+
+        // Common words mapping
+        if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+          return "Hello! How can I help you today?";
+        }
+        if (lower.includes('thank')) {
+          return "You're welcome! Is there anything else I can help you with?";
+        }
+        if (lower.includes('bye') || lower.includes('goodbye')) {
+          return "Thank you for chatting with me. Have a great day!";
+        }
+        if (lower.includes('contact') || lower.includes('address')) {
+          return `Our office is located at ${contactInfo.address}`;
+        }
+        if (lower.includes('phone') || lower.includes('call') || lower.includes('contact number') || lower.includes('number')) {
+          return `You can reach us at ${contactInfo.phones.join(' or ')}.`;
+        }
+        if (lower.includes('email') || lower.includes('mail')) {
+          return `For inquiries, please email us at ${contactInfo.email}`;
+        }
+        if (lower.includes('training') || lower.includes('program') || lower.includes('course')) {
+          return 'We offer various training programs including Management Training, Employee Engagement, and Outbound Training.';
+        }
+        if (lower.includes('service') || lower.includes('offer') || lower.includes('provide')) {
+          return 'We provide corporate training solutions in leadership development, team building, and mental wellness programs.';
+        }
+        if (lower.includes('management') || lower.includes('leadership')) {
+          return 'Our management training programs are designed to build leadership skills, strategic thinking, and team effectiveness.';
+        }
+        if (lower.includes('employee') || lower.includes('staff')) {
+          return 'We offer Employee Engagement and Employee Assistance programs to support your workforce.';
+        }
+        if (lower.includes('global') || lower.includes('executive') || lower.includes('mba')) {
+          return 'We bring world-class executive development programs through our global collaborations with leading universities.';
+        }
+        if (lower.includes('outbound') || lower.includes('obt') || lower.includes('team building')) {
+          return 'Our outbound training programs combine learning with adventure, designed to build teamwork and leadership.';
+        }
+        if (lower.includes('offsites') || lower.includes('offsite')) {
+          return 'We organize corporate offsites to strengthen bonding and align strategy in engaging environments.';
+        }
+        if (lower.includes('help') || lower.includes('support')) {
+          return "I'm here to help! You can ask me about our services, training programs, or how to contact us.";
+        }
+
+        // fallback
+        return fallbackResponse;
+      }
+
+      // --- DOM references ---
+      const sendBtn = document.getElementById('chatbotSend');
+      const inputEl = document.getElementById('chatbotInput');
+      const bodyEl = document.getElementById('chatbotBody');
+      const optionsContainer = document.getElementById('chatOptions');
+
+      // Track current menu state
+      let currentMenu = null;
+
+      // --- helpers ---
+      function scrollChatToBottom() {
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+      }
+
+      function createMessage({ text, who = 'bot', html = false, typing = false }) {
+        const wrapper = document.createElement('div');
+        wrapper.className =
+          'chatbot-message ' +
+          (who === 'user'
+            ? 'user bg-blue-500 text-white rounded-lg p-3 mb-3 max-w-[80%] ml-auto clear-both text-sm'
+            : 'bot bg-blue-50 text-gray-800 rounded-lg p-3 mb-3 max-w-[80%] clear-both text-sm');
+
+        if (typing) {
+          wrapper.classList.add('typing-animation');
+          wrapper.style.width = 'fit-content';
+        }
+
+        if (html) wrapper.innerHTML = text;
+        else wrapper.textContent = text;
+
+        bodyEl.appendChild(wrapper);
+        scrollChatToBottom();
+        return wrapper;
+      }
+
+      function createTypingIndicator() {
+        return createMessage({ text: 'PsypanChatbot is typing...', who: 'bot', typing: true });
+      }
+
+      function removeTypingIndicator(indicator) {
+        if (indicator && indicator.parentNode) {
+          indicator.classList.remove('typing-animation');
+          indicator.style.borderRight = 'none';
+        }
+      }
+
+      // Show main options
+      function showMainOptions() {
+        optionsContainer.innerHTML = '';
+
+        mainOptions.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+          btn.innerHTML = `${opt.icon} ${opt.label}`;
+          btn.dataset.option = opt.id;
+          optionsContainer.appendChild(btn);
+        });
+
+        currentMenu = null;
+        scrollChatToBottom();
+      }
+
+      // Show sub options
+      function showSubOptions(optionId) {
+        optionsContainer.innerHTML = '';
+
+        if (subOptions[optionId]) {
+          subOptions[optionId].forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn px-3 py-2 mb-2 mr-2 text-sm rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition';
+            btn.textContent = opt.label;
+            btn.dataset.action = opt.action;
+            if (opt.target) btn.dataset.target = opt.target;
+            optionsContainer.appendChild(btn);
+          });
+        }
+
+        // Add back button
+        const backBtn = document.createElement('button');
+        backBtn.className = 'option-btn px-3 py-2 mb-2 text-sm rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition';
+        backBtn.textContent = '⬅ Back to Main Menu';
+        backBtn.addEventListener('click', () => {
+          createMessage({ text: 'What would you like to know about?', who: 'bot' });
+          showMainOptions();
+        });
+        optionsContainer.appendChild(backBtn);
+
+        currentMenu = optionId;
+        scrollChatToBottom();
+      }
+
+      // Show list of items
+      function showList(items, redirectUrl = null) {
+        let listHtml = '';
+        if (redirectUrl) {
+          listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li class="cursor-pointer hover:underline" onclick="window.location.href='${redirectUrl}'">${item}</li>`).join('')}</ul>
+                    </div>`;
+        } else {
+          listHtml = `<div class="bg-white p-3 rounded-lg border border-blue-100">
+                        <ul class="list-disc list-inside text-sm">${items.map(item => `<li>${item}</li>`).join('')}</ul>
+                    </div>`;
+        }
+        createMessage({ text: listHtml, who: 'bot', html: true });
+      }
+
+      // Redirect to page
+      function redirectToPage(page) {
+        if (pageUrlMap[page]) {
+          createMessage({ text: `Redirecting you to ${page}...`, who: 'bot' });
+          setTimeout(() => {
+            if (pageUrlMap[page].startsWith('http')) {
+              window.open(pageUrlMap[page], '_blank');
+            } else {
+              window.location.href = pageUrlMap[page];
+            }
+          }, 1000);
+        } else {
+          createMessage({ text: `The ${page} page is not available at the moment.`, who: 'bot' });
+        }
+      }
+
+      // Show phone number
+      function showPhone() {
+        createMessage({ text: `You can call us at: ${contactInfo.phones[1]}`, who: 'bot' });
+      }
+
+      // Show email
+      function showEmail() {
+        createMessage({ text: `Please email us at: ${contactInfo.email}`, who: 'bot' });
+      }
+
+      // Handle option selection
+      function handleOptionSelect(optionId) {
+        // Create user message
+        const optionText = mainOptions.find(opt => opt.id == optionId).label;
+        createMessage({ text: optionText, who: 'user' });
+
+        // Show typing indicator
+        const typingIndicator = createTypingIndicator();
+
+        // After delay, show bot response and options
+        setTimeout(() => {
+          removeTypingIndicator(typingIndicator);
+          createMessage({ text: botResponses[optionId], who: 'bot' });
+
+          // Set last question context if the response ends with a question mark
+          if (botResponses[optionId].endsWith('?')) {
+            const firstSubOption = subOptions[optionId] && subOptions[optionId][0];
+            if (firstSubOption) {
+              lastQuestionContext = {
+                action: firstSubOption.action,
+                target: firstSubOption.target
+              };
+            }
+          }
+
+          showSubOptions(optionId);
+        }, 1500);
+      }
+
+      // Handle action selection
+      function handleActionSelect(action, target) {
+        // Create user message
+        const actionText = event ? event.target.textContent : "Yes";
+        createMessage({ text: actionText, who: 'user' });
+
+        // Show typing indicator
+        const typingIndicator = createTypingIndicator();
+
+        // After delay, handle the action
+        setTimeout(() => {
+          removeTypingIndicator(typingIndicator);
+
+          switch (action) {
+            case 'menu':
+              handleOptionSelect(target);
+              break;
+            case 'Trainings':
+              showList(content.trainings, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'EEPServices':
+              showList(content.eepServices, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'EAPDetails':
+              showList(content.eapDetails, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'Venues':
+              showList(content.venues, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'FormatDetails':
+              showList(content.formatDetails, pageUrlMap['Services']);
+              showSubOptions(currentMenu);
+              break;
+            case 'SampleActivities':
+              showList(content.sampleActivities);
+              showSubOptions(currentMenu);
+              break;
+            case 'Phone':
+              showPhone();
+              showSubOptions(currentMenu);
+              break;
+            case 'Email':
+              showEmail();
+              showSubOptions(currentMenu);
+              break;
+            case 'redirect':
+              redirectToPage(target);
+              break;
+            default:
+              createMessage({ text: "I'm not sure how to help with that.", who: 'bot' });
+              showMainOptions();
+          }
+
+          // Clear the last question context after handling the action
+          lastQuestionContext = null;
+        }, 1500);
+      }
+
+      // Initialize chatbot
+      function initChatbot() {
+        createMessage({ text: "Hello! PsypanChatbot here 👋 Ready to explore our Website?", who: 'bot' });
+        showMainOptions();
+      }
+
+      // --- event handlers ---
+      sendBtn.addEventListener('click', () => {
+        const message = inputEl.value.trim();
+        if (message) {
+          createMessage({ text: message, who: 'user' });
+          inputEl.value = '';
+
+          const typingIndicator = createTypingIndicator();
+
+          setTimeout(() => {
+            removeTypingIndicator(typingIndicator);
+            const response = getBotResponse(message);
+
+            if (response) {
+              createMessage({ text: response, who: 'bot' });
+
+              if (response === fallbackResponse) {
+                const html = `<div class="flex gap-2 mt-2">
+                                    <button data-action="redirect" data-target="Services" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🌐 Explore Services</button>
+                                    <button data-action="redirect" data-target="Contact" class="px-3 py-1 rounded-md bg-blue-500 text-white text-xs">🤝 Talk to Consultant</button>
+                                </div>`;
+                createMessage({ text: html, who: 'bot', html: true });
+              } else {
+                showMainOptions();
+              }
+            }
+          }, 1000);
+        }
+      });
+
+      inputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendBtn.click();
+        }
+      });
+
+      // Delegate option clicks
+      optionsContainer.addEventListener('click', (e) => {
+        if (e.target.dataset.option) {
+          handleOptionSelect(e.target.dataset.option);
+        } else if (e.target.dataset.action) {
+          handleActionSelect(e.target.dataset.action, e.target.dataset.target);
+        }
+      });
+
+      // Initialize the chatbot when the page loads
+      document.addEventListener('DOMContentLoaded', function () {
+        initChatbot();
+      });
+    })();
+    // Client data with categories
+    const clients = [
+      // Automotive
+      { name: "Honda", image: "honda.png", category: "automotive", tagline: "The Power of Dreams" },
+      { name: "Maruti Suzuki", image: "maruti.png", category: "automotive", tagline: "Way of Life" },
+      { name: "Hero", image: "hero.png", category: "automotive", tagline: "Desh Ki Dhadkan" },
+      { name: "JCB", image: "jcb.png", category: "automotive", tagline: "Powering Progress" },
+      { name: "NTPC", image: "ntpc.png", category: "manufacturing" },
+      { name: "Yamaha", image: "BirlaYamaha.png", category: "automotive", tagline: "Revs Your Heart" },
+      { name: "Suzuki Motorcycles", image: "Suzuki-Motorcycles.png", category: "automotive" },
+      { name: "JK Tyres", image: "jktyre.png", category: "automotive" },
+      { name: "Escort", image: "Escort.png", category: "automotive" },
+      { name: "Sona Koyo", image: "Sona-Koyo.jpg", category: "automotive" },
+      { name: "Minda", image: "minda.png", category: "automotive" },
+      { name: "JBM Group", image: "jbm.png", category: "automotive" },
+
+      // Manufacturing
+      { name: "ACC", image: "acc.png", category: "manufacturing", tagline: "The Professional's Choice" },
+      { name: "Amtek", image: "Amtek.jpg", category: "manufacturing" },
+      { name: "Anchor", image: "Anchor.jpg", category: "manufacturing" },
+      { name: "Asahi Glass", image: "Asahi-Glass.png", category: "manufacturing" },
+      { name: "ATO", image: "ato.png", category: "manufacturing" },
+      { name: "BIRLA POWER", image: "birla-power.png", category: "manufacturing", tagline: "POWER... the ability to change" },
+      { name: "Bria", image: "Birla.jpg", category: "manufacturing" },
+      { name: "Chemsys", image: "Chemsys.png", category: "manufacturing" },
+      { name: "Colgate and Palmolive", image: "ColgateandPalmolive.png", category: "manufacturing" },
+      { name: "Daikin", image: "Daikin.png", category: "manufacturing" },
+      { name: "Dabur", image: "dabur.png", category: "manufacturing" },
+      { name: "Ester Industries", image: "Ester-Industries.png", category: "manufacturing" },
+      { name: "Grasim", image: "Grasim.jpg", category: "manufacturing" },
+      { name: "Hindustan Zinc", image: "Hindustan-Zinc.png", category: "manufacturing" },
+      { name: "Indian Oil", image: "indian-oil.png", category: "manufacturing" },
+      { name: "Shree Cements", image: "Shree-Cements.jpg", category: "manufacturing" },
+      { name: "SRF", image: "SRF.png", category: "manufacturing" },
+
+      // Technology
+      { name: "Bharti", image: "Bharti.png", category: "technology" },
+      { name: "HCL", image: "hcl.png", category: "technology" },
+      { name: "Hughes Software", image: "Hughes-Software.png", category: "technology" },
+      { name: "ICICI Bank", image: "icici-bank.png", category: "technology" },
+      { name: "Mizuho Bank", image: "Mizuho-Bank.png", category: "technology" },
+      { name: "RMSI", image: "RMSI.png", category: "technology" },
+      { name: "Safran", image: "Safran.png", category: "technology" },
+      { name: "SPIL", image: "SPIL.png", category: "technology" },
+      { name: "Tech Mahindra", image: "tech-mahindra.png", category: "technology" },
+      { name: "TMTL", image: "TMTL.png", category: "technology" },
+      { name: "Wabag", image: "Wabag.png", category: "technology" },
+      { name: "OMAX Technology", image: "LOGO_OMAX-technology.png", category: "technology" },
+      { name: "Nex-Gen", image: "Nex-Gen.png", category: "technology" },
+      { name: "Biotech", image: "Biotech.webp", category: "technology" },
+
+      // FMCG
+      { name: "Pepsi", image: "pepsi.png", category: "fmg" },
+      { name: "Parle-G", image: "Parle-G.jpg", category: "fmg" },
+      { name: "Dabur", image: "DABUR (1).png", category: "fmg" },
+      { name: "Colgate and Palmolive", image: "Colgate-and-Palmoliv.png", category: "fmg" },
+      { name: "Whirlpool", image: "whirl-pool.png", category: "fmg" },
+      { name: "Spencer's", image: "spencers.png", category: "fmg" },
+      { name: "Van Melle", image: "Van-Melle.png", category: "fmg" },
+      { name: "Mother Dairy", image: "Mother-Dairy.jpg", category: "fmg" },
+      { name: "BSES", image: "bses.png", category: "fmg" },
+      { name: "Antheme", image: "Antheme.png", category: "fmg" },
+      { name: "BPT", image: "BPT.png", category: "fmg" },
+      { name: "EIL", image: "eil.png", category: "fmg" },
+      { name: "LBL", image: "lbl.png", category: "fmg" },
+      { name: "UD-Trucks", image: "UD-trucks-logo-637x426.jpg", category: "fmg" },
+      { name: "UNO MINDA", image: "UNO MINDA.png", category: "fmg" },
+      { name: "Vecv", image: "Vecv.png", category: "fmg" }
+    ];
+
+    // Function to create client card
+    function createClientCard(client) {
+      const card = document.createElement('div');
+      card.className = 'client-card group';
+      card.dataset.category = client.category;
+      card.dataset.name = client.name;
+      card.dataset.tagline = client.tagline || '';
+
+      card.innerHTML = `
+                <div class="relative overflow-hidden rounded-xl shadow-lg h-56 w-full bg-white transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                    <div class="p-4 h-full flex items-center justify-center">
+                        <img src="/images/clients/${client.image}" alt="${client.name}" class="max-h-24 max-w-full">
+                    </div>
+                </div>
+            `;
+
+      // Add click event for lightbox
+      card.addEventListener('click', () => openLightbox(client));
+
+      return card;
+    }
+
+    // Function to render all clients
+    function renderClientGallery() {
+      const gallery = document.querySelector('.client-gallery');
+      gallery.innerHTML = '';
+
+      clients.forEach(client => {
+        gallery.appendChild(createClientCard(client));
+      });
+    }
+
+    // Function to open lightbox
+    function openLightbox(client) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImage = document.getElementById('lightbox-image');
+      const lightboxTitle = document.getElementById('lightbox-title');
+      const lightboxTagline = document.getElementById('lightbox-tagline');
+
+      lightboxImage.src = `/images/clients/${client.image}`;
+      lightboxImage.alt = client.name;
+      lightboxTitle.textContent = client.name;
+      lightboxTagline.textContent = client.tagline || '';
+
+      // Hide tagline element if no tagline exists
+      lightboxTagline.style.display = client.tagline ? 'block' : 'none';
+
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+
+      // Prevent scrolling when lightbox is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Function to close lightbox
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+
+      // Restore scrolling
+      document.body.style.overflow = '';
+    }
+
+    // Function to initialize filter functionality
+    function initFilter() {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          // Update active button
+          filterButtons.forEach(btn => {
+            btn.classList.remove('active', 'bg-primary', 'text-white');
+            btn.classList.add('bg-gray-200');
+          });
+
+          this.classList.add('active', 'bg-primary', 'text-white');
+          this.classList.remove('bg-gray-200');
+
+          const filter = this.dataset.filter;
+          const clientCards = document.querySelectorAll('.client-card');
+
+          clientCards.forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    }
+
+    // Tab Switching Functionality
+    function initTabs() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active class from all buttons and contents
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+
+          // Add active class to clicked button
+          button.classList.add('active');
+
+          // Show corresponding content
+          const tabId = button.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      renderClientGallery();
+      initFilter();
+      initTabs();
+
+      // Close lightbox events
+      document.getElementById('close-lightbox').addEventListener('click', closeLightbox);
+      document.getElementById('lightbox').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeLightbox();
+      });
+
+      // Close with Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+      });
+    });
+  </script>
+  <script type="module">
+    /*
+      Firestore-driven Testimonials carousel
+      - Keeps original class/id names: .testimonial-slide, #prev-testimonial, #next-testimonial
+      - Listens to collection "testimonials" ordered by createdAt desc
+      - Uses provided firebaseConfig if Firebase app not already initialized
+    */
+
+    import { initializeApp, getApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA8t0YBEkZ-hDHmw7u8aud-jwNybYEKnbU",
+      authDomain: "psypanweb-7747a.firebaseapp.com",
+      projectId: "psypanweb-7747a",
+      storageBucket: "psypanweb-7747a.appspot.com",
+      messagingSenderId: "441049264188",
+      appId: "1:441049264188:web:4dab8de0554b2c7c741339",
+      measurementId: "G-C1CTMX729Z"
+    };
+
+    // initialize or reuse app
+    let app;
+    try {
+      app = getApp();
+    } catch (e) {
+      app = initializeApp(firebaseConfig);
+    }
+
+    // ---------- Testimonials script with HEIC + Cloudinary + default-avatar fallbacks ----------
+    const db = getFirestore(app);
+    (function () {
+      const testimonialsRef = collection(db, 'testimonials');
+      const testimonialsQuery = query(testimonialsRef, orderBy('createdAt', 'desc'));
+
+      // DOM refs (keep original container and button IDs)
+      const relativeEl = document.getElementById('testimonials-relative');
+      const loaderEl = document.getElementById('tp-testimonials-loader');
+      const prevBtn = document.getElementById('prev-testimonial');
+      const nextBtn = document.getElementById('next-testimonial');
+
+      if (!relativeEl) {
+        console.error('Testimonials container not found (#testimonials-relative). Aborting testimonials script.');
+        return;
+      }
+
+      // store slide data & track current index
+      let slideData = []; // array of {id, name, role, company, photoURL, rating, text, createdAt}
+      let currentIndex = 0;
+
+      const DEFAULT_AVATAR = 'https://www.gravatar.com/avatar/?d=mp&s=160';
+
+      // UTIL: escape html
+      function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+      }
+
+      // UTIL: render star icons same look as original markup
+      function renderStars(rating) {
+        rating = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+        let html = '';
+        for (let i = 0; i < rating; i++) html += '<i class="fas fa-star text-yellow-400 mr-1"></i>';
+        for (let i = rating; i < 5; i++) html += '<i class="far fa-star text-gray-300 mr-1"></i>';
+        return html;
+      }
+
+      /**
+       * resolveImageUrl(originalUrl)
+       * Tries the provided URL first. If it loads, returns it.
+       * If it fails and the url looks like .heic, tries .jpg.
+       * If it fails and looks like Cloudinary, tries /upload/f_auto,q_auto/ variant.
+       * Otherwise resolves to DEFAULT_AVATAR.
+       *
+       * Returns Promise<string> with the resolved URL (or DEFAULT_AVATAR).
+       */
+      function resolveImageUrl(originalUrl) {
+        return new Promise((resolve) => {
+          if (!originalUrl) {
+            resolve(DEFAULT_AVATAR);
+            return;
+          }
+
+          const url = String(originalUrl).trim();
+
+          // If it's a data: URL (base64 etc) — use directly without testing (browsers handle it)
+          if (/^data:/i.test(url)) {
+            resolve(url);
+            return;
+          }
+
+          let triedHeic = false;
+          let triedCloudinary = false;
+          let finished = false;
+
+          function finish(finalUrl) {
+            if (!finished) {
+              finished = true;
+              resolve(finalUrl || DEFAULT_AVATAR);
+            }
+          }
+
+          function attempt(u, failCb) {
+            if (!u) {
+              failCb();
+              return;
+            }
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            let timeout = setTimeout(() => {
+              // if image hasn't loaded in 5s, treat as failure (prevents hanging)
+              img.onload = img.onerror = null;
+              failCb();
+            }, 5000);
+            img.onload = function () {
+              clearTimeout(timeout);
+              finish(u);
+            };
+            img.onerror = function () {
+              clearTimeout(timeout);
+              failCb();
+            };
+            img.src = u;
+          }
+
+          // First try original
+          attempt(url, function () {
+            // If original fails, try logical fallbacks in order
+
+            // 1) If .heic extension, try .jpg
+            if (!triedHeic && /\.heic(?:$|\?)/i.test(url)) {
+              triedHeic = true;
+              const jpg = url.replace(/\.heic/i, '.jpg');
+              attempt(jpg, function () {
+                // next try cloudinary auto if applicable
+                if (!triedCloudinary && /cloudinary\.com|res\.cloudinary\.com/.test(url)) {
+                  triedCloudinary = true;
+                  const auto = url.replace('/upload/', '/upload/f_auto,q_auto/');
+                  attempt(auto, function () {
+                    finish(DEFAULT_AVATAR);
+                  });
+                } else {
+                  finish(DEFAULT_AVATAR);
+                }
+              });
+              return;
+            }
+
+            // 2) If Cloudinary URL, try f_auto,q_auto variant
+            if (!triedCloudinary && /cloudinary\.com|res\.cloudinary\.com/.test(url)) {
+              triedCloudinary = true;
+              const auto = url.replace('/upload/', '/upload/f_auto,q_auto/');
+              attempt(auto, function () {
+                // after cloudinary variant fails, if it was .heic try jpg, else finish
+                if (!triedHeic && /\.heic(?:$|\?)/i.test(url)) {
+                  triedHeic = true;
+                  const jpg = url.replace(/\.heic/i, '.jpg');
+                  attempt(jpg, function () {
+                    finish(DEFAULT_AVATAR);
+                  });
+                } else {
+                  finish(DEFAULT_AVATAR);
+                }
+              });
+              return;
+            }
+
+            // 3) If URL contains .heic anywhere but we haven't tried jpg -> try jpg
+            if (!triedHeic && /\.heic(?:$|\?)/i.test(url)) {
+              triedHeic = true;
+              const jpg = url.replace(/\.heic/i, '.jpg');
+              attempt(jpg, function () {
+                finish(DEFAULT_AVATAR);
+              });
+              return;
+            }
+
+            // nothing left -> fallback
+            finish(DEFAULT_AVATAR);
+          });
+        });
+      }
+
+      // Build a slide element following your original structure and classes
+      // NOTE: we set the img src initially to DEFAULT_AVATAR and include data-photo attribute for async replacement
+      function buildSlide(item) {
+        const slide = document.createElement('div');
+        slide.className = 'testimonial-slide';
+        const escapedName = escapeHtml(item.name || '');
+        const escapedRoleCompany = escapeHtml((item.role || '') + (item.company ? ' • ' + item.company : ''));
+        const escapedText = escapeHtml(item.text || '');
+        const dataPhotoAttr = escapeHtml(item.photoURL || '');
+
+        slide.innerHTML = `
+      <div class="bg-gray-50 rounded-xl p-8 md:p-12 shadow-md">
+        <div class="rating mb-6">${renderStars(item.rating)}</div>
+        <p class="text-gray-700 text-lg mb-8 italic">"${escapedText}"</p>
+        <div class="flex items-center">
+          <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-200 border-2 border-dashed flex-shrink-0">
+            <!-- placeholder image; data-photo holds original URL for later resolution -->
+            <img data-photo="${dataPhotoAttr}" src="${DEFAULT_AVATAR}" alt="${escapedName}" class="w-full h-full object-cover testimonial-img" style="opacity:0; transition: opacity .25s ease-in;">
+          </div>
+          <div class="ml-4">
+            <h4 class="text-xl font-bold text-gray-900">${escapedName || 'Anonymous'}</h4>
+            <p class="text-gray-600">${escapedRoleCompany}</p>
+          </div>
+        </div>
+      </div>
+    `;
+        return slide;
+      }
+
+      // Clear current slides (but leave nav buttons intact)
+      function clearSlides() {
+        const existing = relativeEl.querySelectorAll('.testimonial-slide');
+        existing.forEach(n => n.remove());
+      }
+
+      // After slides are inserted, resolve images asynchronously and swap srcs to working url
+      function resolveImagesInSlides() {
+        const imgs = relativeEl.querySelectorAll('img.testimonial-img');
+        imgs.forEach(imgEl => {
+          const dataPhoto = imgEl.getAttribute('data-photo') || '';
+          // If dataPhoto is empty -> set default avatar and reveal
+          if (!dataPhoto) {
+            imgEl.src = DEFAULT_AVATAR;
+            imgEl.style.opacity = '1';
+            return;
+          }
+          // attempt to resolve; set src when resolved
+          resolveImageUrl(dataPhoto).then(finalUrl => {
+            if (finalUrl) {
+              // Temporarily set a tiny transparent pixel if finalUrl === current to avoid reload
+              // Set src and reveal on load or immediately if data URL
+              if (finalUrl === imgEl.src) {
+                imgEl.style.opacity = '1';
+              } else {
+                // If finalUrl is data: or cross-origin, the load will trigger onload
+                imgEl.onload = function () {
+                  imgEl.style.opacity = '1';
+                  imgEl.onload = null;
+                };
+                imgEl.onerror = function () {
+                  // fallback to default
+                  imgEl.src = DEFAULT_AVATAR;
+                  imgEl.style.opacity = '1';
+                  imgEl.onerror = null;
+                };
+                imgEl.src = finalUrl;
+              }
+            } else {
+              imgEl.src = DEFAULT_AVATAR;
+              imgEl.style.opacity = '1';
+            }
+          }).catch(() => {
+            imgEl.src = DEFAULT_AVATAR;
+            imgEl.style.opacity = '1';
+          });
+        });
+      }
+
+      // Render slides array into DOM, inserting before nav buttons
+      function renderSlides() {
+        // remove old slides
+        clearSlides();
+
+        // remove loader
+        if (loaderEl) loaderEl.remove();
+
+        if (!slideData || slideData.length === 0) {
+          // show no-data message
+          const nodata = document.createElement('div');
+          nodata.className = 'testimonial-slide';
+          nodata.innerHTML = `
+        <div class="bg-gray-50 rounded-xl p-8 md:p-12 shadow-md">
+          <p class="text-gray-700 text-lg mb-8 italic">No testimonials yet. Be the first to add one!</p>
+        </div>`;
+          const nav = relativeEl.querySelector('.flex.justify-center.mt-10');
+          if (nav) relativeEl.insertBefore(nodata, nav);
+          else relativeEl.appendChild(nodata);
+          currentIndex = 0;
+          updateVisible();
+          return;
+        }
+
+        // create slides and insert
+        slideData.forEach((item, idx) => {
+          const slideEl = buildSlide(item);
+          if (idx === currentIndex) slideEl.classList.add('active');
+          const nav = relativeEl.querySelector('.flex.justify-center.mt-10');
+          if (nav) relativeEl.insertBefore(slideEl, nav);
+          else relativeEl.appendChild(slideEl);
+        });
+
+        // resolve images for newly inserted slides
+        resolveImagesInSlides();
+
+        // ensure visible slide updated
+        updateVisible();
+      }
+
+      // Add/remove 'active' class to show the current slide only
+      function updateVisible() {
+        const slides = Array.from(relativeEl.querySelectorAll('.testimonial-slide'));
+        if (slides.length === 0) return;
+        slides.forEach(s => s.classList.remove('active'));
+        // clamp index
+        if (currentIndex < 0) currentIndex = slides.length - 1;
+        if (currentIndex >= slides.length) currentIndex = 0;
+        slides[currentIndex].classList.add('active');
+      }
+
+      // Prev/next handlers (preserve original behavior)
+      prevBtn?.addEventListener('click', () => {
+        const slides = relativeEl.querySelectorAll('.testimonial-slide');
+        if (!slides.length) return;
+        currentIndex--;
+        if (currentIndex < 0) currentIndex = slides.length - 1;
+        updateVisible();
+      });
+
+      nextBtn?.addEventListener('click', () => {
+        const slides = relativeEl.querySelectorAll('.testimonial-slide');
+        if (!slides.length) return;
+        currentIndex++;
+        if (currentIndex >= slides.length) currentIndex = 0;
+        updateVisible();
+      });
+
+      // Listen to Firestore in real-time
+      onSnapshot(testimonialsQuery, (snapshot) => {
+        // map docs to simple object shape (reference screenshot fields)
+        slideData = snapshot.docs.map(doc => {
+          const d = doc.data();
+          return {
+            id: doc.id,
+            name: d.name || '',
+            role: d.role || '',
+            company: d.company || '',
+            photoURL: d.photoURL || '',
+            rating: d.rating || 5,
+            text: d.text || '',
+            createdAt: d.createdAt || null
+          };
+        });
+
+        // reset to first (most recent) when data refreshes
+        currentIndex = 0;
+        renderSlides();
+
+      }, (err) => {
+        console.error('Error listening to testimonials:', err);
+        if (loaderEl) loaderEl.textContent = 'Could not load testimonials.';
+      });
+
+      // initial: show loader (already present in HTML)
+    })();
+
+
+  </script>
+
+</body>
+
+</html>
